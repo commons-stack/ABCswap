@@ -1,33 +1,40 @@
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { useBalance } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 
 export default function SimpleConvert() {
 
     type Token = {
         symbol: string,
         bgColor: string,
+        contract: `0x${string}`,
     }
 
-    const [fromToken, setFromToken] = useState<Token>({symbol: "TEC", bgColor: "blue.100"});
-    const [toToken, setToToken] = useState<Token>({symbol: "WXDAI", bgColor: "green.100"});
+    const [fromToken, setFromToken] = useState<Token>({symbol: "TEC", bgColor: "blue.100", contract: "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"});
+    const [toToken, setToToken] = useState<Token>({symbol: "WXDAI", bgColor: "green.100", contract: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"});
 
+    const [fromTokenBalance, setFromTokenBalance] = useState<string>("0");
     const [fromTokenAmount, setFromTokenAmount] = useState<string>("0");
 
-    const handleFromTokenChange = () => {
-        setFromTokenAmount("0");
-        if (fromToken.symbol === "TEC") {
-            setFromToken({symbol: "WXDAI", bgColor: "green.100"});
-            setToToken({symbol: "TEC", bgColor: "blue.100"});
-        } else {
-            setFromToken({symbol: "TEC", bgColor: "blue.100"});
-            setToToken({symbol: "WXDAI", bgColor: "green.100"});
-        }
-    };
+    const { address, isConnected } = useAccount();
 
-    const handleEntireBalance = () => {
-        useBalance();
-    }
+    const handleFromTokenChange = () => {
+        if (fromToken.symbol === "TEC") {
+            setFromToken({symbol: "WXDAI", bgColor: "green.100", contract: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"});
+            setToToken({symbol: "TEC", bgColor: "blue.100", contract: "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"});
+        } else {
+            setFromToken({symbol: "TEC", bgColor: "blue.100", contract: "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"});
+            setToToken({symbol: "WXDAI", bgColor: "green.100", contract: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"});
+        }
+
+        const { data, isError, isLoading } = useBalance({
+            address: address,
+            token: fromToken.contract,
+        });
+
+        setFromTokenAmount("0");
+        !isLoading && !isError ? setFromTokenBalance(data?.formatted.toString() || "0") : undefined;
+    };
 
     const handleConvert = () => {
         
@@ -45,7 +52,8 @@ export default function SimpleConvert() {
                         setFromTokenAmount(inputValue);
                     }
                 }}/>
-                <Button onClick={handleEntireBalance}>Convert all</Button>
+                {isConnected && <Text>{fromTokenBalance + " " + fromToken.symbol }</Text>}
+                <Button onClick={() => setFromTokenAmount(fromTokenBalance)}>Convert all</Button>
             </Flex>
             {/* Middle Section */}
             <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
