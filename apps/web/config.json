@@ -1,0 +1,10 @@
+{
+    "collateral": {
+        "symbol": "WXDAI",
+        "contract": "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"
+    },
+    "bonded": {
+        "symbol": "TEC",
+        "contract": "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"
+    } 
+}

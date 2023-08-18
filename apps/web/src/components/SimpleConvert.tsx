@@ -1,3 +1,4 @@
+import { collateral, bonded } from '../../config.json';
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAccount, useBalance } from "wagmi";
@@ -6,12 +7,12 @@ export default function SimpleConvert() {
 
     type Token = {
         symbol: string,
-        bgColor: string,
+        bgColor?: string,
         contract: `0x${string}`,
     }
 
-    const [fromToken, setFromToken] = useState<Token>({symbol: "TEC", bgColor: "blue.100", contract: "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"});
-    const [toToken, setToToken] = useState<Token>({symbol: "WXDAI", bgColor: "green.100", contract: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"});
+    const [fromToken, setFromToken] = useState<Token>({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
+    const [toToken, setToToken] = useState<Token>({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
 
     const [fromTokenBalance, setFromTokenBalance] = useState<string>("0");
     const [fromTokenAmount, setFromTokenAmount] = useState<string>("0");
@@ -19,12 +20,12 @@ export default function SimpleConvert() {
     const { address, isConnected } = useAccount();
 
     const handleFromTokenChange = () => {
-        if (fromToken.symbol === "TEC") {
-            setFromToken({symbol: "WXDAI", bgColor: "green.100", contract: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"});
-            setToToken({symbol: "TEC", bgColor: "blue.100", contract: "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"});
+        if (fromToken.symbol === bonded.symbol) {
+            setFromToken({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
+            setToToken({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
         } else {
-            setFromToken({symbol: "TEC", bgColor: "blue.100", contract: "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27"});
-            setToToken({symbol: "WXDAI", bgColor: "green.100", contract: "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d"});
+            setFromToken({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
+            setToToken({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
         }
 
         const { data, isError, isLoading } = useBalance({
