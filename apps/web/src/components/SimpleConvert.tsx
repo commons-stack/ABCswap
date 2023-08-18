@@ -1,7 +1,8 @@
 import { collateral, bonded } from '../../config.json';
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { useAccount, useBalance } from "wagmi";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { fetchBalance } from '@wagmi/core'
 
 export default function SimpleConvert() {
 
@@ -9,6 +10,13 @@ export default function SimpleConvert() {
         symbol: string,
         bgColor?: string,
         contract: `0x${string}`,
+    }
+
+    type TokenBalance = {
+        decimals: number,
+        formatted: string,
+        symbol: string,
+        value: BigInt
     }
 
     const [fromToken, setFromToken] = useState<Token>({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
@@ -19,27 +27,35 @@ export default function SimpleConvert() {
 
     const { address, isConnected } = useAccount();
 
-    const handleFromTokenChange = () => {
+    const handleFromTokenChange = async() => {
+        setFromTokenAmount("0");
         if (fromToken.symbol === bonded.symbol) {
             setFromToken({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
             setToToken({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
+            const balance: TokenBalance = await fetchBalance({
+                address: address as `0x${string}`,
+                token: fromToken.contract as `0x${string}`,
+            })
+            setFromTokenBalance(balance.formatted.toString());
         } else {
             setFromToken({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
             setToToken({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
+            const balance = await fetchBalance({
+                address: address as `0x${string}`,
+                token: fromToken.contract as `0x${string}`,
+            })
+            setFromTokenBalance(balance.formatted?.toString());
         }
-
-        const { data, isError, isLoading } = useBalance({
-            address: address,
-            token: fromToken.contract,
-        });
-
-        setFromTokenAmount("0");
-        !isLoading && !isError ? setFromTokenBalance(data?.formatted.toString() || "0") : undefined;
     };
 
     const handleConvert = () => {
         
     };
+
+    useEffect(() => {
+        // TODO get amount of ToToken
+
+    }, [fromTokenAmount]);
 
     return (
         <Flex height="100vh" direction="column">
