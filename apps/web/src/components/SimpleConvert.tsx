@@ -19,42 +19,45 @@ export default function SimpleConvert() {
         value: BigInt
     }
 
-    const [fromToken, setFromToken] = useState<Token>({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
-    const [toToken, setToToken] = useState<Token>({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
+    const [fromToken, setFromToken] = useState<Token>({ symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}` });
+    const [toToken, setToToken] = useState<Token>({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
 
     const [fromTokenBalance, setFromTokenBalance] = useState<string>("0");
     const [fromTokenAmount, setFromTokenAmount] = useState<string>("0");
 
     const { address, isConnected } = useAccount();
 
-    const handleFromTokenChange = async() => {
+    const handleFromTokenChange = async () => {
         setFromTokenAmount("0");
         if (fromToken.symbol === bonded.symbol) {
-            setFromToken({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
-            setToToken({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
-            const balance: TokenBalance = await fetchBalance({
-                address: address as `0x${string}`,
-                token: fromToken.contract as `0x${string}`,
-            })
-            setFromTokenBalance(balance.formatted.toString());
+            setFromToken({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
+            setToToken({ symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}` });
+            if (address) {
+                const balance: TokenBalance = await fetchBalance({
+                    address: address as `0x${string}`,
+                    token: fromToken.contract as `0x${string}`,
+                })
+                setFromTokenBalance(balance.formatted.toString());
+            }
         } else {
-            setFromToken({symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}`});
-            setToToken({symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}`});
-            const balance = await fetchBalance({
-                address: address as `0x${string}`,
-                token: fromToken.contract as `0x${string}`,
-            })
-            setFromTokenBalance(balance.formatted?.toString());
+            setFromToken({ symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}` });
+            setToToken({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
+            if (address) {
+                const balance = await fetchBalance({
+                    address: address as `0x${string}`,
+                    token: fromToken.contract as `0x${string}`,
+                })
+                setFromTokenBalance(balance.formatted?.toString());
+            }
         }
     };
 
     const handleConvert = () => {
-        
+
     };
 
     useEffect(() => {
         // TODO get amount of ToToken
-
     }, [fromTokenAmount]);
 
     return (
@@ -64,12 +67,12 @@ export default function SimpleConvert() {
                 <Text>{fromToken.symbol}</Text>
                 <Input value={fromTokenAmount} onChange={(e) => {
                     const inputValue = e.target.value;
-                    
+
                     if (/^\d*\.?\d*$/.test(inputValue)) {
                         setFromTokenAmount(inputValue);
                     }
-                }}/>
-                {isConnected && <Text>{fromTokenBalance + " " + fromToken.symbol }</Text>}
+                }} />
+                {isConnected && <Text>{fromTokenBalance + " " + fromToken.symbol}</Text>}
                 <Button onClick={() => setFromTokenAmount(fromTokenBalance)}>Convert all</Button>
             </Flex>
             {/* Middle Section */}
