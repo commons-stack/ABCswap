@@ -57,8 +57,19 @@ export default function SimpleConvert() {
     };
 
     useEffect(() => {
+        (async() => {
+            if (isConnected) {
+                const balance: TokenBalance = await fetchBalance({
+                    address: address as `0x${string}`,
+                    token: fromToken.contract as `0x${string}`,
+                })
+                setFromTokenBalance(balance.formatted.toString());
+            } else {
+                setFromTokenBalance("0");
+            }
+        })();
         // TODO get amount of ToToken
-    }, [fromTokenAmount]);
+    }, [isConnected]);
 
     return (
         <Flex height="100vh" direction="column">
