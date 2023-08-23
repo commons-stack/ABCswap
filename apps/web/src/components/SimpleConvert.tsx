@@ -2,7 +2,12 @@ import { collateral, bonded } from '../../config.json';
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { fetchBalance } from '@wagmi/core'
+import { fetchBalance } from '@wagmi/core';
+import { getCollateral } from './../../utils/getCollateral';
+import { getBondingCurvePrice } from './../../utils/getBondingCurvePrice';
+import { getTributePcts } from './../../utils/getTributePcts';
+import { formatUnits, parseUnits } from 'viem';
+import Transaction from './Transaction';
 
 export default function SimpleConvert() {
 
@@ -19,11 +24,18 @@ export default function SimpleConvert() {
         value: BigInt
     }
 
+    const [bondedTokenBalance, setBondedTokenBalance] = useState<bigint>(0n)
+    const [collateralTokenBalance, setCollateralTokenBalance] = useState<bigint>(0n)
+
     const [fromToken, setFromToken] = useState<Token>({ symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}` });
     const [toToken, setToToken] = useState<Token>({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
 
     const [fromTokenBalance, setFromTokenBalance] = useState<string>("0");
     const [fromTokenAmount, setFromTokenAmount] = useState<string>("0");
+
+    const [toTokenAmount, setToTokenAmount] = useState<string>("0");
+
+    const [isTransacting, setIsTransacting] = useState<boolean>(false);
 
     const { address, isConnected } = useAccount();
 
@@ -52,8 +64,8 @@ export default function SimpleConvert() {
         }
     };
 
-    const handleConvert = () => {
-
+    const handleConvert = async() => {
+        setIsTransacting(true);
     };
 
     useEffect(() => {
@@ -67,9 +79,37 @@ export default function SimpleConvert() {
             } else {
                 setFromTokenBalance("0");
             }
+
+            const [, virtualBalance, virtualSupply, reserveRatio ] = await getCollateral();
+            const [sellFeePct, buyFeePct] = await getTributePcts();
+               
+            const amountAsBigInt = parseUnits(fromTokenAmount, 18)
+        
+            const forwards = fromToken.symbol === "TEC" ? false : true;
+
+            const returnedAmount = await getBondingCurvePrice({
+                amount: amountAsBigInt,
+                entryTribute: sellFeePct,
+                exitTribute: buyFeePct,
+                virtualBalance: virtualBalance,
+                virtualSupply: virtualSupply,
+                reserveRatio: reserveRatio,
+                forwards: forwards
+            }) as bigint;
+
+            setToTokenAmount(formatUnits(returnedAmount, 18));
+
         })();
         // TODO get amount of ToToken
-    }, [isConnected]);
+    }, [isConnected, fromTokenAmount]);
+
+    useEffect(() => {
+
+    }, []);
+
+    if(isTransacting) {
+        return <Transaction fromAmount={fromTokenAmount} toAmount={toTokenAmount} />
+    }
 
     return (
         <Flex height="100vh" direction="column">
@@ -92,8 +132,8 @@ export default function SimpleConvert() {
             </Flex>
             {/* Bottom Section */}
             <Flex flex="1" bg={toToken.bgColor} direction="column" justifyContent="center">
+                <Text>{toTokenAmount}</Text>
                 <Text>{toToken.symbol}</Text>
-                <Input isDisabled />
             </Flex>
             <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
                 <Button onClick={handleConvert}>Convert</Button>
