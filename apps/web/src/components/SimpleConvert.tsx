@@ -173,7 +173,7 @@ export default function SimpleConvert() {
                     <ModalHeader>Confirm Transaction</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Transaction account={address} fromAmount={fromTokenAmount} toSymbol={toToken.symbol} transact={true}/>
+                        <Transaction account={address} fromAmount={fromTokenAmount} toSymbol={toToken.symbol}/>
                     </ModalBody>
                 </ModalContent>
             </Modal>
