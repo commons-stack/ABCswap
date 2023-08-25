@@ -9,6 +9,16 @@ import { getTributePcts } from './../../utils/getTributePcts';
 import { formatUnits, parseUnits } from 'viem';
 import Transaction from './Transaction';
 
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure
+} from '@chakra-ui/react'
+
 export default function SimpleConvert() {
 
     type Token = {
@@ -107,7 +117,7 @@ export default function SimpleConvert() {
     // Calculate estimated return
     const calculateEstimatedReturn = (amount: string) => {
         const parsedAmount = parseFloat(amount);
-        if(!parsedAmount) {
+        if (!parsedAmount) {
             setEstimatedReturn("0")
             return;
         } else {
@@ -120,38 +130,53 @@ export default function SimpleConvert() {
         }
     }
 
+    // Handle transaction modal
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     if (isTransacting) {
         console.log("Transacting");
     }
 
     return (
-        <Flex height="100vh" direction="column">
-            {/* Top Section */}
-            <Flex flex="1" bg={fromToken.bgColor} direction="column" justifyContent="center">
-                <Text>{fromToken.symbol}</Text>
-                <Input value={fromTokenAmount} onChange={(e) => {
-                    const inputValue = e.target.value;
+        <>
+            <Flex height="100vh" direction="column">
+                {/* Top Section */}
+                <Flex flex="1" bg={fromToken.bgColor} direction="column" justifyContent="center">
+                    <Text>{fromToken.symbol}</Text>
+                    <Input value={fromTokenAmount} onChange={(e) => {
+                        const inputValue = e.target.value;
 
-                    if (/^\d*\.?\d*$/.test(inputValue)) {
-                        setFromTokenAmount(inputValue);
-                        calculateEstimatedReturn(inputValue);
-                    }
-                }} />
-                {isConnected && <Text>{fromTokenBalance + " " + fromToken.symbol}</Text>}
-                <Button onClick={() => setFromTokenAmount(fromTokenBalance)}>Convert all</Button>
+                        if (/^\d*\.?\d*$/.test(inputValue)) {
+                            setFromTokenAmount(inputValue);
+                            calculateEstimatedReturn(inputValue);
+                        }
+                    }} />
+                    {isConnected && <Text>{fromTokenBalance + " " + fromToken.symbol}</Text>}
+                    <Button onClick={() => setFromTokenAmount(fromTokenBalance)}>Convert all</Button>
+                </Flex>
+                {/* Middle Section */}
+                <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
+                    <Button onClick={handleFromTokenChange}>Change from/to</Button>
+                </Flex>
+                {/* Bottom Section */}
+                <Flex flex="1" bg={toToken.bgColor} direction="column" justifyContent="center">
+                    <Text>{estimatedReturn}</Text>
+                    <Text>{toToken.symbol}</Text>
+                </Flex>
+                <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
+                    <Button onClick={onOpen} isDisabled={!address}>Convert</Button>
+                </Flex>
             </Flex>
-            {/* Middle Section */}
-            <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
-                <Button onClick={handleFromTokenChange}>Change from/to</Button>
-            </Flex>
-            {/* Bottom Section */}
-            <Flex flex="1" bg={toToken.bgColor} direction="column" justifyContent="center">
-                <Text>{estimatedReturn}</Text>
-                <Text>{toToken.symbol}</Text>
-            </Flex>
-            <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
-                <Button onClick={handleConvert}>Convert</Button>
-            </Flex>
-        </Flex>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Confirm Transaction</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Transaction account={address} fromAmount={fromTokenAmount} toSymbol={toToken.symbol} transact={true}/>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </>
     );
 }
