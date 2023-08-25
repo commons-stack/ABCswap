@@ -17,12 +17,9 @@ export default function SimpleConvert() {
         contract: `0x${string}`,
     }
 
-    type TokenBalance = {
-        decimals: number,
-        formatted: string,
-        symbol: string,
-        value: BigInt
-    }
+    const [collateralMultiplier, setCollateralMultiplier] = useState<bigint>(0n);
+    const [bondedMultiplier, setBondedMultiplier] = useState<bigint>(0n);
+    const [estimatedReturn, setEstimatedReturn] = useState<string>("0");
 
     const [bondedTokenBalance, setBondedTokenBalance] = useState<bigint>(0n)
     const [collateralTokenBalance, setCollateralTokenBalance] = useState<bigint>(0n)
@@ -33,82 +30,98 @@ export default function SimpleConvert() {
     const [fromTokenBalance, setFromTokenBalance] = useState<string>("0");
     const [fromTokenAmount, setFromTokenAmount] = useState<string>("0");
 
-    const [toTokenAmount, setToTokenAmount] = useState<string>("0");
-
     const [isTransacting, setIsTransacting] = useState<boolean>(false);
 
     const { address, isConnected } = useAccount();
 
     const handleFromTokenChange = async () => {
         setFromTokenAmount("0");
+        setEstimatedReturn("0");
         if (fromToken.symbol === bonded.symbol) {
             setFromToken({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
             setToToken({ symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}` });
-            if (address) {
-                const balance: TokenBalance = await fetchBalance({
-                    address: address as `0x${string}`,
-                    token: fromToken.contract as `0x${string}`,
-                })
-                setFromTokenBalance(balance.formatted.toString());
-            }
+            setFromTokenBalance(formatUnits(collateralTokenBalance, 18));
         } else {
             setFromToken({ symbol: bonded.symbol, bgColor: "blue.100", contract: bonded.contract as `0x${string}` });
             setToToken({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
-            if (address) {
-                const balance = await fetchBalance({
-                    address: address as `0x${string}`,
-                    token: fromToken.contract as `0x${string}`,
-                })
-                setFromTokenBalance(balance.formatted?.toString());
-            }
+            setFromTokenBalance(formatUnits(bondedTokenBalance, 18));
         }
     };
 
-    const handleConvert = async() => {
+    const handleConvert = async () => {
         setIsTransacting(true);
     };
 
+    // Retrieve balances from the user's wallet
     useEffect(() => {
-        (async() => {
-            if (isConnected) {
-                const balance: TokenBalance = await fetchBalance({
+        (async () => {
+            if (address) {
+                const bondedBalance = await fetchBalance({
                     address: address as `0x${string}`,
-                    token: fromToken.contract as `0x${string}`,
+                    token: bonded.contract as `0x${string}`,
                 })
-                setFromTokenBalance(balance.formatted.toString());
-            } else {
-                setFromTokenBalance("0");
+                setBondedTokenBalance(bondedBalance.value);
+
+                const collateralBalance = await fetchBalance({
+                    address: address as `0x${string}`,
+                    token: collateral.contract as `0x${string}`,
+                })
+                setCollateralTokenBalance(collateralBalance.value);
             }
+        })();
+    }, [address, isConnected]);
 
-            const [, virtualBalance, virtualSupply, reserveRatio ] = await getCollateral();
+    // Retrieve multiplier to calculate estimated return
+    useEffect(() => {
+        (async () => {
+            const [, virtualBalance, virtualSupply, reserveRatio] = await getCollateral();
             const [sellFeePct, buyFeePct] = await getTributePcts();
-               
-            const amountAsBigInt = parseUnits(fromTokenAmount, 18)
-        
-            const forwards = fromToken.symbol === "TEC" ? false : true;
 
-            const returnedAmount = await getBondingCurvePrice({
+            const amountAsBigInt = parseUnits("1", 18)
+
+            const bondedToCollateral = await getBondingCurvePrice({
                 amount: amountAsBigInt,
                 entryTribute: sellFeePct,
                 exitTribute: buyFeePct,
                 virtualBalance: virtualBalance,
                 virtualSupply: virtualSupply,
                 reserveRatio: reserveRatio,
-                forwards: forwards
+                forwards: false
             }) as bigint;
 
-            setToTokenAmount(formatUnits(returnedAmount, 18));
+            const collateralToBonded = await getBondingCurvePrice({
+                amount: amountAsBigInt,
+                entryTribute: sellFeePct,
+                exitTribute: buyFeePct,
+                virtualBalance: virtualBalance,
+                virtualSupply: virtualSupply,
+                reserveRatio: reserveRatio,
+                forwards: true
+            }) as bigint;
 
+            setBondedMultiplier(bondedToCollateral);
+            setCollateralMultiplier(collateralToBonded);
         })();
-        // TODO get amount of ToToken
-    }, [isConnected, fromTokenAmount]);
-
-    useEffect(() => {
-
     }, []);
 
-    if(isTransacting) {
-        return <Transaction fromAmount={fromTokenAmount} toAmount={toTokenAmount} />
+    // Calculate estimated return
+    const calculateEstimatedReturn = (amount: string) => {
+        const parsedAmount = parseFloat(amount);
+        if(!parsedAmount) {
+            setEstimatedReturn("0")
+            return;
+        } else {
+            const amountAsBigInt = BigInt(parseFloat(amount));
+            if (fromToken.symbol === bonded.symbol) {
+                setEstimatedReturn(formatUnits(amountAsBigInt * bondedMultiplier, 18));
+            } else {
+                setEstimatedReturn(formatUnits(amountAsBigInt * collateralMultiplier, 18));
+            }
+        }
+    }
+
+    if (isTransacting) {
+        console.log("Transacting");
     }
 
     return (
@@ -121,6 +134,7 @@ export default function SimpleConvert() {
 
                     if (/^\d*\.?\d*$/.test(inputValue)) {
                         setFromTokenAmount(inputValue);
+                        calculateEstimatedReturn(inputValue);
                     }
                 }} />
                 {isConnected && <Text>{fromTokenBalance + " " + fromToken.symbol}</Text>}
@@ -132,7 +146,7 @@ export default function SimpleConvert() {
             </Flex>
             {/* Bottom Section */}
             <Flex flex="1" bg={toToken.bgColor} direction="column" justifyContent="center">
-                <Text>{toTokenAmount}</Text>
+                <Text>{estimatedReturn}</Text>
                 <Text>{toToken.symbol}</Text>
             </Flex>
             <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
