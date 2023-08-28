@@ -13,10 +13,11 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { collateral, bonded } from '../../config.json';
-import { prepareWriteContract, writeContract } from '@wagmi/core';
+import { prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core';
 import { knownContracts } from '../../config.json';
 import bondingCurveAbi from '../../utils/abi/augmented-bonding-curve.json';
-import { Abi, parseUnits } from 'viem';
+import tokenAbi from '../../utils/abi/token.json';
+import { Abi, parseEther, parseGwei, parseUnits } from 'viem';
 
 type TransactionProps = {
     account: `0x${string}` | undefined,
@@ -39,8 +40,9 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
         if (toSymbol === bonded.symbol) {
             setSteps([
                 { title: 'Raise approval', description: 'Waiting for signature' },
-                { title: 'Make sell order', description: 'Waiting for signature' }
+                { title: 'Make buy order', description: 'Waiting for signature' }
             ]);
+            buyOrder();
         } else if (toSymbol === collateral.symbol) {
             setSteps([
                 { title: 'Make sell order', description: 'Waiting for signature' }
@@ -53,6 +55,49 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
         index: 0,
         count: steps.length,
     })
+
+    const buyOrder = async () => {
+        if(transact) {
+            transact = false; // Used to prevent multiple transactions automatically appearing
+            // Raise approval
+            const config = await prepareWriteContract({
+                address: knownContracts[100].COLLATERAL_TOKEN as `0x${string}`,
+                abi: tokenAbi as Abi,
+                functionName: 'approve',
+                args: [
+                    account as `0x${string}`,
+                    parseUnits(fromAmount, 18)
+                ]
+            });
+
+            const tx = await writeContract(config);
+            const data = await waitForTransaction(tx);
+            console.log(data)
+            if(data.status === "success") {
+                goToNext();
+                // Make buy order
+
+                const config = await prepareWriteContract({
+                    address: knownContracts[100].BONDING_CURVE as `0x${string}`,
+                    abi: bondingCurveAbi as Abi,
+                    functionName: 'makeBuyOrder',
+                    args: [
+                        account as `0x${string}`,
+                        knownContracts[100].COLLATERAL_TOKEN as `0x${string}`,
+                        parseUnits(fromAmount, 18),
+                        parseUnits("0", 18)
+                    ],
+                    value: parseEther("0"),
+                    maxFeePerGas: parseGwei("100"),
+                    
+                });
+
+                const tx = await writeContract(config)
+                console.log(tx) 
+                
+            }
+        }
+    }
 
     const sellOrder = async () => {
         if(transact) {
