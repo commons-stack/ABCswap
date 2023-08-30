@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     Step,
     StepDescription,
     StepIndicator,
@@ -65,7 +64,7 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
                 abi: tokenAbi as Abi,
                 functionName: 'approve',
                 args: [
-                    account as `0x${string}`,
+                    knownContracts[100].BONDING_CURVE as `0x${string}`,
                     parseUnits(fromAmount, 18)
                 ]
             });
