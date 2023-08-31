@@ -1,13 +1,12 @@
 import './App.css'
-import Header from './components/Header'
-import SimpleConvert from './components/SimpleConvert'
+import { Link } from "react-router-dom";
 
 function App() {
 
   return (
     <>
-      <Header />
-      <SimpleConvert />
+      <Link to="/swap">Swap</Link>
+      <Link to="/launchpad">Launchpad</Link>
     </>
   )
 }

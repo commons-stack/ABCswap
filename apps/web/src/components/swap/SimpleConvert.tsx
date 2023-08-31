@@ -1,13 +1,13 @@
-import { collateral, bonded } from '../../config.json';
+import { collateral, bonded } from '../../../config.json';
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { fetchBalance } from '@wagmi/core';
-import { getCollateral } from './../../utils/getCollateral';
-import { getBondingCurvePrice } from './../../utils/getBondingCurvePrice';
-import { getTributePcts } from './../../utils/getTributePcts';
+import { getCollateral } from '../../../utils/getCollateral';
+import { getBondingCurvePrice } from '../../../utils/getBondingCurvePrice';
+import { getTributePcts } from '../../../utils/getTributePcts';
 import { formatUnits, parseUnits } from 'viem';
-import Transaction from './Transaction';
+import Transaction from '../Transaction';
 
 import {
     Modal,
@@ -171,7 +171,7 @@ export default function SimpleConvert() {
                     <Text>{toToken.symbol}</Text>
                 </Flex>
                 <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
-                    <Button onClick={onOpen} isDisabled={!address}>Convert</Button>
+                    <Button bg="brand.cs-wisdom" onClick={onOpen} isDisabled={!address}>Convert</Button>
                 </Flex>
             </Flex>
             <Modal isOpen={isOpen} onClose={onClose}>
