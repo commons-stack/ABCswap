@@ -52,8 +52,6 @@ export default function SimpleConvert() {
     const [fromTokenBalance, setFromTokenBalance] = useState<string>("0");
     const [fromTokenAmount, setFromTokenAmount] = useState<string>("0");
 
-    const [isTransacting, setIsTransacting] = useState<boolean>(false);
-
     const { address, isConnected } = useAccount();
 
     const handleFromTokenChange = async () => {
@@ -68,10 +66,6 @@ export default function SimpleConvert() {
             setToToken({ symbol: collateral.symbol, bgColor: "green.100", contract: collateral.contract as `0x${string}` });
             setFromTokenBalance(formatUnits(bondedTokenBalance, 18));
         }
-    };
-
-    const handleConvert = async () => {
-        setIsTransacting(true);
     };
 
     // Retrieve balances from the user's wallet
@@ -149,10 +143,6 @@ export default function SimpleConvert() {
 
     // Handle transaction modal
     const { isOpen, onOpen, onClose } = useDisclosure()
-
-    if (isTransacting) {
-        console.log("Transacting");
-    }
 
     return (
         <>
