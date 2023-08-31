@@ -50,7 +50,7 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
         }
     }, [toSymbol]);
 
-    const { activeStep, goToNext } = useSteps({
+    const { activeStep, setActiveStep } = useSteps({
         index: 0,
         count: steps.length,
     })
@@ -73,7 +73,7 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
             const data = await waitForTransaction(tx);
             console.log(data)
             if(data.status === "success") {
-                goToNext();
+                setActiveStep(activeStep + 1);
                 // Make buy order
 
                 const config = await prepareWriteContract({
@@ -93,7 +93,7 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
 
                 const tx = await writeContract(config)
                 console.log(tx) 
-                
+                setActiveStep(activeStep + 1);
             }
         }
     }
@@ -114,9 +114,9 @@ export default function Transaction({ account, fromAmount, toSymbol}: Transactio
             });
     
             const tx = await writeContract(config);
-            console.log(tx);
-            if(tx) {
-                goToNext();
+            const data = await waitForTransaction(tx);
+            if(data.status === "success") {
+                setActiveStep(activeStep + 1);
             }
         }
     }
