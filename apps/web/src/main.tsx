@@ -6,12 +6,13 @@ import ReactDOM from 'react-dom/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { WagmiConfig } from "wagmi";
 import { chains, wagmiConfig } from "../wagmi";
+import theme from './theme.ts';
 import App from './App.tsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <App />
