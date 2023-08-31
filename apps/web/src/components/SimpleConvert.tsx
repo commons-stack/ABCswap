@@ -27,8 +27,20 @@ export default function SimpleConvert() {
         contract: `0x${string}`,
     }
 
-    const [collateralMultiplier, setCollateralMultiplier] = useState<bigint>(0n);
-    const [bondedMultiplier, setBondedMultiplier] = useState<bigint>(0n);
+    type CollateralData = {
+        virtualBalance: bigint,
+        virtualSupply: bigint,
+        reserveRatio: number
+    }
+
+    type TributePcts = {
+        sellFeePct: bigint,
+        buyFeePct: bigint
+    }
+
+    const [collateralData, setCollateralData] = useState<CollateralData>({ virtualBalance: 0n, virtualSupply: 0n, reserveRatio: 0 });
+    const [tributePcts, setTributePcts] = useState<TributePcts>({ sellFeePct: 0n, buyFeePct: 0n });
+
     const [estimatedReturn, setEstimatedReturn] = useState<string>("0");
 
     const [bondedTokenBalance, setBondedTokenBalance] = useState<bigint>(0n)
@@ -85,47 +97,52 @@ export default function SimpleConvert() {
     useEffect(() => {
         (async () => {
             const [, virtualBalance, virtualSupply, reserveRatio] = await getCollateral();
+            
             const [sellFeePct, buyFeePct] = await getTributePcts();
 
-            const amountAsBigInt = parseUnits("1", 18)
+            setCollateralData({ virtualBalance, virtualSupply, reserveRatio });
+            setTributePcts({ sellFeePct, buyFeePct });
 
-            const bondedToCollateral = await getBondingCurvePrice({
-                amount: amountAsBigInt,
-                entryTribute: sellFeePct,
-                exitTribute: buyFeePct,
-                virtualBalance: virtualBalance,
-                virtualSupply: virtualSupply,
-                reserveRatio: reserveRatio,
-                forwards: false
-            }) as bigint;
-
-            const collateralToBonded = await getBondingCurvePrice({
-                amount: amountAsBigInt,
-                entryTribute: sellFeePct,
-                exitTribute: buyFeePct,
-                virtualBalance: virtualBalance,
-                virtualSupply: virtualSupply,
-                reserveRatio: reserveRatio,
-                forwards: true
-            }) as bigint;
-
-            setBondedMultiplier(bondedToCollateral);
-            setCollateralMultiplier(collateralToBonded);
         })();
     }, []);
 
+    
+
     // Calculate estimated return
-    const calculateEstimatedReturn = (amount: string) => {
+    const calculateEstimatedReturn = async(amount: string) => {
         const parsedAmount = parseFloat(amount);
         if (!parsedAmount) {
             setEstimatedReturn("0")
             return;
         } else {
-            const amountAsBigInt = BigInt(parseFloat(amount));
+            const amountAsBigInt = parseUnits(amount, 18);
             if (fromToken.symbol === bonded.symbol) {
-                setEstimatedReturn(formatUnits(amountAsBigInt * bondedMultiplier, 18));
+
+                const bondedToCollateral = await getBondingCurvePrice({
+                    amount: amountAsBigInt,
+                    entryTribute: tributePcts.sellFeePct,
+                    exitTribute: tributePcts.buyFeePct,
+                    virtualBalance: collateralData.virtualBalance,
+                    virtualSupply: collateralData.virtualSupply,
+                    reserveRatio: collateralData.reserveRatio,
+                    forwards: false
+                }) as bigint;
+
+                setEstimatedReturn(formatUnits(bondedToCollateral, 18));
+
             } else {
-                setEstimatedReturn(formatUnits(amountAsBigInt * collateralMultiplier, 18));
+
+                const collateralToBonded = await getBondingCurvePrice({
+                    amount: amountAsBigInt,
+                    entryTribute: tributePcts.sellFeePct,
+                    exitTribute: tributePcts.buyFeePct,
+                    virtualBalance: collateralData.virtualBalance,
+                    virtualSupply: collateralData.virtualSupply,
+                    reserveRatio: collateralData.reserveRatio,
+                    forwards: true
+                }) as bigint;
+
+                setEstimatedReturn(formatUnits(collateralToBonded, 18));
             }
         }
     }
