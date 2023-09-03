@@ -4,6 +4,7 @@ import TokenSettings from '../components/launchpad/TokenSettings'
 import Header from '../components/shared/Header'
 import { useState } from 'react'
 import AugmentedBondingCurveSettings from '../components/launchpad/AugmentedBondingCurveSettings'
+import Summary from '../components/launchpad/Summary'
 
 type VotingSettings = {
     support: number,
@@ -26,7 +27,7 @@ type TokenSettings = {
 
 type AugmentedBondingCurveSettings = {
     reserveRatio: number;
-    colateralToken: CollateralToken;
+    collateralToken: CollateralToken;
     initialReserve: number;
     entryTribute: number;
     exitTribute: number;
@@ -60,7 +61,7 @@ export default function Launchpad() {
     // Augmented bonding curve settings
     const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState({
         reserveRatio: 0,
-        colateralToken: { address: '', symbol: '' },
+        collateralToken: { address: '', symbol: '' },
         initialReserve: 0,
         entryTribute: 0,
         exitTribute: 0,
@@ -90,6 +91,7 @@ export default function Launchpad() {
             <VotingSettings onVotingSettingsChanged={votingSettingsChanged} />
             <TokenSettings onTokenSettingsChanged={tokenSettingsChanged} />
             <AugmentedBondingCurveSettings onAugmentedBondingCurveSettingsChanged={augmentedBondingCurveSettingsChanged} />
+            <Summary tokenSettings={tokenSettings} votingSettings={votingSettings} augmentedBondingCurveSettings={augmentedBondingCurveSettings} organizationName={organizationName}/>
         </>
     )
 }

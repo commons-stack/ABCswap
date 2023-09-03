@@ -7,7 +7,7 @@ interface AugmentedBondingCurveSettingsProps {
 
 type AugmentedBondingCurveSettings = {
     reserveRatio: number;
-    colateralToken: CollateralToken;
+    collateralToken: CollateralToken;
     initialReserve: number;
     entryTribute: number;
     exitTribute: number;
@@ -22,7 +22,7 @@ export default function AugmentedBondingCurveSettings({onAugmentedBondingCurveSe
 
     const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState({
         reserveRatio: 0,
-        colateralToken: { address: '', symbol: '' },
+        collateralToken: { address: '', symbol: '' },
         initialReserve: 0,
         entryTribute: 0,
         exitTribute: 0,
@@ -41,10 +41,10 @@ export default function AugmentedBondingCurveSettings({onAugmentedBondingCurveSe
         onAugmentedBondingCurveSettingsChanged(updatedSettings);
     };
 
-    const handleColateralTokenChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleCollateralTokenChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedToken = collateralTokenList.find(token => token.symbol === event.target.value);
         if (selectedToken) {
-            const updatedSettings = { ...augmentedBondingCurveSettings, colateralToken: selectedToken };
+            const updatedSettings = { ...augmentedBondingCurveSettings, collateralToken: selectedToken };
             setAugmentedBondingCurveSettings(updatedSettings);
             onAugmentedBondingCurveSettingsChanged(updatedSettings);
         }
@@ -83,7 +83,7 @@ export default function AugmentedBondingCurveSettings({onAugmentedBondingCurveSe
                     </FormControl>
                     <FormControl>
                         <FormLabel>Colateral token</FormLabel>
-                        <Select placeholder="Select token" value={augmentedBondingCurveSettings.colateralToken?.symbol || ''} onChange={handleColateralTokenChange}>
+                        <Select placeholder="Select token" value={augmentedBondingCurveSettings.collateralToken?.symbol || ''} onChange={handleCollateralTokenChange}>
                             {collateralTokenList.map((token) => (
                                 <option key={token.address} value={token.symbol}>
                                     {token.symbol}
@@ -95,7 +95,7 @@ export default function AugmentedBondingCurveSettings({onAugmentedBondingCurveSe
                         <FormLabel>Initial reserve token</FormLabel>
                         <InputGroup>
                             <Input value={augmentedBondingCurveSettings.initialReserve ?? 0} onChange={(e) => handleInitialReserveChange(Number(e.target.value))} type="number" />
-                            <InputRightAddon children={augmentedBondingCurveSettings.colateralToken?.symbol} />
+                            <InputRightAddon children={augmentedBondingCurveSettings.collateralToken?.symbol} />
                         </InputGroup>
                     </FormControl>
                     <HStack spacing={8}>
