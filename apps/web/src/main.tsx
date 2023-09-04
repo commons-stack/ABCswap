@@ -8,7 +8,6 @@ import { WagmiConfig } from "wagmi";
 import { chains, wagmiConfig } from "../wagmi";
 import theme from './theme.ts';
 import App from './App.tsx'
-import './index.css'
 import Launchpad from './pages/launchpad';
 import Swap from './pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";

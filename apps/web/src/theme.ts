@@ -1,7 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
 import "@fontsource/roboto";
 
-const theme = extendTheme({
+const theme = extendTheme({ 
     colors: {
         brand: {
             300: "#E8E9E3", // CS Cream
