@@ -11,11 +11,10 @@ import App from './App.tsx'
 import Launchpad from './pages/launchpad';
 import Swap from './pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
-import Header from './components/shared/Header';
 
 const router = createHashRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Header />}>
+    <Route path="/" element={<App />}>
       <Route index element={<App />} />
       <Route path="swap" element={<Swap />} />
       <Route path="launchpad" element={<Launchpad />} />
