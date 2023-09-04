@@ -1,5 +1,6 @@
 import { Text, Box, HStack, Image } from "@chakra-ui/react"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { CustomConnectButton } from "./ConnectButton"
 
 export default function Header() {
     return (
@@ -11,7 +12,7 @@ export default function Header() {
                     <Text fontSize="16px">FAQs</Text>
                     <Text fontSize="16px">ABC Launchpad</Text>
                     <Text fontSize="16px">ABC Swap</Text>
-                    <ConnectButton />
+                    <CustomConnectButton />
                 </HStack>
             </HStack>
         </Box>

@@ -6,7 +6,7 @@ import Header from '../components/shared/Header'
 import { useState } from 'react'
 import AugmentedBondingCurveSettings from '../components/launchpad/AugmentedBondingCurveSettings'
 import Summary from '../components/launchpad/Summary'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { CustomConnectButtonLong } from '../components/shared/ConnectButtonLong'
 
 type VotingSettings = {
     support: number,
@@ -122,7 +122,7 @@ export default function Launchpad() {
                             <Text fontSize="24px" color="brand.900">your DAO</Text>
                         </VStack>
                     </HStack>
-                    <ConnectButton />
+                    <CustomConnectButtonLong />
                 </VStack>
             </Box>
         </>
