@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <>
-      <Box width="100%" height="100vh" bgColor="brand.300">
+      <Box width="100%" height="100vh" bgColor="brand.100">
         <Header />
         {isInitialRoute && (
           <>
