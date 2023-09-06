@@ -11,7 +11,7 @@ const theme = extendTheme({
         }
     }, 
     fonts: {
-        heading: "Roboto",
+        heading: "VictorSerifTrial",
         body: "Roboto"
     }
 

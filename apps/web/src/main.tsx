@@ -11,13 +11,14 @@ import App from './App.tsx'
 import Launchpad from './pages/launchpad';
 import Swap from './pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
-import Header from './components/shared/Header';
+import NewDao from './pages/new-dao.tsx';
 
 const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="swap" element={<Swap />} />
       <Route path="launchpad" element={<Launchpad />} />
+      <Route path="launchpad/new-dao" element={<NewDao />} />
     </Route>
   ));
 
