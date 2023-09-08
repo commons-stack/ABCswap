@@ -7,6 +7,12 @@ const Button = {
         borderRadius: "20px",
         color: "brand.500",
       }),
+      "outline": (props: AsyncGeneratorFunctionConstructor) => ({
+        borderColor: "brand.900",
+        padding: "8px 20px",
+        borderRadius: "20px",
+        color: "brand.900",
+      }),
     },
     defaultProps: {
       size: "md",
