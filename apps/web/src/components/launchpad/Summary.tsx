@@ -15,8 +15,17 @@ import {
     Td,
 } from '@chakra-ui/react'
 import { useRouter } from "next/router";
-import { useEffect, useState } from 'react';
-import { ethers } from "ethers";
+import { useState } from 'react';
+import { usePrepareContractWrite, useContractWrite, useWaitForTransaction, useTransaction } from 'wagmi'
+
+import { knownContracts } from '../../../config.json';
+import { Abi, TransactionReceipt } from "viem";
+import newDaoWithABCAbi from '../../../utils/abi/augmented-bonding-curve.json'
+
+const [isMined, setIsMined] = useState(false);
+const [isSending, setIsSending] = useState(false);
+const [isLoading, setIsLoading] = useState(false);
+const [txData, setTxData] = useState<any>(); // Type correctly
 
 type VotingSettings = {
     support: number,
@@ -57,8 +66,6 @@ interface SummaryProps {
     organizationName: string
 }
 
-import { usePrepareContractWrite, useContractWrite } from 'wagmi'
-
 export default function Summary({ tokenSettings, votingSettings, augmentedBondingCurveSettings, organizationName }: SummaryProps) {
     // Initialize useRouter
     const router = useRouter()
@@ -75,111 +82,51 @@ export default function Summary({ tokenSettings, votingSettings, augmentedBondin
         return (BigInt(holder.balance) * BigInt(1e18)).toString()
     });
 
-    // ABI
-    const abi = [
-        {
-            "inputs": [
-                {
-                    "name": "_tokenName",
-                    "type": "string"
-                },
-                {
-                    "name": "_tokenSymbol",
-                    "type": "string"
-                },
-                {
-                    "name": "_id",
-                    "type": "string"
-                },
-                {
-                    "name": "_holders",
-                    "type": "address[]"
-                },
-                {
-                    "name": "_stakes",
-                    "type": "uint256[]"
-                },
-                {
-                    "name": "_votingSettings",
-                    "type": "uint64[3]"
-                },
-                {
-                    "name": "_fees",
-                    "type": "uint256[2]"
-                },
-                {
-                    "name": "_collateralToken",
-                    "type": "address"
-                },
-                {
-                    "name": "_reserveRatio",
-                    "type": "uint32"
-                },
-                {
-                    "name": "_initialBalance",
-                    "type": "uint256"
-                }
-            ],
-            "name": "newTokenAndInstance",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }
-    ]
-
     // Prepare contract
-    const { config, error } = usePrepareContractWrite({
-        address: '0xafbb787a94c9bf664294b9d6c7148db538f82f0f',
-        abi: abi,
-        functionName: 'newTokenAndInstance',
-        args: [
-            tokenSettings.tokenName,
-            tokenSettings.tokenSymbol,
-            organizationName,
-            addresses,
-            balances,
-            [(BigInt(1e16) * BigInt(votingSettings.support!)).toString(),
-            (BigInt(1e16) * BigInt(votingSettings.minApproval!)).toString(),
-            Number(votingSettings.days) * 24 * 60 * 60 + Number(votingSettings.hours) * 60 * 60 + Number(votingSettings.minutes) * 60],
-            [(BigInt(1e16) * BigInt(augmentedBondingCurveSettings.entryTribute!)).toString(),
-            (BigInt(1e16) * BigInt(augmentedBondingCurveSettings.exitTribute!)).toString()],
-            augmentedBondingCurveSettings.collateralToken?.address,
-            augmentedBondingCurveSettings.reserveRatio! * 10000,
-            0
-        ]
-    })
 
     /* ADD PROPER TRANSACTION HANDLING */
     // Execute contract function
-    const { data, isLoading, write } = useContractWrite(config)
 
-    // State to store the transaction status
-    const [isMined, setIsMined] = useState(false);
-    const [isSending, setIsSending] = useState(false);
-    const handleLaunch = () => {
+    const handleLaunch = async () => {
+        setIsLoading(true);
         setIsSending(true);
-        write?.();
-    }
+        const { config, error } = usePrepareContractWrite({
+            address: knownContracts[100].NEW_DAO_WITH_ABC as `0x${string}`,
+            abi: newDaoWithABCAbi as Abi,
+            functionName: 'newTokenAndInstance',
+            args: [
+                tokenSettings.tokenName,
+                tokenSettings.tokenSymbol,
+                organizationName,
+                addresses,
+                balances,
+                [(BigInt(1e16) * BigInt(votingSettings.support!)).toString(),
+                (BigInt(1e16) * BigInt(votingSettings.minApproval!)).toString(),
+                Number(votingSettings.days) * 24 * 60 * 60 + Number(votingSettings.hours) * 60 * 60 + Number(votingSettings.minutes) * 60],
+                [(BigInt(1e16) * BigInt(augmentedBondingCurveSettings.entryTribute!)).toString(),
+                (BigInt(1e16) * BigInt(augmentedBondingCurveSettings.exitTribute!)).toString()],
+                augmentedBondingCurveSettings.collateralToken?.address,
+                augmentedBondingCurveSettings.reserveRatio! * 10000,
+                0
+            ]
+        })
 
-    // Effect to check the transaction status
-    useEffect(() => {
-        if (data?.hash) {
+        const tx = await useContractWrite(config);
+        const data = await useWaitForTransaction({hash: tx.data?.hash}); 
+        setTxData(data);
+        if(data.status === "success") {
+            setIsLoading(false);
             setIsSending(false);
-            const provider = new ethers.providers.JsonRpcProvider("https://rpc.gnosischain.com/");
-            const interval = setInterval(async () => {
-                const receipt = await provider.getTransactionReceipt(data.hash);
-                if (receipt && receipt.blockNumber) {
-                    setIsMined(true);
-                    clearInterval(interval);
-                }
-            }, 15000); // Check every 5 seconds
-
-
-            return () => clearInterval(interval); // Clean up on unmount
+            const receipt = await useTransaction(txData) // Retrieve hash ? Verify docs
+            if(receipt) {
+                setIsMined(true)
+            }
+        } else if (data.status === "error") {
+            console.log(data.error);
+            // Handle error
         }
-    }, [data]);
 
-    /* TILL HERE ADD PROPER TRANSACTION HANDLING */
+    }
 
     return (
         <div>
@@ -190,7 +137,7 @@ export default function Summary({ tokenSettings, votingSettings, augmentedBondin
                         <Spinner size="xl" />
                     </VStack>
                 </Box>
-            ) : data && !!data.hash ? (
+            ) : txData && !!txData.hash ? (
                 <Box borderWidth="1px" borderRadius="lg" padding="6" boxShadow="lg" width="50vw">
                     <VStack spacing={4}>
                         <Text fontSize="2xl" as="b" p="1rem" textAlign="center">Your DAO has been successfully created!</Text>
