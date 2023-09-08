@@ -12,6 +12,7 @@ import Launchpad from './pages/launchpad';
 import Swap from './pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
 import NewDao from './pages/new-dao.tsx';
+import { TransactionProvider } from './providers/TransactionProvider.tsx';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -27,7 +28,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ChakraProvider theme={theme}>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
-          <RouterProvider router={router} />
+          <TransactionProvider>
+            <RouterProvider router={router} />
+          </TransactionProvider>
         </RainbowKitProvider>
       </WagmiConfig>
     </ChakraProvider>

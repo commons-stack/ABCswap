@@ -7,17 +7,10 @@ import { getCollateral } from '../../../utils/getCollateral';
 import { getBondingCurvePrice } from '../../../utils/getBondingCurvePrice';
 import { getTributePcts } from '../../../utils/getTributePcts';
 import { formatUnits, parseUnits } from 'viem';
-import Transaction from '../Transaction';
+import Transaction from '../TransactionModal';
 
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure
-} from '@chakra-ui/react'
+import useProcessTransactions from '../../hooks/useProcessTransactions';
+import useConvertSteps from '../../hooks/useConvertSteps';
 
 export default function SimpleConvert() {
 
@@ -141,8 +134,9 @@ export default function SimpleConvert() {
         }
     }
 
-    // Handle transaction modal
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { processTransactions } = useProcessTransactions();
+
+    const steps = useConvertSteps(toToken.symbol, fromTokenAmount, address, bonded as { symbol: string; contract: `0x${string}`; });
 
     return (
         <>
@@ -171,19 +165,10 @@ export default function SimpleConvert() {
                     <Text>{toToken.symbol}</Text>
                 </Flex>
                 <Flex flex="0.1" bg="red.100" direction="column" justifyContent="center">
-                    <Button bg="brand.cs-wisdom" onClick={onOpen} isDisabled={!address}>Convert</Button>
+                    <Button bg="brand.cs-wisdom" onClick={() => processTransactions(steps)} isDisabled={!address}>Convert</Button>
                 </Flex>
             </Flex>
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Confirm Transaction</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <Transaction account={address} fromAmount={fromTokenAmount} toSymbol={toToken.symbol}/>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+            <Transaction />
         </>
     );
 }
