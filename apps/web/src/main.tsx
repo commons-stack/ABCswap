@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { WagmiConfig } from "wagmi";
 import { chains, wagmiConfig } from "../wagmi";
-import theme from './theme.ts';
+import theme from './theme/index.ts';
 import App from './App.tsx'
 import Launchpad from './pages/launchpad';
 import Swap from './pages/swap';
