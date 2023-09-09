@@ -48,12 +48,6 @@ export default function Launchpad() {
                     <Text color="brand.900" fontSize="20px">Augmented Bonding Curve</Text>
                     <Button mt="34px" onClick={handleCreateNewDAOButton}>Create new DAO <ArrowForwardIcon ml="5px" /></Button>
                 </VStack>
-                <VStack className="option-box" bgColor="white" spacing={0}>
-                    <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">I already have a DAO</Text>
-                    <Text color="brand.900" fontSize="20px" mt="34px">I already have a DAO and I want to</Text>
-                    <Text color="brand.900" fontSize="20px">add an Augmented Bonding Curve</Text>
-                    <Button mt="34px">Create new DAO <ArrowForwardIcon ml="5px" /></Button>
-                </VStack>
             </HStack>
         </VStack>
     )
