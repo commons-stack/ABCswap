@@ -9,6 +9,11 @@ import { CustomConnectButtonLong } from '../components/shared/ConnectButtonLong'
 import { useAccount } from 'wagmi'
 import DAOLayout from '../components/launchpad/DAOLayout'
 
+type OrganizationNameSettings = {
+    organizationName: string;
+    completed: boolean;
+}
+
 type VotingSettings = {
     support: number,
     minApproval: number,
@@ -50,7 +55,10 @@ export default function NewDao() {
     }
 
     // Organization name 
-    const [organizationName, setOrganizationName] = useState('')
+    const [organizationName, setOrganizationName] = useState<OrganizationNameSettings>({
+        organizationName: '',
+        completed: false
+    })
 
     // Voting settings
     const [votingSettings, setVotingSettings] = useState<VotingSettings>({
@@ -78,7 +86,7 @@ export default function NewDao() {
     });
 
     // Handle childrent components events
-    const organizationNameChanged = (data: string) => {
+    const organizationNameChanged = (data: OrganizationNameSettings) => {
         setOrganizationName(data);
         console.log(data);
     }
@@ -107,22 +115,22 @@ export default function NewDao() {
             index: 0
         },
         {
-            title: 'Organization name',
+            title: 'Choose DAO name',
             content: <OrganizationName onOrganizationNameChanged={organizationNameChanged} />,
             index: 1
         }, 
         {
-            title: 'Voting settings',
+            title: 'Configure voting',
             content: <VotingSettings onVotingSettingsChanged={votingSettingsChanged} />,
             index: 2
         },
         {
-            title: 'Token settings',
+            title: 'Configure token',
             content: <TokenSettings onTokenSettingsChanged={tokenSettingsChanged} />,
             index: 3
         },
         {
-            title: 'Augmented Bonding Curve settings',
+            title: 'Configure ABC',
             content: <AugmentedBondingCurveSettings onAugmentedBondingCurveSettingsChanged={augmentedBondingCurveSettingsChanged} />,
             index: 4
         },
@@ -131,7 +139,7 @@ export default function NewDao() {
     if (step !== 0) {
         return (
             <>
-            <DAOLayout steps={steps} currentStep={step} onStepChanged={stepChanged}/>
+            <DAOLayout steps={steps} currentStep={step} onStepChanged={stepChanged} />
             </>
         )
     } else {
@@ -139,7 +147,7 @@ export default function NewDao() {
             <>
                 <Box bg="brand.100">
                     <VStack spacing={0} pb="244px">
-                        <Text fontSize="72px" color="brand.900">Create your DAO</Text>
+                        <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">Create your DAO</Text>
                         <Text fontSize="24px" color="brand.900">Connect your wallet to start creating your DAO</Text>
                         <Text fontSize="24px" color="brand.900">with Augmented Bonding Curve</Text>
                         <Text fontSize="24px" color="brand.900" pt="64px" as="b">It is simple, you just have to follow the following steps</Text>

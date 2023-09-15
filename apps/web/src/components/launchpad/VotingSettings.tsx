@@ -1,4 +1,4 @@
-import { Box, VStack, Text, Input, InputGroup, InputRightAddon, Alert, AlertIcon, HStack, FormControl, FormLabel, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
+import { Box, VStack, Text, Input, InputGroup, InputRightAddon, Alert, AlertIcon, HStack, FormControl, FormLabel, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Divider } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface VotingSettingsProps {
@@ -74,13 +74,14 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
     };
 
     return (
-        <Box borderWidth="1px" borderRadius="lg" padding="6" boxShadow="lg" width="50vw">
-            <VStack spacing={4}>
-                <Text fontSize="2xl" as="b" p="1rem" textAlign="center">Configure template</Text>
-                <Text fontSize="xl" as="b" p="1rem" textAlign="center">Choose your voting settings below</Text>
-
-                <FormControl>
-                    <FormLabel>Support %</FormLabel>
+        <VStack spacing={4} pt="130px">
+            <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Voting</Text>
+            <Text fontSize="24px" color="brand.900" pt="32px">Choose your voting settings below</Text>
+            <VStack width="80%">
+                <FormControl pt="34px" pb="32px">
+                    <FormLabel>
+                        <Text fontSize="16px" color="brand.900">SUPPORT</Text>
+                    </FormLabel>                    
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
                             aria-label='slider-ex-1'
@@ -105,7 +106,9 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
                 </FormControl>
 
                 <FormControl>
-                    <FormLabel>Minimum approval %</FormLabel>
+                    <FormLabel>
+                        <Text fontSize="16px" color="brand.900">MINIMUM APPROVAL</Text>
+                    </FormLabel>
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
                             aria-label='slider-ex-1'
@@ -128,9 +131,8 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
                         </InputGroup>
                     </HStack>
                 </FormControl>
-
-                <Text fontSize="sm">Vote duration</Text>
-                <HStack>
+                <Text fontSize="16px" color="brand.900" alignSelf="start">VOTE DURATION</Text>
+                <HStack spacing={4}>
                     <InputGroup>
                         <Input
                             value={votingSettings.days ?? 0}
@@ -156,12 +158,11 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
                         <InputRightAddon children="Minutes" />
                     </InputGroup>
                 </HStack>
-
-                <Alert status="info" p="1rem">
-                    <AlertIcon />
-                    <Text fontSize="xs" as="em">The support and minimum approval thresholds are strict requirements, such that votes will only pass if they achieve approval percentages greater than these thresholds.</Text>
-                </Alert>
+                <VStack pt="32px">
+                    <Text fontSize="16px" color="brand.900">All votes must reach the support and minimum approval threshold in order to pass. </Text>
+                    <Text fontSize="16px" color="brand.900">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
+                </VStack>
             </VStack>
-        </Box>
+        </VStack>
     );
 }
