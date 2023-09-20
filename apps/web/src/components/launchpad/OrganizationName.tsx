@@ -1,38 +1,43 @@
-import { Box, VStack, Text, Input, InputGroup, InputRightAddon, Alert, AlertIcon, HStack } from "@chakra-ui/react";
+import { Box, VStack, Text, InputGroup } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import CustomInput from "../shared/CustomInput";
+import CustomInputRightAddon from "../shared/CustomInputRightAddon";
 
 interface OrganizationNameProps {
-    onOrganizationNameChanged: (data: { organizationName: string, completed: boolean }) => void;
+    onStepCompletionChanged: (completed: boolean) => void;
 }
 
-
-export default function OrganizationName({ onOrganizationNameChanged }: OrganizationNameProps) {
-
+export default function OrganizationName({ onStepCompletionChanged }: OrganizationNameProps) {
     const [organizationName, setOrganizationName] = useState<string>('');
+
+    useEffect(() => {
+        localStorage.getItem('organizationName') && setOrganizationName(localStorage.getItem('organizationName') ?? '');
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('organizationName', organizationName);
+        const isCompleted = organizationName.length > 0;        
+        if (onStepCompletionChanged) {
+            onStepCompletionChanged(isCompleted);
+        }
+    }, [organizationName]);
 
     return (
         <Box pt="100px" pb="75px">
             <VStack spacing={0}>
-                <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Claim a name</Text>
-                <Text fontSize="24px" color="brand.900" pt="32px">Connect your wallet to start creating your DAO</Text>
-                <Text fontSize="24px" color="brand.900">with Augmented Bonding Curve</Text>
-                <InputGroup pt="48px">
-                    <Input
+                <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Name your DAO</Text>
+                <InputGroup mt="48px">
+                    <CustomInput 
+                        rightAddon={true}
                         placeholder="Type an organization name"
                         value={organizationName ?? ''}
-                        onChange={(e) => {
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setOrganizationName(e.target.value);
-                            if(organizationName.length > 0) {
-                                onOrganizationNameChanged({ organizationName, completed: true });
-                            } else {
-                                onOrganizationNameChanged({ organizationName, completed: false });
-                            }
                         }}
                     />
+                    <CustomInputRightAddon children="sample" />
                 </InputGroup>
-
             </VStack>
         </Box>
-    )
-
+    );
 }

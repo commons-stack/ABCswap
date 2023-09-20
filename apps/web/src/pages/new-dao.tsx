@@ -2,24 +2,20 @@ import { Box, HStack, Text, VStack, Image, Button } from '@chakra-ui/react'
 import OrganizationName from '../components/launchpad/OrganizationName'
 import VotingSettings from '../components/launchpad/VotingSettings'
 import TokenSettings from '../components/launchpad/TokenSettings'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AugmentedBondingCurveSettings from '../components/launchpad/AugmentedBondingCurveSettings'
 import Summary from '../components/launchpad/Summary'
 import { CustomConnectButtonLong } from '../components/shared/ConnectButtonLong'
 import { useAccount } from 'wagmi'
 import DAOLayout from '../components/launchpad/DAOLayout'
 
-type OrganizationNameSettings = {
-    organizationName: string;
-    completed: boolean;
-}
-
 type VotingSettings = {
     support: number,
     minApproval: number,
     days: number,
     hours: number,
-    minutes: number
+    minutes: number,
+    completed: boolean;
 }
 
 type TokenHolder = {
@@ -31,6 +27,7 @@ type TokenSettings = {
     tokenName: string;
     tokenSymbol: string;
     tokenHolders: TokenHolder[];
+    completed: boolean;
 }
 
 type AugmentedBondingCurveSettings = {
@@ -39,6 +36,7 @@ type AugmentedBondingCurveSettings = {
     initialReserve: number;
     entryTribute: number;
     exitTribute: number;
+    completed: boolean;
 }
 
 type CollateralToken = {
@@ -55,53 +53,32 @@ export default function NewDao() {
     }
 
     // Organization name 
-    const [organizationName, setOrganizationName] = useState<OrganizationNameSettings>({
-        organizationName: '',
-        completed: false
-    })
-
+    const [organizationNameStatus, setOrganizationNameStatus] = useState<boolean>(false);
+    
     // Voting settings
-    const [votingSettings, setVotingSettings] = useState<VotingSettings>({
-        support: 50,
-        minApproval: 15,
-        days: 7,
-        hours: 0,
-        minutes: 0,
-    });
+    const [votingSettingsStatus, setVotingSettingsStatus] = useState<boolean>(true);
 
     // Token settings
-    const [tokenSettings, setTokenSettings] = useState<TokenSettings>({
-        tokenName: '',
-        tokenSymbol: '',
-        tokenHolders: []
-    });
+    const [tokenSettingsStatus, setTokenSettingsStatus] = useState<boolean>(false);
 
     // Augmented bonding curve settings
-    const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState({
-        reserveRatio: 0,
-        collateralToken: { address: '', symbol: '' },
-        initialReserve: 0,
-        entryTribute: 0,
-        exitTribute: 0,
-    });
+    const [augmentedBondingCurveSettingsStatus, setAugmentedBondingCurveSettingsStatus] = useState<boolean>(false);
 
     // Handle childrent components events
-    const organizationNameChanged = (data: OrganizationNameSettings) => {
-        setOrganizationName(data);
-        console.log(data);
+    const organizationNameChanged = (data: boolean) => {
+        setOrganizationNameStatus(data);
     }
 
-    const votingSettingsChanged = (data: VotingSettings) => {
-        setVotingSettings(data);
+    const votingSettingsChanged = (data: boolean) => {
+        setVotingSettingsStatus(data);    
     }
 
-    const tokenSettingsChanged = (data: TokenSettings) => {
-        setTokenSettings(data);
+    const tokenSettingsChanged = (data: boolean) => {
+        setTokenSettingsStatus(data);
     }
 
-    const augmentedBondingCurveSettingsChanged = (data: AugmentedBondingCurveSettings) => {
-        setAugmentedBondingCurveSettings(data);
-        console.log(data);
+    const augmentedBondingCurveSettingsChanged = (data: boolean) => {
+        setAugmentedBondingCurveSettingsStatus(data);
     }
 
     const stepChanged = (data: number) => {
@@ -112,27 +89,32 @@ export default function NewDao() {
         {
             title: 'Start',
             content: <></>,
-            index: 0
+            index: 0,
+            completed: true
         },
         {
             title: 'Choose DAO name',
-            content: <OrganizationName onOrganizationNameChanged={organizationNameChanged} />,
-            index: 1
+            content: <OrganizationName onStepCompletionChanged={organizationNameChanged} />,
+            index: 1,
+            completed: organizationNameStatus
         }, 
         {
             title: 'Configure voting',
-            content: <VotingSettings onVotingSettingsChanged={votingSettingsChanged} />,
-            index: 2
+            content: <VotingSettings onStepCompletionChanged={votingSettingsChanged} />,
+            index: 2,
+            completed: votingSettingsStatus
         },
         {
             title: 'Configure token',
-            content: <TokenSettings onTokenSettingsChanged={tokenSettingsChanged} />,
-            index: 3
+            content: <TokenSettings onStepCompletionChanged={tokenSettingsChanged} />,
+            index: 3,
+            completed: tokenSettingsStatus
         },
         {
             title: 'Configure ABC',
-            content: <AugmentedBondingCurveSettings onAugmentedBondingCurveSettingsChanged={augmentedBondingCurveSettingsChanged} />,
-            index: 4
+            content: <AugmentedBondingCurveSettings onStepCompletionChanged={augmentedBondingCurveSettingsChanged} />,
+            index: 4,
+            completed: augmentedBondingCurveSettingsStatus
         },
     ]
 

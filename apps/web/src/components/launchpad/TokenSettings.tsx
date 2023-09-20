@@ -1,6 +1,8 @@
-import { Box, Button, InputGroup, Input, InputRightAddon, Text, VStack, HStack, IconButton, FormControl, FormLabel } from "@chakra-ui/react";
-import { useState } from 'react'
+import { Button, InputGroup, Text, VStack, HStack, FormControl, FormLabel } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react'
 import { CloseIcon } from "@chakra-ui/icons";
+import CustomInput from "../shared/CustomInput";
+import CustomInputRightAddon from "../shared/CustomInputRightAddon";
 
 interface TokenHolder {
     address: string;
@@ -14,21 +16,21 @@ interface TokenSettings {
 }
 
 interface TokenSettingProps {
-    onTokenSettingsChanged: (data: TokenSettings) => void;
+    onStepCompletionChanged: (completed: boolean) => void;
 }
 
-export default function TokenHoldersComponent({ onTokenSettingsChanged }: TokenSettingProps) {
+export default function TokenHoldersComponent({ onStepCompletionChanged }: TokenSettingProps) {
     const [tokenSettings, setTokenSettings] = useState<TokenSettings>({
         tokenName: '',
         tokenSymbol: '',
-        tokenHolders: []
+        tokenHolders: [{address: '', balance: ''}]
     });
 
     function handleHolderChange(i: number, event: React.ChangeEvent<HTMLInputElement>, field: boolean) {
         const values = [...tokenSettings.tokenHolders];
         values[i] = { ...values[i], [field ? 'address' : 'balance']: event.target.value };
         setTokenSettings({ ...tokenSettings, tokenHolders: values });
-        onTokenSettingsChanged({ ...tokenSettings, tokenHolders: values });
+        localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
     }
 
     function handleRemoveHolder(i: number) {
@@ -39,85 +41,100 @@ export default function TokenHoldersComponent({ onTokenSettingsChanged }: TokenS
             values.splice(i, 1);
         }
         setTokenSettings({ ...tokenSettings, tokenHolders: values });
-        onTokenSettingsChanged({ ...tokenSettings, tokenHolders: values });
+        localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
     }
 
+    useEffect(() => {
+        const isCompleted = !!(tokenSettings.tokenName && tokenSettings.tokenSymbol && tokenSettings.tokenHolders.length > 0);
+        if (onStepCompletionChanged) {
+            onStepCompletionChanged(isCompleted);
+        }
+    }, [tokenSettings]);
+
+    useEffect(() => {
+        localStorage.getItem('tokenSettings') && setTokenSettings(JSON.parse(localStorage.getItem('tokenSettings')!));
+    }, []);
+
     return (
-        <Box borderWidth="1px" borderRadius="lg" padding="6" boxShadow="lg" width="50vw">
-            <VStack spacing={4}>
-                <Text fontSize="2xl" as="b" p="1rem" textAlign="center">Configure template</Text>
-                <Text fontSize="xl" as="b" p="1rem" textAlign="center">Choose your token settings below</Text>
-                <HStack width="90%">
-                    <FormControl width="70%">
-                        <FormLabel>Token name</FormLabel>
-                        <Input
-                            placeholder="My Organization Token"
-                            value={tokenSettings.tokenName}
-                            onChange={(e) => {
-                                const newTokenSettings = {
-                                    ...tokenSettings,
-                                    tokenName: e.target.value,
-                                };
-                                setTokenSettings(newTokenSettings);
-                                onTokenSettingsChanged(newTokenSettings);
-                            }}
-                        />
-                    </FormControl>
-                    <FormControl width="30%">
-                        <FormLabel>Token symbol</FormLabel>
-                        <Input
-                            placeholder="MOT"
-                            value={tokenSettings.tokenSymbol}
-                            onChange={(e) => {
-                                const newTokenSettings = {
-                                    ...tokenSettings,
-                                    tokenSymbol: e.target.value,
-                                };
-                                setTokenSettings(newTokenSettings);
-                                onTokenSettingsChanged(newTokenSettings);
-                            }}
-                        />
-                    </FormControl>
-                </HStack>
-                <HStack width="90%">
-                    <FormControl width="70%">
-                        <FormLabel>Token holders</FormLabel>
-                        {tokenSettings.tokenHolders.map((holder, i) => (
-                            <InputGroup key={i} p=".25rem">
-                                <Input
-                                    name="address"
-                                    placeholder="Account address"
-                                    value={holder.address}
-                                    onChange={(event) =>
-                                        handleHolderChange(i, event, true)
-                                    }
-                                />
-                                <InputRightAddon>
-                                    <IconButton
-                                        aria-label="Delete"
-                                        icon={<CloseIcon />}
-                                        onClick={() => handleRemoveHolder(i)}
-                                    />
-                                </InputRightAddon>
-                            </InputGroup>
-                        ))}
-                    </FormControl>
-                    <FormControl width="30%">
-                        <FormLabel>Balances</FormLabel>
-                        {tokenSettings.tokenHolders.map((holder, i) => (
-                            <InputGroup p=".25rem" key={i}>
-                                <Input
-                                    name="balance"
-                                    value={holder.balance}
-                                    onChange={(event) =>
-                                        handleHolderChange(i, event, false)
-                                    }
-                                    type="number"
-                                />
-                            </InputGroup>
-                        ))}
-                    </FormControl>
-                </HStack>
+        <VStack spacing={4} pt="130px">
+            <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Token</Text>
+            <Text fontSize="24px" color="brand.900" pt="32px">Configure the DAO's token parameters</Text>
+            {/* ADD DIVIDER */}
+            <HStack width="100%">
+                <FormControl width="70%">
+                    <FormLabel>
+                        <Text fontSize="16px" color="brand.900">SUPPORT</Text>
+                    </FormLabel>
+                    <CustomInput
+                        placeholder="My Organization Token"
+                        value={tokenSettings.tokenName}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            const newTokenSettings = {
+                                ...tokenSettings,
+                                tokenName: e.target.value,
+                            };
+                            setTokenSettings(newTokenSettings);
+                        }}
+                    />
+                </FormControl>
+                <FormControl width="30%">
+                    <FormLabel>
+                        <Text fontSize="16px" color="brand.900">TOKEN SYMBOL</Text>
+                    </FormLabel>
+                    <CustomInput
+                        placeholder="MOT"
+                        value={tokenSettings.tokenSymbol}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            const newTokenSettings = {
+                                ...tokenSettings,
+                                tokenSymbol: e.target.value,
+                            };
+                            setTokenSettings(newTokenSettings);
+                        }}
+                    />
+                </FormControl>
+            </HStack>
+            <HStack width="100%">
+                <FormControl width="70%">
+                    <FormLabel>
+                        <Text fontSize="16px" color="brand.900">TOKEN HOLDERS</Text>
+                    </FormLabel>
+                    {tokenSettings.tokenHolders.map((holder, i) => (
+                        <InputGroup key={i} p=".25rem">
+                            <CustomInput
+                                rightAddon={true}
+                                name="address"
+                                placeholder="Account address"
+                                value={holder.address}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    handleHolderChange(i, e, true)
+                                }
+                            />
+                            <CustomInputRightAddon onClick={() => handleRemoveHolder(i)} >
+                                <CloseIcon />
+                            </CustomInputRightAddon>
+                        </InputGroup>
+                    ))}
+                </FormControl>
+                <FormControl width="30%">
+                    <FormLabel>
+                        <Text fontSize="16px" color="brand.900">BALANCES</Text>
+                    </FormLabel>
+                    {tokenSettings.tokenHolders.map((holder, i) => (
+                        <InputGroup p=".25rem" key={i}>
+                            <CustomInput
+                                name="balance"
+                                value={holder.balance}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    handleHolderChange(i, e, false)
+                                }
+                                type="number"
+                            />
+                        </InputGroup>
+                    ))}
+                </FormControl>
+            </HStack>
+            <HStack>
                 <Button
                     onClick={() => {
                         const newHolders = [
@@ -129,14 +146,15 @@ export default function TokenHoldersComponent({ onTokenSettingsChanged }: TokenS
                             tokenHolders: newHolders,
                         };
                         setTokenSettings(newTokenSettings);
-                        onTokenSettingsChanged(newTokenSettings);
                     }}
                 >
-                    Add holder
+                    + Add more
                 </Button>
-            </VStack>
-        </Box>
-
+                <Button>
+                    Import xls
+                </Button>
+            </HStack>
+        </VStack>
     )
 }
 

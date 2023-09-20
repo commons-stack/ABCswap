@@ -1,8 +1,10 @@
-import { Box, VStack, Text, Input, InputGroup, InputRightAddon, Alert, AlertIcon, HStack, FormControl, FormLabel, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Divider } from "@chakra-ui/react";
-import { useState } from "react";
+import { VStack, Text, InputGroup, HStack, FormControl, FormLabel, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import CustomInput from "../shared/CustomInput";
+import CustomInputRightAddon from "../shared/CustomInputRightAddon";
 
 interface VotingSettingsProps {
-    onVotingSettingsChanged: (data: VotingSettings) => void;
+    onStepCompletionChanged: (completed: boolean) => void;
 }
 
 type VotingSettings = {
@@ -13,7 +15,7 @@ type VotingSettings = {
     minutes: number
 }
 
-export default function VotingSettings({ onVotingSettingsChanged }: VotingSettingsProps) {
+export default function VotingSettings({ onStepCompletionChanged }: VotingSettingsProps) {
 
     const [votingSettings, setVotingSettings] = useState<VotingSettings>({
         support: 50,
@@ -28,9 +30,8 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
             ...votingSettings,
             support: value
         };
-
+        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
         setVotingSettings(updatedSettings);
-        onVotingSettingsChanged(updatedSettings);
     };
 
     const handleMinApprovalChange = (value: number) => {
@@ -38,9 +39,8 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
             ...votingSettings,
             minApproval: value
         };
-
+        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
         setVotingSettings(updatedSettings);
-        onVotingSettingsChanged(updatedSettings);
     };
 
     const handleDaysChange = (value: number) => {
@@ -48,9 +48,8 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
             ...votingSettings,
             days: value
         };
-
+        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
         setVotingSettings(updatedSettings);
-        onVotingSettingsChanged(updatedSettings);
     };
 
     const handleHoursChange = (value: number) => {
@@ -58,9 +57,8 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
             ...votingSettings,
             hours: value
         };
-
+        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
         setVotingSettings(updatedSettings);
-        onVotingSettingsChanged(updatedSettings);
     };
 
     const handleMinutesChange = (value: number) => {
@@ -68,10 +66,20 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
             ...votingSettings,
             minutes: value
         };
-
+        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
         setVotingSettings(updatedSettings);
-        onVotingSettingsChanged(updatedSettings);
     };
+
+    useEffect(() => {
+        localStorage.getItem('votingSettings') && setVotingSettings(JSON.parse(localStorage.getItem('votingSettings') ?? ''));
+    }, []);
+
+    useEffect(() => {
+        const isCompleted = votingSettings.support > 0 && (votingSettings.days > 0 || votingSettings.hours > 0 || votingSettings.minutes > 0)
+        if (onStepCompletionChanged) {
+            onStepCompletionChanged(isCompleted);
+        }
+    }, [votingSettings]);
 
     return (
         <VStack spacing={4} pt="130px">
@@ -95,16 +103,16 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
                             <SliderThumb />
                         </Slider>
                         <InputGroup width="20%">
-                            <Input
+                            <CustomInput
+                                rightAddon={true}
                                 value={votingSettings.support ?? 0}
-                                onChange={(e) => handleSupportChange(Number(e.target.value))}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSupportChange(Number(e.target.value))}
                                 type="number"
                             />
-                            <InputRightAddon children="%" />
+                            <CustomInputRightAddon children="%" />
                         </InputGroup>
                     </HStack>
                 </FormControl>
-
                 <FormControl>
                     <FormLabel>
                         <Text fontSize="16px" color="brand.900">MINIMUM APPROVAL</Text>
@@ -122,40 +130,44 @@ export default function VotingSettings({ onVotingSettingsChanged }: VotingSettin
                             <SliderThumb />
                         </Slider>
                         <InputGroup width="20%">
-                            <Input
+                            <CustomInput
+                                rightAddon={true}
                                 value={votingSettings.minApproval ?? 0}
-                                onChange={(e) => handleMinApprovalChange(Number(e.target.value))}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMinApprovalChange(Number(e.target.value))}
                                 type="number"
                             />
-                            <InputRightAddon children="%" />
+                            <CustomInputRightAddon children="%" />
                         </InputGroup>
                     </HStack>
                 </FormControl>
                 <Text fontSize="16px" color="brand.900" alignSelf="start">VOTE DURATION</Text>
                 <HStack spacing={4}>
                     <InputGroup>
-                        <Input
+                        <CustomInput
+                            rightAddon={true}
                             value={votingSettings.days ?? 0}
-                            onChange={(e) => handleDaysChange(Number(e.target.value))}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDaysChange(Number(e.target.value))}
                             type="number"
                         />
-                        <InputRightAddon children="Days" />
+                        <CustomInputRightAddon children="Days" />
                     </InputGroup>
                     <InputGroup>
-                        <Input
+                        <CustomInput
+                            rightAddon={true}
                             value={votingSettings.hours ?? 0}
                             type="number"
-                            onChange={(e) => handleHoursChange(Number(e.target.value))}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleHoursChange(Number(e.target.value))}
                         />
-                        <InputRightAddon children="Hours" />
+                        <CustomInputRightAddon children="Hours" />
                     </InputGroup>
                     <InputGroup>
-                        <Input
+                        <CustomInput
+                            rightAddon={true}
                             value={votingSettings.minutes ?? 0}
                             type="number"
-                            onChange={(e) => handleMinutesChange(Number(e.target.value))}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMinutesChange(Number(e.target.value))}
                         />
-                        <InputRightAddon children="Minutes" />
+                        <CustomInputRightAddon children="Minutes" />
                     </InputGroup>
                 </HStack>
                 <VStack pt="32px">
