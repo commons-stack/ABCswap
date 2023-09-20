@@ -7,8 +7,8 @@ import { publicProvider } from 'wagmi/providers/public';
 
 export const { chains, publicClient } = configureChains(
   [gnosis],
-  process.env.ALCHEMY_ID ? [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
+  import.meta.env.ALCHEMY_ID ? [
+    alchemyProvider({ apiKey: import.meta.env.ALCHEMY_ID }),
     publicProvider()
   ] : [
     publicProvider()

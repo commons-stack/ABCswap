@@ -1,0 +1,9 @@
+{
+    "extends": "./vite.json",
+    "compilerOptions": {
+      "moduleResolution": "bundler",
+      "allowImportingTsExtensions": true,
+      "jsx": "react-jsx"
+    }
+  }
+  
