@@ -22,11 +22,6 @@ import { knownContracts } from '../../../config.json';
 import { Abi, TransactionReceipt } from "viem";
 import newDaoWithABCAbi from '../../../utils/abi/augmented-bonding-curve.json'
 
-const [isMined, setIsMined] = useState(false);
-const [isSending, setIsSending] = useState(false);
-const [isLoading, setIsLoading] = useState(false);
-const [txData, setTxData] = useState<any>(); // Type correctly
-
 type VotingSettings = {
     support: number,
     minApproval: number,
@@ -59,19 +54,24 @@ type CollateralToken = {
     symbol: string;
 }
 
-interface SummaryProps {
-    votingSettings: VotingSettings,
-    tokenSettings: TokenSettings,
-    augmentedBondingCurveSettings: AugmentedBondingCurveSettings,
-    organizationName: string
-}
+export default function Summary() {
 
-export default function Summary({ tokenSettings, votingSettings, augmentedBondingCurveSettings, organizationName }: SummaryProps) {
+    const [isMined, setIsMined] = useState(false);
+    const [isSending, setIsSending] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [txData, setTxData] = useState<any>(); // Type correctly
+
     // Initialize useRouter
     const router = useRouter()
 
     // Handle user confirmation of summary
     const [validated, setValidated] = useState(false)
+
+    // Retrieve settings from local storage
+    const organizationName: string = localStorage.getItem('organizationName')!;
+    const votingSettings: VotingSettings = JSON.parse(localStorage.getItem('votingSettings')!);
+    const tokenSettings: TokenSettings = JSON.parse(localStorage.getItem('tokenSettings')!);
+    const augmentedBondingCurveSettings: AugmentedBondingCurveSettings = JSON.parse(localStorage.getItem('augmentedBondingCurveSettings')!);
 
     // Process holder adresses and balances
     const addresses = tokenSettings.tokenHolders?.map((holder) => holder.address);
@@ -112,13 +112,13 @@ export default function Summary({ tokenSettings, votingSettings, augmentedBondin
         })
 
         const tx = await useContractWrite(config);
-        const data = await useWaitForTransaction({hash: tx.data?.hash}); 
+        const data = await useWaitForTransaction({ hash: tx.data?.hash });
         setTxData(data);
-        if(data.status === "success") {
+        if (data.status === "success") {
             setIsLoading(false);
             setIsSending(false);
             const receipt = await useTransaction(txData) // Retrieve hash ? Verify docs
-            if(receipt) {
+            if (receipt) {
                 setIsMined(true)
             }
         } else if (data.status === "error") {

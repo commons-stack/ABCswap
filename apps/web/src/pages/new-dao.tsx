@@ -116,6 +116,12 @@ export default function NewDao() {
             index: 4,
             completed: augmentedBondingCurveSettingsStatus
         },
+        {
+            title: 'Launch your DAO',
+            content: <Summary />,
+            index: 5,
+            completed: false
+        }
     ]
 
     if (step !== 0) {
