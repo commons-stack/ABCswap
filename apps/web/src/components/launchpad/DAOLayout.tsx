@@ -4,6 +4,7 @@ type Step = {
     title: string;
     content: JSX.Element;
     index: number;
+    completed: boolean;
 }
 
 interface DAOLayoutProps {
@@ -22,7 +23,6 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                 position="relative"
                 pt="40px"
             >
-                {/* Overlapping Content */}
                 <Box
                     position="absolute"
                     top="-30px"
@@ -33,9 +33,8 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                     alignItems="center"
                 >
                     {steps.slice(1).map((step, index) => (
-                        <VStack key={index + 1} spacing={2} alignItems="center"> {/* Added VStack */}
+                        <VStack key={index + 1} spacing={2} alignItems="center">
                             <Box position="relative" width="64px" height="64px">
-                                {/* First Image (bottom-most layer) */}
                                 <Image
                                     src="/launchpad/CreamEllipse.png"
                                     alt="First Image"
@@ -45,8 +44,6 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                                     top="0"
                                     left="0"
                                 />
-
-                                {/* Second Image (middle layer) - Conditionally rendered */}
                                 {currentStep === index + 1 && (
                                     <Image
                                         src="/launchpad/GreenEllipse.png"
@@ -59,8 +56,6 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                                         transform="translate(-50%, -50%)"
                                     />
                                 )}
-
-                                {/* Index Text (topmost layer) */}
                                 <Text
                                     fontSize="xl"
                                     position="absolute"
@@ -68,12 +63,12 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                                     left="50%"
                                     transform="translate(-50%, -50%)"
                                     zIndex={30}
-                                    color={currentStep === index + 1 ? "brand.100" : "inherit"} // Conditional coloring
+                                    color={currentStep === index + 1 ? "brand.100" : "inherit"}
                                 >
                                     {index + 1}
                                 </Text>
                             </Box>
-                            <Text fontSize="20px" color="brand.900">{step.title}</Text> {/* New Text */}
+                            <Text fontSize="20px" color="brand.900">{step.title}</Text>
                         </VStack>
                     ))}
                 </Box>
@@ -81,8 +76,12 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                 {steps[currentStep].content}
 
                 <HStack spacing={4} pb="50px" pt="40px">
-                    <Button onClick={() => onStepChanged(currentStep - 1)} variant="outline">Previous</Button>
-                    <Button onClick={() => onStepChanged(currentStep + 1)}>Next</Button>
+                    <Button onClick={() => onStepChanged(currentStep - 1)} variant="outline">Back</Button>
+                    <Button
+                        onClick={() => onStepChanged(currentStep + 1)}
+                        isDisabled={!steps[currentStep].completed}>
+                        Next
+                    </Button>
                 </HStack>
             </VStack>
         </Flex>
