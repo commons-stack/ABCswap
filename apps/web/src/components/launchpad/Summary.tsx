@@ -14,12 +14,12 @@ import {
     Th,
     Td,
 } from '@chakra-ui/react'
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction, useTransaction } from 'wagmi'
 
 import { knownContracts } from '../../../config.json';
-import { Abi, TransactionReceipt } from "viem";
+import { Abi } from "viem";
 import newDaoWithABCAbi from '../../../utils/abi/augmented-bonding-curve.json'
 
 type VotingSettings = {
@@ -62,7 +62,7 @@ export default function Summary() {
     const [txData, setTxData] = useState<any>(); // Type correctly
 
     // Initialize useRouter
-    const router = useRouter()
+    const navigate = useNavigate()
 
     // Handle user confirmation of summary
     const [validated, setValidated] = useState(false)
@@ -241,7 +241,7 @@ export default function Summary() {
                         </Accordion>
                         <Checkbox onChange={(e) => setValidated(e.target.checked)}>Did you verify that all the information is correct?</Checkbox>
                         <HStack>
-                            <Button alignSelf="flex-start" onClick={() => router.push('/augmented-bonding-curve')} colorScheme="blue">Back</Button>
+                            <Button alignSelf="flex-start" onClick={() => navigate('/augmented-bonding-curve')} colorScheme="blue">Back</Button>
                             <Button alignSelf="flex-end" isDisabled={!validated} onClick={handleLaunch} colorScheme="red">Launch</Button>
                         </HStack>
                     </VStack>
