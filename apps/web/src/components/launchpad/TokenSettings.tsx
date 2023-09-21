@@ -1,4 +1,4 @@
-import { Button, InputGroup, Text, VStack, HStack, FormControl, FormLabel } from "@chakra-ui/react";
+import { Button, InputGroup, Text, VStack, HStack, FormControl, FormLabel, Box } from "@chakra-ui/react";
 import React, { useEffect, useState } from 'react'
 import { CloseIcon } from "@chakra-ui/icons";
 import CustomInput from "../shared/CustomInput";
@@ -57,13 +57,13 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
 
     return (
         <VStack spacing={4} pt="130px">
-            <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Token</Text>
-            <Text fontSize="24px" color="brand.900" pt="32px">Configure the DAO's token parameters</Text>
+            <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Tokens</Text>
+            <Text fontSize="24px" color="brand.900" pt="32px">Choose your Tokens settings below</Text>
             {/* ADD DIVIDER */}
             <HStack width="100%">
                 <FormControl width="70%">
                     <FormLabel>
-                        <Text fontSize="16px" color="brand.900">SUPPORT</Text>
+                        <Text fontSize="16px" color="brand.900">TOKEN NAME</Text>
                     </FormLabel>
                     <CustomInput
                         placeholder="My Organization Token"
@@ -100,7 +100,7 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
                         <Text fontSize="16px" color="brand.900">TOKEN HOLDERS</Text>
                     </FormLabel>
                     {tokenSettings.tokenHolders.map((holder, i) => (
-                        <InputGroup key={i} p=".25rem">
+                        <InputGroup key={i} mb="17px">
                             <CustomInput
                                 rightAddon={true}
                                 name="address"
@@ -121,7 +121,7 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
                         <Text fontSize="16px" color="brand.900">BALANCES</Text>
                     </FormLabel>
                     {tokenSettings.tokenHolders.map((holder, i) => (
-                        <InputGroup p=".25rem" key={i}>
+                        <InputGroup mb="17px" key={i}>
                             <CustomInput
                                 name="balance"
                                 value={holder.balance}
@@ -134,7 +134,7 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
                     ))}
                 </FormControl>
             </HStack>
-            <HStack>
+            <HStack w="45%" alignSelf="start" spacing={3}>
                 <Button
                     onClick={() => {
                         const newHolders = [
