@@ -25,6 +25,7 @@ export default function CustomInput({ rightAddon, ...props }: CustomInputProps) 
                     border: "1px solid",
                     borderRight: "none",
                 }}
+                min={0}
                 {...props}
             >
                 {props.children}
@@ -48,6 +49,7 @@ export default function CustomInput({ rightAddon, ...props }: CustomInputProps) 
                     border: "1px solid",
                     borderRight: "none",
                 }}
+                min={0}
                 {...props}
             >
                 {props.children}
