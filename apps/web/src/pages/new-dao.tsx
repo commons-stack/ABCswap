@@ -57,7 +57,7 @@ export default function NewDao() {
     }
 
     useEffect(() => {
-        if (!balance?.value || balance?.value < (parseEther('0.0005'))) {
+        if (!balance?.value || balance?.value > (parseEther('0.0005'))) {
             setEnoughBalance(true);
         } else {
             setEnoughBalance(false);
