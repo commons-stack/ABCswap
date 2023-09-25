@@ -1,6 +1,6 @@
 const Select = {
     variants: {
-        "solid": (props: AsyncGeneratorFunctionConstructor) => ({
+        "solid": (_: AsyncGeneratorFunctionConstructor) => ({
             field: {
                 background: "white",
                 border: "1px solid",

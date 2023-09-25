@@ -56,7 +56,6 @@ type CollateralToken = {
 
 export default function Summary() {
 
-    const [isMined, setIsMined] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [txData, setTxData] = useState<any>(); // Type correctly
@@ -90,7 +89,7 @@ export default function Summary() {
     const handleLaunch = async () => {
         setIsLoading(true);
         setIsSending(true);
-        const { config, error } = usePrepareContractWrite({
+        const { config } = usePrepareContractWrite({
             address: knownContracts[100].NEW_DAO_WITH_ABC as `0x${string}`,
             abi: newDaoWithABCAbi as Abi,
             functionName: 'newTokenAndInstance',
@@ -118,9 +117,7 @@ export default function Summary() {
             setIsLoading(false);
             setIsSending(false);
             const receipt = await useTransaction(txData) // Retrieve hash ? Verify docs
-            if (receipt) {
-                setIsMined(true)
-            }
+            console.log(receipt);
         } else if (data.status === "error") {
             console.log(data.error);
             // Handle error

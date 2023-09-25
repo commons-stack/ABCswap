@@ -1,6 +1,6 @@
 const Button = {
   variants: {
-    "solid": (props: AsyncGeneratorFunctionConstructor) => ({
+    "solid": (_: AsyncGeneratorFunctionConstructor) => ({
       bgColor: "brand.900",
       padding: "8px 20px",
       borderRadius: "20px",
@@ -11,7 +11,7 @@ const Button = {
         color: "brand.900",
       }
     }),
-    "outline": (props: AsyncGeneratorFunctionConstructor) => ({
+    "outline": (_: AsyncGeneratorFunctionConstructor) => ({
       borderColor: "brand.900",
       borderWidth: "1px", 
       padding: "8px 20px",

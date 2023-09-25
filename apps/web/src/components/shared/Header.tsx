@@ -1,5 +1,4 @@
 import { Text, Box, HStack, Image } from "@chakra-ui/react"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { CustomConnectButton } from "./ConnectButton"
 
 export default function Header() {

@@ -1,4 +1,4 @@
-import { Button, InputGroup, Text, VStack, HStack, FormControl, FormLabel, Box } from "@chakra-ui/react";
+import { Button, InputGroup, Text, VStack, HStack, FormControl, FormLabel } from "@chakra-ui/react";
 import React, { useEffect, useState } from 'react'
 import { CloseIcon } from "@chakra-ui/icons";
 import CustomInput from "../shared/CustomInput";

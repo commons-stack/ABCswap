@@ -1,6 +1,6 @@
 const Slider = {
     variants: {
-        "solid": (props: AsyncGeneratorFunctionConstructor) => ({
+        "solid": (_: AsyncGeneratorFunctionConstructor) => ({
             filledTrack: { 
                 bgColor: "brand.500",
                 height: "8px",
