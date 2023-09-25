@@ -2,12 +2,13 @@ import { Box, HStack, Text, VStack, Image, Button } from '@chakra-ui/react'
 import OrganizationName from '../components/launchpad/OrganizationName'
 import VotingSettings from '../components/launchpad/VotingSettings'
 import TokenSettings from '../components/launchpad/TokenSettings'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AugmentedBondingCurveSettings from '../components/launchpad/AugmentedBondingCurveSettings'
 import Summary from '../components/launchpad/Summary'
 import { CustomConnectButtonLong } from '../components/shared/ConnectButtonLong'
-import { useAccount } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import DAOLayout from '../components/launchpad/DAOLayout'
+import { parseEther } from 'viem'
 
 type VotingSettings = {
     support: number,
@@ -46,15 +47,26 @@ type CollateralToken = {
 
 export default function NewDao() {
     const { address } = useAccount();
+    const [enoughBalance, setEnoughBalance] = useState<boolean>(false);
+    const { data: balance } = useBalance({ address });
+
     const [step, setStep] = useState(0);
 
     const handleStart = () => {
         setStep(1);
     }
 
+    useEffect(() => {
+        if (!balance?.value || balance?.value < (parseEther('0.0005'))) {
+            setEnoughBalance(true);
+        } else {
+            setEnoughBalance(false);
+        }
+    }, [address, balance]);
+
     // Organization name 
     const [organizationNameStatus, setOrganizationNameStatus] = useState<boolean>(false);
-    
+
     // Voting settings
     const [votingSettingsStatus, setVotingSettingsStatus] = useState<boolean>(true);
 
@@ -70,7 +82,7 @@ export default function NewDao() {
     }
 
     const votingSettingsChanged = (data: boolean) => {
-        setVotingSettingsStatus(data);    
+        setVotingSettingsStatus(data);
     }
 
     const tokenSettingsChanged = (data: boolean) => {
@@ -85,6 +97,7 @@ export default function NewDao() {
         setStep(data);
     }
 
+    // Steps
     const steps = [
         {
             title: 'Start',
@@ -97,7 +110,7 @@ export default function NewDao() {
             content: <OrganizationName onStepCompletionChanged={organizationNameChanged} />,
             index: 1,
             completed: organizationNameStatus
-        }, 
+        },
         {
             title: 'Configure voting',
             content: <VotingSettings onStepCompletionChanged={votingSettingsChanged} />,
@@ -127,14 +140,14 @@ export default function NewDao() {
     if (step !== 0) {
         return (
             <>
-            <DAOLayout steps={steps} currentStep={step} onStepChanged={stepChanged} />
+                <DAOLayout steps={steps} currentStep={step} onStepChanged={stepChanged} />
             </>
         )
     } else {
         return (
             <>
                 <Box bg="brand.100">
-                    <VStack spacing={0} pb="244px">
+                    <VStack spacing={0} pb="117px">
                         <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">Create your DAO</Text>
                         <Text fontSize="24px" color="brand.900">Connect your wallet to start creating your DAO</Text>
                         <Text fontSize="24px" color="brand.900">with Augmented Bonding Curve</Text>
@@ -166,12 +179,19 @@ export default function NewDao() {
                                 <Text fontSize="24px" color="brand.900">your DAO</Text>
                             </VStack>
                         </HStack>
-                        {address ? <Button onClick={handleStart}>Let's start</Button> : <CustomConnectButtonLong />}
+                        {!enoughBalance &&
+                            <HStack mb="28px" mt="93px">
+                                <Image src="../../..//public/Error.svg" w="32px" h="32px" mr="8px" />
+                                <VStack spacing={0} alignItems="start">
+                                    <Text fontSize="16px" color="brand.1200">Insuficient funds, you need</Text>
+                                    <Text fontSize="16px" color="brand.1200">more ETH to launch an ABC.</Text>
+                                </VStack>
+                            </HStack>
+                        }
+                        {address ? <Button onClick={handleStart} isDisabled={!enoughBalance}>Let's start</Button> : <CustomConnectButtonLong />}
                     </VStack>
                 </Box>
             </>
         );
     }
 }
-
-{/* <Summary tokenSettings={tokenSettings} votingSettings={votingSettings} augmentedBondingCurveSettings={augmentedBondingCurveSettings} organizationName={organizationName} /> */ }
