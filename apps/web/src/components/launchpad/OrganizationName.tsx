@@ -9,10 +9,15 @@ interface OrganizationNameProps {
 
 export default function OrganizationName({ onStepCompletionChanged }: OrganizationNameProps) {
     const [organizationName, setOrganizationName] = useState<string>('');
+    const [userInteracted, setUserInteracted] = useState<boolean>(false);
 
     useEffect(() => {
-        localStorage.getItem('organizationName') && setOrganizationName(localStorage.getItem('organizationName') ?? '');
-    }, []);
+        const storedOrganizationName = localStorage.getItem('organizationName');
+        if (storedOrganizationName) {
+            setOrganizationName(storedOrganizationName);
+            setUserInteracted(true);
+        }
+    }, []);    
 
     useEffect(() => {
         localStorage.setItem('organizationName', organizationName);
@@ -33,9 +38,12 @@ export default function OrganizationName({ onStepCompletionChanged }: Organizati
                         value={organizationName ?? ''}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setOrganizationName(e.target.value);
+                            setUserInteracted(true);
                         }}
                     />
-                    <CustomInputRightAddon children="sample" />
+                    <CustomInputRightAddon>
+                        {userInteracted ? (organizationName.length > 0 ? "Completed" : "Not Completed") : ""}
+                    </CustomInputRightAddon>
                 </InputGroup>
             </VStack>
         </Box>
