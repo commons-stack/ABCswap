@@ -37,17 +37,19 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                             <Box position="relative" width="64px" height="64px">
                                 <Image
                                     src="/launchpad/CreamEllipse.png"
-                                    alt="First Image"
+                                    alt="Default Image"
                                     boxSize="64px"
                                     position="absolute"
                                     zIndex={10}
                                     top="0"
                                     left="0"
                                 />
+
+                                {/* For the current step */}
                                 {currentStep === index + 1 && (
                                     <Image
                                         src="/launchpad/GreenEllipse.png"
-                                        alt="Second Image"
+                                        alt="Current Step Image"
                                         boxSize="48px"
                                         position="absolute"
                                         zIndex={20}
@@ -56,17 +58,35 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                                         transform="translate(-50%, -50%)"
                                     />
                                 )}
-                                <Text
-                                    fontSize="xl"
-                                    position="absolute"
-                                    top="50%"
-                                    left="50%"
-                                    transform="translate(-50%, -50%)"
-                                    zIndex={30}
-                                    color={currentStep === index + 1 ? "brand.100" : "inherit"}
-                                >
-                                    {index + 1}
-                                </Text>
+
+                                {/* For all the previous steps */}
+                                {currentStep > index + 1 && (
+                                    <Image
+                                        src="/Check.svg"
+                                        alt="Previous Step Image"
+                                        boxSize="48px"
+                                        position="absolute"
+                                        zIndex={15}
+                                        top="50%"
+                                        left="50%"
+                                        transform="translate(-50%, -50%)"
+                                    />
+                                )}
+
+                                {/* Don't show the step number for all the previous steps */}
+                                {currentStep > index + 1 ? null : (
+                                    <Text
+                                        fontSize="xl"
+                                        position="absolute"
+                                        top="50%"
+                                        left="50%"
+                                        transform="translate(-50%, -50%)"
+                                        zIndex={30}
+                                        color={currentStep === index + 1 ? "brand.100" : "inherit"}
+                                    >
+                                        {index + 1}
+                                    </Text>
+                                )}
                             </Box>
                             <Text fontSize="20px" color="brand.900">{step.title}</Text>
                         </VStack>
