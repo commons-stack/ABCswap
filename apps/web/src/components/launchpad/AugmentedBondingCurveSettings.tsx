@@ -86,37 +86,39 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Augmented Bonding Curve</Text>
             <Text fontSize="24px" color="brand.900" pt="32px">Configure the DAO's ABC parameters</Text>
             <HStack w="100%">
-                <VStack spacing={3} w="35%" alignSelf="start">
-                    <HStack alignSelf="start">
-                        <FormControl>
+                <VStack spacing={3} minW="320px" maxW="400px" w="35%" alignSelf="start">
+                    <HStack alignSelf="start" w="100%">
+                        <FormControl w="100%">
                             <FormLabel>
                                 <Text fontSize="16px" color="brand.900">RESERVE RATIO</Text>
                             </FormLabel>
-                            <Button
-                                w="81px"
-                                onClick={() => handleReserveRatioChange(20)}
-                                variant={augmentedBondingCurveSettings.reserveRatio === 20 ? 'solid' : 'outline'}
-                            >
-                                20%
-                            </Button>
-                            <Button
-                                w="81px"
-                                onClick={() => handleReserveRatioChange(50)}
-                                variant={augmentedBondingCurveSettings.reserveRatio === 50 ? 'solid' : 'outline'}
-                            >
-                                50%
-                            </Button>
-                            <Button
-                                w="81px"
-                                onClick={() => handleReserveRatioChange(80)}
-                                variant={augmentedBondingCurveSettings.reserveRatio === 80 ? 'solid' : 'outline'}
-                            >
-                                80%
-                            </Button>
-                            <InputGroup w="150px">
-                                <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.reserveRatio || 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(Number(e.target.value))} type="number" />
-                                <CustomInputRightAddon children="%" />
-                            </InputGroup>
+                            <HStack justifyContent="space-between">
+                                <Button
+                                    w="70px"
+                                    onClick={() => handleReserveRatioChange(20)}
+                                    variant={augmentedBondingCurveSettings.reserveRatio === 20 ? 'solid' : 'outline'}
+                                >
+                                    20%
+                                </Button>
+                                <Button
+                                    w="70px"
+                                    onClick={() => handleReserveRatioChange(50)}
+                                    variant={augmentedBondingCurveSettings.reserveRatio === 50 ? 'solid' : 'outline'}
+                                >
+                                    50%
+                                </Button>
+                                <Button
+                                    w="70px"
+                                    onClick={() => handleReserveRatioChange(80)}
+                                    variant={augmentedBondingCurveSettings.reserveRatio === 80 ? 'solid' : 'outline'}
+                                >
+                                    80%
+                                </Button>
+                                <InputGroup w="91px" display="inline-flex">
+                                    <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.reserveRatio || 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(Number(e.target.value))} type="number" />
+                                    <CustomInputRightAddon children="%" />
+                                </InputGroup>
+                            </HStack>
                         </FormControl>
                     </HStack>
                     <FormControl>

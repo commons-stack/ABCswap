@@ -19,7 +19,7 @@ export default function CustomInput({ rightAddon, ...props }: CustomInputProps) 
                 border="1px solid"
                 borderRadius="15px"
                 paddingY="12px"
-                paddingX="24px"
+                paddingX="12px"
                 fontWeight="bold"
                 _hover={{
                     border: "1px solid",
@@ -43,7 +43,7 @@ export default function CustomInput({ rightAddon, ...props }: CustomInputProps) 
                 borderTopRightRadius="0"
                 borderBottomRightRadius="0"
                 paddingY="12px"
-                paddingX="24px"
+                paddingX="12px"
                 fontWeight="bold"
                 _hover={{
                     border: "1px solid",

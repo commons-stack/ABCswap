@@ -13,7 +13,7 @@ export default function CustomInputRightAddon(props: any) {
             borderTopLeftRadius="0 !important"
             borderBottomLeftRadius="0 !important"
             paddingY="12px"
-            paddingX="24px"
+            paddingX="12px"
             fontWeight="bold"
             {...props}
         >
