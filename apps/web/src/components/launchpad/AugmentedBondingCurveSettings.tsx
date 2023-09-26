@@ -117,7 +117,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                                     80%
                                 </Button>
                                 <InputGroup w="91px" display="inline-flex">
-                                    <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.reserveRatio ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} style={{pattern:"[0-9]"}}/>
+                                    <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.reserveRatio ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} style={{ pattern: "[0-9]" }} />
                                     <CustomInputRightAddon children="%" />
                                 </InputGroup>
                             </HStack>
@@ -127,18 +127,18 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                         <FormLabel>
                             <Text fontSize="16px" color="brand.900">RESERVE INITIAL BALANCE</Text>
                         </FormLabel>
-                        <Box border="1px solid" borderColor="gray.200" borderRadius="md">
-                        <Flex>
-                            <Select placeholder="Select option" borderRight="1px solid" borderColor="gray.200" borderRadius="0" value={augmentedBondingCurveSettings.collateralToken?.symbol || ''} onChange={handleCollateralTokenChange}>
-                            {collateralTokenList.map((token) => (
-                                <option key={token.address} value={token.symbol}>
-                                    {token.symbol}
-                                </option>
-                            ))}
-                            </Select>
-                            <CustomInput placeholder="Enter value" borderRadius="0" value={augmentedBondingCurveSettings.initialReserve ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number"/>
-                        </Flex>
-                    </Box>
+                        <Box>
+                            <Flex>
+                                <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.collateralToken?.symbol || ''} onChange={handleCollateralTokenChange}>
+                                    {collateralTokenList.map((token) => (
+                                        <option key={token.address} value={token.symbol}>
+                                            {token.symbol}
+                                        </option>
+                                    ))}
+                                </Select>
+                                <CustomInput placeholder="Enter value" borderRadius="15px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={augmentedBondingCurveSettings.initialReserve ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number" />
+                            </Flex>
+                        </Box>
                     </FormControl>
                     <HStack spacing={8}>
                         <FormControl>
