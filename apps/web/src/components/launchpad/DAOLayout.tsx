@@ -88,7 +88,7 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                                     </Text>
                                 )}
                             </Box>
-                            <Text fontSize="20px" color="brand.900">{step.title}</Text>
+                            <Text fontSize="20px" color="brand.900" textAlign="center">{step.title}</Text>
                         </VStack>
                     ))}
                 </Box>
