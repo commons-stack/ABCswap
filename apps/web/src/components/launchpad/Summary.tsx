@@ -142,36 +142,31 @@ export default function Summary() {
                     </VStack>
                 </Box>
             ) : (
-                <Box borderWidth="1px" borderRadius="lg" padding="6" boxShadow="lg" width="50vw">
+                <Box pt="100px">
                     <VStack spacing={4}>
-                        <Text fontSize="2xl" as="b" p="1rem" textAlign="center">Summary</Text>
-                        <Text fontSize="xl" as="b" p="1rem" textAlign="center">Make sure your settings are correct</Text>
+                        <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Launch your DAO</Text>
+                        <Text fontSize="24px" color="brand.900" >Make sure your settings are correct</Text>
                         <Accordion width="80%">
                             <AccordionItem>
-                                <h2>
-                                    <AccordionButton>
-                                        <Box flex='1' textAlign='left'>
-                                            Organization settings
-                                        </Box>
-                                        <AccordionIcon />
-                                    </AccordionButton>
-                                </h2>
+                                <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
+                                    <Box flex='1' textAlign='left'>
+                                        <Text color="brand.900">Organization settings</Text>
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
-                                        Organization domain: <Text as="b">{organizationName + '.aragonid.eth'}</Text>
+                                        <Text as="b">Organization domain: </Text>{organizationName + '.aragonid.eth'}
                                     </Text>
                                 </AccordionPanel>
                             </AccordionItem>
-
                             <AccordionItem>
-                                <h2>
-                                    <AccordionButton>
-                                        <Box flex='1' textAlign='left'>
-                                            Governance settings
-                                        </Box>
-                                        <AccordionIcon />
-                                    </AccordionButton>
-                                </h2>
+                                <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
+                                    <Box flex='1' textAlign='left'>
+                                        <Text color="brand.900">Governance settings</Text>
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
                                         Support: <Text as="b"> {votingSettings.support + '%'}</Text>
@@ -182,17 +177,27 @@ export default function Summary() {
                                     <Text>
                                         Vote duration: <Text as="b"> {votingSettings.days + ' days ' + votingSettings.hours + ' hours ' + votingSettings.minutes + ' minutes'}</Text>
                                     </Text>
+                                </AccordionPanel>
+                            </AccordionItem>
+                            <AccordionItem>
+                                <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
+                                    <Box flex='1' textAlign='left'>
+                                        <Text color="brand.900">Token settings</Text>
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                                <AccordionPanel pb={4}>
                                     <Text>
                                         Token name: <Text as="b">{tokenSettings.tokenName}</Text>
                                     </Text>
                                     <Text>
                                         Token symbol: <Text as="b">{tokenSettings.tokenSymbol}</Text>
                                     </Text>
-                                    <Table variant="simple">
+                                    <Table variant="simple" mt="20px" backgroundColor="brand.200" borderRadius="15px">
                                         <Thead>
                                             <Tr>
-                                                <Th>Holder account</Th>
-                                                <Th>Balance</Th>
+                                                <Th><Text color="brand.900" fontSize="12px" fontFamily="Roboto">HOLDER ACCOUNT</Text></Th>
+                                                <Th><Text color="brand.900" fontSize="12px" fontFamily="Roboto">BALANCE</Text></Th>
                                             </Tr>
                                         </Thead>
                                         <Tbody>
@@ -204,19 +209,15 @@ export default function Summary() {
                                             ))}
                                         </Tbody>
                                     </Table>
-
                                 </AccordionPanel>
                             </AccordionItem>
-
                             <AccordionItem>
-                                <h2>
-                                    <AccordionButton>
-                                        <Box flex='1' textAlign='left'>
-                                            Augmented bonding curve settings
-                                        </Box>
-                                        <AccordionIcon />
-                                    </AccordionButton>
-                                </h2>
+                                <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
+                                    <Box flex='1' textAlign='left'>
+                                        <Text color="brand.900">Augmented bonding curve settings</Text>
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
                                         Reserve ratio: <Text as="b">{augmentedBondingCurveSettings.reserveRatio + '%'}</Text>
