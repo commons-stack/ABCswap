@@ -6,13 +6,13 @@ import ReactDOM from 'react-dom/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { WagmiConfig } from "wagmi";
 import { chains, wagmiConfig } from "../wagmi";
-import theme from './theme/index.ts';
+import theme from './presentation/theme/index.ts';
 import App from './App.tsx'
-import Launchpad from './pages/launchpad';
-import Swap from './pages/swap';
+import Launchpad from './presentation/pages/launchpad';
+import Swap from './presentation/pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
-import NewDao from './pages/new-dao.tsx';
-import { TransactionProvider } from './providers/TransactionProvider.tsx';
+import NewDao from './presentation/pages/new-dao.tsx';
+import { TransactionProvider } from './presentation/providers/TransactionProvider.tsx';
 
 const router = createHashRouter(
   createRoutesFromElements(

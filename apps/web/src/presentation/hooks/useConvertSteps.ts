@@ -1,6 +1,6 @@
-import { knownContracts } from '../../config.json';
-import bondingCurveAbi from '../../utils/abi/augmented-bonding-curve.json';
-import tokenAbi from '../../utils/abi/token.json';
+import { knownContracts } from '../../../config.json';
+import bondingCurveAbi from '../../../utils/abi/augmented-bonding-curve.json';
+import tokenAbi from '../../../utils/abi/token.json';
 import { Abi, parseUnits } from 'viem';
 
 export default function useConvertSteps(toSymbol: string, fromAmount: string, account: `0x${string}` | undefined, bonded: { symbol: string, contract: `0x${string}` }) {

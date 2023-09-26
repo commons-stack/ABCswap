@@ -18,9 +18,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction, useTransaction } from 'wagmi'
 
-import { knownContracts } from '../../../config.json';
+import { knownContracts } from '../../../../config.json';
 import { Abi } from "viem";
-import newDaoWithABCAbi from '../../../utils/abi/augmented-bonding-curve.json'
+import newDaoWithABCAbi from '../../../../utils/abi/augmented-bonding-curve.json'
 
 type VotingSettings = {
     support: number,

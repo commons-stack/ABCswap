@@ -1,11 +1,11 @@
-import { collateral, bonded } from '../../../config.json';
+import { collateral, bonded } from '../../../../config.json';
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { fetchBalance } from '@wagmi/core';
-import { getCollateral } from '../../../utils/getCollateral';
-import { getBondingCurvePrice } from '../../../utils/getBondingCurvePrice';
-import { getTributePcts } from '../../../utils/getTributePcts';
+import { getCollateral } from '../../../../utils/getCollateral';
+import { getBondingCurvePrice } from '../../../../utils/getBondingCurvePrice';
+import { getTributePcts } from '../../../../utils/getTributePcts';
 import { formatUnits, parseUnits } from 'viem';
 import Transaction from '../TransactionModal';
 

@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import Footer from './components/shared/Footer';
+import Footer from './presentation/components/shared/Footer';
 import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import Header from "./components/shared/Header";
+import Header from "./presentation/components/shared/Header";
 
 export default function App() {
 
