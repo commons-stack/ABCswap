@@ -16,49 +16,33 @@ import {
 } from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction, useTransaction } from 'wagmi'
 
-import { knownContracts } from '../../../../config.json';
-import { Abi } from "viem";
-import newDaoWithABCAbi from '../../../../utils/abi/augmented-bonding-curve.json'
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
+import { useDAOCreationSummaryModelController } from "./DAOCreationSummaryModelController";
 
-type VotingSettings = {
-    support: number,
-    minApproval: number,
-    days: number,
-    hours: number,
-    minutes: number
-}
+interface SummaryViewProps {
+    daoCreationRepository : DAOCreationRepository;
+};
 
-type TokenHolder = {
-    address: string;
-    balance: string;
-}
+export default function Summary({daoCreationRepository} : SummaryViewProps) {
+    // use cases
+    const {
+        isSending,
+        setIsSending,
+        isLoading,
+        setIsLoading,
+        txData,
+        setTxData,
+        daoName,
+        votingSettings,
+        tokenInfo,
+        tokenHolders,
+        abcConfig,
+        handleLaunch,
+    } = useDAOCreationSummaryModelController(daoCreationRepository);
 
-type TokenSettings = {
-    tokenName: string;
-    tokenSymbol: string;
-    tokenHolders: TokenHolder[];
-}
 
-type AugmentedBondingCurveSettings = {
-    reserveRatio: number;
-    collateralToken: CollateralToken;
-    initialReserve: number;
-    entryTribute: number;
-    exitTribute: number;
-}
-
-type CollateralToken = {
-    address: string;
-    symbol: string;
-}
-
-export default function Summary() {
-
-    const [isSending, setIsSending] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [txData, setTxData] = useState<any>(); // Type correctly
+    
 
     // Initialize useRouter
     const navigate = useNavigate()
@@ -66,64 +50,6 @@ export default function Summary() {
     // Handle user confirmation of summary
     const [validated, setValidated] = useState(false)
 
-    // Retrieve settings from local storage
-    const organizationName: string = localStorage.getItem('organizationName')!;
-    const votingSettings: VotingSettings = JSON.parse(localStorage.getItem('votingSettings')!);
-    const tokenSettings: TokenSettings = JSON.parse(localStorage.getItem('tokenSettings')!);
-    const augmentedBondingCurveSettings: AugmentedBondingCurveSettings = JSON.parse(localStorage.getItem('augmentedBondingCurveSettings')!);
-
-    // Process holder adresses and balances
-    const addresses = tokenSettings.tokenHolders?.map((holder) => holder.address);
-    const balances = tokenSettings.tokenHolders?.map((holder) => {
-        if (holder.balance === null) {
-            return null;
-        }
-        return (BigInt(holder.balance) * BigInt(1e18)).toString()
-    });
-
-    // Prepare contract
-
-    /* ADD PROPER TRANSACTION HANDLING */
-    // Execute contract function
-
-    const handleLaunch = async () => {
-        setIsLoading(true);
-        setIsSending(true);
-        const { config } = usePrepareContractWrite({
-            address: knownContracts[100].NEW_DAO_WITH_ABC as `0x${string}`,
-            abi: newDaoWithABCAbi as Abi,
-            functionName: 'newTokenAndInstance',
-            args: [
-                tokenSettings.tokenName,
-                tokenSettings.tokenSymbol,
-                organizationName,
-                addresses,
-                balances,
-                [(BigInt(1e16) * BigInt(votingSettings.support!)).toString(),
-                (BigInt(1e16) * BigInt(votingSettings.minApproval!)).toString(),
-                Number(votingSettings.days) * 24 * 60 * 60 + Number(votingSettings.hours) * 60 * 60 + Number(votingSettings.minutes) * 60],
-                [(BigInt(1e16) * BigInt(augmentedBondingCurveSettings.entryTribute!)).toString(),
-                (BigInt(1e16) * BigInt(augmentedBondingCurveSettings.exitTribute!)).toString()],
-                augmentedBondingCurveSettings.collateralToken?.address,
-                augmentedBondingCurveSettings.reserveRatio! * 10000,
-                0
-            ]
-        })
-
-        const tx = await useContractWrite(config);
-        const data = await useWaitForTransaction({ hash: tx.data?.hash });
-        setTxData(data);
-        if (data.status === "success") {
-            setIsLoading(false);
-            setIsSending(false);
-            const receipt = await useTransaction(txData) // Retrieve hash ? Verify docs
-            console.log(receipt);
-        } else if (data.status === "error") {
-            console.log(data.error);
-            // Handle error
-        }
-
-    }
 
     return (
         <div>
@@ -138,7 +64,7 @@ export default function Summary() {
                 <Box borderWidth="1px" borderRadius="lg" padding="6" boxShadow="lg" width="50vw">
                     <VStack spacing={4}>
                         <Text fontSize="2xl" as="b" p="1rem" textAlign="center">Your DAO has been successfully created!</Text>
-                        <Button onClick={() => window.open("https://xdai.aragon.blossom.software/#/" + organizationName, "_blank", "noreferrer")}>See DAO</Button>
+                        <Button onClick={() => window.open("https://xdai.aragon.blossom.software/#/" + daoName, "_blank", "noreferrer")}>See DAO</Button>
                     </VStack>
                 </Box>
             ) : (
@@ -156,7 +82,7 @@ export default function Summary() {
                                 </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
-                                        <Text as="b">Organization domain: </Text>{organizationName + '.aragonid.eth'}
+                                        <Text as="b">Organization domain: </Text>{daoName + '.aragonid.eth'}
                                     </Text>
                                 </AccordionPanel>
                             </AccordionItem>
@@ -169,13 +95,13 @@ export default function Summary() {
                                 </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
-                                        Support: <Text as="b"> {votingSettings.support + '%'}</Text>
+                                        Support: <Text as="b"> {votingSettings.getSupportRequiredValue() + '%'}</Text>
                                     </Text>
                                     <Text>
-                                        Minimum approval: <Text as="b"> {votingSettings.minApproval + '%'}</Text>
+                                        Minimum approval: <Text as="b"> {votingSettings.getMinimumAcceptanceQuorumValue() + '%'}</Text>
                                     </Text>
                                     <Text>
-                                        Vote duration: <Text as="b"> {votingSettings.days + ' days ' + votingSettings.hours + ' hours ' + votingSettings.minutes + ' minutes'}</Text>
+                                        Vote duration: <Text as="b"> {votingSettings.getVoteDurationDays() + ' days ' + votingSettings.getVoteDurationHours() + ' hours ' + votingSettings.getVoteDurationMinutes() + ' minutes'}</Text>
                                     </Text>
                                 </AccordionPanel>
                             </AccordionItem>
@@ -188,10 +114,10 @@ export default function Summary() {
                                 </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
-                                        Token name: <Text as="b">{tokenSettings.tokenName}</Text>
+                                        Token name: <Text as="b">{tokenInfo.tokenName}</Text>
                                     </Text>
                                     <Text>
-                                        Token symbol: <Text as="b">{tokenSettings.tokenSymbol}</Text>
+                                        Token symbol: <Text as="b">{tokenInfo.tokenSymbol}</Text>
                                     </Text>
                                     <Table variant="simple" mt="20px" backgroundColor="brand.200" borderRadius="15px">
                                         <Thead>
@@ -201,7 +127,7 @@ export default function Summary() {
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {tokenSettings.tokenHolders?.map((holder, index) => (
+                                            {tokenHolders?.map((holder, index) => (
                                                 <Tr key={index}>
                                                     <Td>{holder.address || "-"}</Td>
                                                     <Td>{holder.balance !== null ? holder.balance : "-"}</Td>
@@ -220,19 +146,19 @@ export default function Summary() {
                                 </AccordionButton>
                                 <AccordionPanel pb={4}>
                                     <Text>
-                                        Reserve ratio: <Text as="b">{augmentedBondingCurveSettings.reserveRatio + '%'}</Text>
+                                        Reserve ratio: <Text as="b">{abcConfig.getReserveRatio() + '%'}</Text>
                                     </Text>
                                     <Text>
-                                        Colateral token: <Text as="b">{augmentedBondingCurveSettings.collateralToken?.symbol}</Text>
+                                        Colateral token: <Text as="b">{abcConfig.collateralToken?.tokenSymbol}</Text>
                                     </Text>
                                     <Text>
-                                        Initial reserve token: <Text as="b">{augmentedBondingCurveSettings.initialReserve + ' ' + augmentedBondingCurveSettings.collateralToken?.symbol}</Text>
+                                        Initial reserve token: <Text as="b">{abcConfig.getReserveInitialBalance() + ' ' + abcConfig.collateralToken?.tokenSymbol}</Text>
                                     </Text>
                                     <Text>
-                                        Entry tribute: <Text as="b">{augmentedBondingCurveSettings.entryTribute + '%'}</Text>
+                                        Entry tribute: <Text as="b">{abcConfig.entryTribute + '%'}</Text>
                                     </Text>
                                     <Text>
-                                        Exit tribute: <Text as="b">{augmentedBondingCurveSettings.entryTribute + '%'}</Text>
+                                        Exit tribute: <Text as="b">{abcConfig.entryTribute + '%'}</Text>
                                     </Text>
                                 </AccordionPanel>
                             </AccordionItem>

@@ -1,10 +1,13 @@
 import { Button, FormControl, FormLabel, HStack, InputGroup, Box, Flex, Select, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import CustomInput from "../shared/CustomInput";
-import CustomInputRightAddon from "../shared/CustomInputRightAddon";
+import CustomInput from "../../shared/CustomInput";
+import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
+import { useABCSettingsModelController } from "./ABCSettingsModelController";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface AugmentedBondingCurveSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
+    daoCreationRepository : DAOCreationRepository;
 }
 
 type AugmentedBondingCurveSettings = {
@@ -20,64 +23,20 @@ type CollateralToken = {
     symbol: string;
 }
 
-export default function AugmentedBondingCurveSettings({ onStepCompletionChanged }: AugmentedBondingCurveSettingsProps) {
+export default function AugmentedBondingCurveSettings({ onStepCompletionChanged , daoCreationRepository}: AugmentedBondingCurveSettingsProps) {
 
-    const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState({
-        reserveRatio: 0,
-        collateralToken: { address: '', symbol: '' },
-        initialReserve: 0,
-        entryTribute: 0,
-        exitTribute: 0,
-    });
-
-    const collateralTokenList = [
-        { address: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d", symbol: "WXDAI" },
-        { address: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", symbol: "USDC" },
-        { address: "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb", symbol: "GNO" },
-        { address: "0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75", symbol: "GIV" },
-    ];
-
-    const handleReserveRatioChange = (value: string) => {
-        const re = /[^0-9]+/g;
-        const numericValue = Number(value.replaceAll(re, ''));
-        const updatedSettings = { ...augmentedBondingCurveSettings, reserveRatio: numericValue };
-        setAugmentedBondingCurveSettings(updatedSettings);
-        localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-    };
-
-    const handleCollateralTokenChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedToken = collateralTokenList.find(token => token.symbol === event.target.value);
-        if (selectedToken) {
-            const updatedSettings = { ...augmentedBondingCurveSettings, collateralToken: selectedToken };
-            setAugmentedBondingCurveSettings(updatedSettings);
-            localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-        }
-    };
-
-    const handleInitialReserveChange = (value: number) => {
-        const updatedSettings = { ...augmentedBondingCurveSettings, initialReserve: value };
-        setAugmentedBondingCurveSettings(updatedSettings);
-        localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-    };
-
-    const handleEntryTributeChange = (value: number) => {
-        const updatedSettings = { ...augmentedBondingCurveSettings, entryTribute: value };
-        setAugmentedBondingCurveSettings(updatedSettings);
-        localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-    };
-
-    const handleExitTributeChange = (value: number) => {
-        const updatedSettings = { ...augmentedBondingCurveSettings, exitTribute: value };
-        setAugmentedBondingCurveSettings(updatedSettings);
-        localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-    };
+    const {
+        augmentedBondingCurveSettings,
+        collateralTokenList,
+        handleReserveRatioChange,
+        handleCollateralTokenChange,
+        handleInitialReserveChange,
+        handleEntryTributeChange,
+        handleExitTributeChange
+    } = useABCSettingsModelController(daoCreationRepository);
 
     useEffect(() => {
-        localStorage.getItem('augmentedBondingCurveSettings') && setAugmentedBondingCurveSettings(JSON.parse(localStorage.getItem('augmentedBondingCurveSettings') ?? ''));
-    }, []);
-
-    useEffect(() => {
-        const isCompleted = augmentedBondingCurveSettings.reserveRatio > 0 && augmentedBondingCurveSettings.collateralToken.symbol.length > 0 && augmentedBondingCurveSettings.initialReserve > 0;
+        const isCompleted = (augmentedBondingCurveSettings.getReserveRatio()??0) > 0 && (augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol()?.length??0) > 0 && (augmentedBondingCurveSettings.getReserveInitialBalance()??0) > 0;
         if (onStepCompletionChanged) {
             onStepCompletionChanged(isCompleted);
         }
@@ -129,14 +88,14 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                         </FormLabel>
                         <Box>
                             <Flex>
-                                <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.collateralToken?.symbol || ''} onChange={handleCollateralTokenChange}>
+                                <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol() || ''} onChange={handleCollateralTokenChange}>
                                     {collateralTokenList.map((token) => (
                                         <option key={token.address} value={token.symbol}>
                                             {token.symbol}
                                         </option>
                                     ))}
                                 </Select>
-                                <CustomInput placeholder="Enter value" borderRadius="15px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={augmentedBondingCurveSettings.initialReserve ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number" />
+                                <CustomInput placeholder="Enter value" borderRadius="15px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number" />
                             </Flex>
                         </Box>
                     </FormControl>

@@ -1,14 +1,15 @@
 import { Box, HStack, Text, VStack, Image, Button } from '@chakra-ui/react'
-import OrganizationName from '../components/launchpad/OrganizationName'
-import VotingSettings from '../components/launchpad/VotingSettings'
-import TokenSettings from '../components/launchpad/TokenSettings'
+import OrganizationName from '../components/launchpad/name/OrganizationName'
+import VotingSettings from '../components/launchpad/voting/VotingSettings'
+import TokenSettings from '../components/launchpad/token/TokenSettings'
 import { useEffect, useState } from 'react'
-import AugmentedBondingCurveSettings from '../components/launchpad/AugmentedBondingCurveSettings'
-import Summary from '../components/launchpad/Summary'
+import AugmentedBondingCurveSettings from '../components/launchpad/abc/AugmentedBondingCurveSettings'
+import Summary from '../components/launchpad/summary/Summary'
 import { CustomConnectButtonLong } from '../components/shared/ConnectButtonLong'
 import { useAccount, useBalance } from 'wagmi'
 import DAOLayout from '../components/launchpad/DAOLayout'
 import { parseEther } from 'viem'
+import { DAOCreationRepository } from '../../domain/repository/DAOCreationRepository'
 
 type VotingSettings = {
     support: number,
@@ -45,7 +46,11 @@ type CollateralToken = {
     symbol: string;
 }
 
-export default function NewDao() {
+interface NewDaoProps {
+    daoCreationRepository : DAOCreationRepository;
+}
+
+export default function NewDao({daoCreationRepository} : NewDaoProps) {
     const { address } = useAccount();
     const [enoughBalance, setEnoughBalance] = useState<boolean>(false);
     const { data: balance } = useBalance({ address });
@@ -107,7 +112,7 @@ export default function NewDao() {
         },
         {
             title: 'Choose DAO name',
-            content: <OrganizationName onStepCompletionChanged={organizationNameChanged} />,
+            content: <OrganizationName onStepCompletionChanged={organizationNameChanged} daoCreationRepository={daoCreationRepository}/>,
             index: 1,
             completed: organizationNameStatus
         },
@@ -125,13 +130,13 @@ export default function NewDao() {
         },
         {
             title: 'Configure ABC',
-            content: <AugmentedBondingCurveSettings onStepCompletionChanged={augmentedBondingCurveSettingsChanged} />,
+            content: <AugmentedBondingCurveSettings onStepCompletionChanged={augmentedBondingCurveSettingsChanged} daoCreationRepository={daoCreationRepository} />,
             index: 4,
             completed: augmentedBondingCurveSettingsStatus
         },
         {
             title: 'Launch your DAO',
-            content: <Summary />,
+            content: <Summary daoCreationRepository={daoCreationRepository}/>,
             index: 5,
             completed: false
         }

@@ -1,7 +1,7 @@
 import { VStack, Text, InputGroup, HStack, FormControl, FormLabel, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import CustomInput from "../shared/CustomInput";
-import CustomInputRightAddon from "../shared/CustomInputRightAddon";
+import CustomInput from "../../shared/CustomInput";
+import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 
 interface VotingSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;

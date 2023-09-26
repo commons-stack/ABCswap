@@ -1,26 +1,24 @@
 import { Box, VStack, Text, InputGroup } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import CustomInput from "../shared/CustomInput";
-import CustomInputRightAddon from "../shared/CustomInputRightAddon";
+import CustomInput from "../../shared/CustomInput";
+import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
+import { useDAONameModelController } from "./DAONameModelController";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface OrganizationNameProps {
     onStepCompletionChanged: (completed: boolean) => void;
+    daoCreationRepository : DAOCreationRepository;
 }
 
-export default function OrganizationName({ onStepCompletionChanged }: OrganizationNameProps) {
-    const [organizationName, setOrganizationName] = useState<string>('');
-    const [userInteracted, setUserInteracted] = useState<boolean>(false);
+export default function OrganizationName({ onStepCompletionChanged , daoCreationRepository}: OrganizationNameProps) {  
+    
+    const {
+        organizationName,
+        handleChangeName,
+        userInteracted
+     } = useDAONameModelController(daoCreationRepository);
 
     useEffect(() => {
-        const storedOrganizationName = localStorage.getItem('organizationName');
-        if (storedOrganizationName) {
-            setOrganizationName(storedOrganizationName);
-            setUserInteracted(true);
-        }
-    }, []);    
-
-    useEffect(() => {
-        localStorage.setItem('organizationName', organizationName);
         const isCompleted = organizationName.length > 0;        
         if (onStepCompletionChanged) {
             onStepCompletionChanged(isCompleted);
@@ -37,8 +35,7 @@ export default function OrganizationName({ onStepCompletionChanged }: Organizati
                         placeholder="Type an organization name"
                         value={organizationName ?? ''}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setOrganizationName(e.target.value);
-                            setUserInteracted(true);
+                            handleChangeName(e.target.value);
                         }}
                     />
                     <CustomInputRightAddon>
