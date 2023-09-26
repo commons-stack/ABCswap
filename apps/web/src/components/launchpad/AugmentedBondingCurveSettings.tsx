@@ -37,8 +37,10 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
         { address: "0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75", symbol: "GIV" },
     ];
 
-    const handleReserveRatioChange = (value: number) => {
-        const updatedSettings = { ...augmentedBondingCurveSettings, reserveRatio: value };
+    const handleReserveRatioChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        const numericValue = Number(value.replaceAll(re, ''));
+        const updatedSettings = { ...augmentedBondingCurveSettings, reserveRatio: numericValue };
         setAugmentedBondingCurveSettings(updatedSettings);
         localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
     };
@@ -95,27 +97,27 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                             <HStack justifyContent="space-between">
                                 <Button
                                     w="70px"
-                                    onClick={() => handleReserveRatioChange(20)}
+                                    onClick={() => handleReserveRatioChange("20")}
                                     variant={augmentedBondingCurveSettings.reserveRatio === 20 ? 'solid' : 'outline'}
                                 >
                                     20%
                                 </Button>
                                 <Button
                                     w="70px"
-                                    onClick={() => handleReserveRatioChange(50)}
+                                    onClick={() => handleReserveRatioChange("50")}
                                     variant={augmentedBondingCurveSettings.reserveRatio === 50 ? 'solid' : 'outline'}
                                 >
                                     50%
                                 </Button>
                                 <Button
                                     w="70px"
-                                    onClick={() => handleReserveRatioChange(80)}
+                                    onClick={() => handleReserveRatioChange("80")}
                                     variant={augmentedBondingCurveSettings.reserveRatio === 80 ? 'solid' : 'outline'}
                                 >
                                     80%
                                 </Button>
                                 <InputGroup w="91px" display="inline-flex">
-                                    <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.reserveRatio || 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(Number(e.target.value))} type="number" />
+                                    <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.reserveRatio ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} style={{pattern:"[0-9]"}}/>
                                     <CustomInputRightAddon children="%" />
                                 </InputGroup>
                             </HStack>
