@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, HStack, InputGroup, Box, Flex, Select, Text, VStack } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, HStack, InputGroup, Box, Image, Flex, Select, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import CustomInput from "../shared/CustomInput";
 import CustomInputRightAddon from "../shared/CustomInputRightAddon";
@@ -31,10 +31,12 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
     });
 
     const collateralTokenList = [
-        { address: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d", symbol: "WXDAI" },
-        { address: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", symbol: "USDC" },
-        { address: "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb", symbol: "GNO" },
-        { address: "0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75", symbol: "GIV" },
+        { address: "0x00000", symbol: "OP", logo: "/token-logos/optimism-ethereum-op-logo.svg" },
+        { address: "0x00000", symbol: "USDT", logo: "../"},
+        { address: "0x00000", symbol: "DAI", logo: "../"},
+        { address: "0x00000", symbol: "USDC", logo: "../" }, 
+        { address: "0x00000", symbol: "GNO", logo: "../" },
+        { address: "0x00000", symbol: "GIV", logo: "../" },
     ];
 
     const handleReserveRatioChange = (value: string) => {
@@ -132,7 +134,10 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                                 <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.collateralToken?.symbol || ''} onChange={handleCollateralTokenChange}>
                                     {collateralTokenList.map((token) => (
                                         <option key={token.address} value={token.symbol}>
-                                            {token.symbol}
+                                            <HStack>
+                                                <Image src={token.logo} boxSize="24px" />
+                                                <Text>{token.symbol}</Text>
+                                            </HStack>
                                         </option>
                                     ))}
                                 </Select>
