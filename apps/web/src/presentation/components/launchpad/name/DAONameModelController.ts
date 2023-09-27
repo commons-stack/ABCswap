@@ -8,7 +8,9 @@ export function useDAONameModelController(daoCreationRepository: DAOCreationRepo
 
     useEffect(() => {
         async function init() {
-            await daoCreationRepository.load();
+            if(daoCreationRepository.isUsingDefaultData()){
+                await daoCreationRepository.load();
+            }
             if (daoCreationRepository.getDAOInfo().name) {
                 setOrganizationName(daoCreationRepository.getDAOInfo().name!);
                 setUserInteracted(true);

@@ -25,7 +25,9 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
 
     useEffect(() => {
         async function init() {
-          await daoCreationRepository.load();
+          if(daoCreationRepository.isUsingDefaultData()){
+            await daoCreationRepository.load();
+          }
           setDAOName(daoCreationRepository.getDAOInfo().name ?? "");
           setVotingSettings(daoCreationRepository.getDAOInfo().getVotingConfig());
           setTokenInfo(daoCreationRepository.getDAOInfo().getTokenInfo());
@@ -41,7 +43,9 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
     // Execute contract function
 
     const handleLaunch = async () => {
-        await daoCreationRepository.load();
+        if(daoCreationRepository.isUsingDefaultData()){
+            await daoCreationRepository.load();
+        }
         // Process holder adresses and balances
         const addresses = daoCreationRepository.getDAOInfo().tokenHolders?.map((holder) => holder.address);
         const balances = daoCreationRepository.getDAOInfo().tokenHolders?.map((holder) => {

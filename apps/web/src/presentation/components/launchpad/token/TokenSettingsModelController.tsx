@@ -21,7 +21,9 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
 
     useEffect(() => {
         async function init() {
-            await daoCreationRepository.load();
+            if(daoCreationRepository.isUsingDefaultData()){
+              await daoCreationRepository.load();
+            }
             if (daoCreationRepository.getDAOInfo().name) {
                 setTokenSettings({
                     tokenName: daoCreationRepository.getDAOInfo().getTokenInfo().tokenName ?? "",

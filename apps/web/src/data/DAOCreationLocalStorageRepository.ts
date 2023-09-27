@@ -3,11 +3,12 @@ import { DAOCreationRepository } from "../domain/repository/DAOCreationRepositor
 
 
 export class DAOCreationLocalStorageRepository implements DAOCreationRepository {
-    // TODO: This should be a DAOInfo object
     private _daoInfo: DAOInfo;
+    private _isUsingDefaultData : boolean;
 
     constructor() {
         this._daoInfo = new DAOInfo();
+        this._isUsingDefaultData = true;
     }
 
     getDAOInfo(): DAOInfo {
@@ -20,18 +21,7 @@ export class DAOCreationLocalStorageRepository implements DAOCreationRepository 
 
     async save(): Promise<void> {
         localStorage.setItem("daoInfo", JSON.stringify(this._daoInfo));
-
-        // localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-        // localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-        // localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-        // localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-        // localStorage.setItem('augmentedBondingCurveSettings', JSON.stringify(updatedSettings));
-        //localStorage.getItem('augmentedBondingCurveSettings') && setAugmentedBondingCurveSettings(JSON.parse(localStorage.getItem('augmentedBondingCurveSettings') ?? ''));
-
-        // localStorage.setItem('organizationName', organizationName); 
-        //localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
-
-        // localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
+        this._isUsingDefaultData = false;
     }
 
     async load(): Promise<void> {
@@ -39,20 +29,11 @@ export class DAOCreationLocalStorageRepository implements DAOCreationRepository 
         if (daoInfo) {
             this._daoInfo = JSON.parse(daoInfo);
         }
+        this._isUsingDefaultData = false;
+    }
 
-        // Retrieve settings from local storage
-        // const organizationName: string = localStorage.getItem('organizationName')!;
-        // const votingSettings: VotingSettings = JSON.parse(localStorage.getItem('votingSettings')!);
-        // const tokenSettings: TokenSettings = JSON.parse(localStorage.getItem('tokenSettings')!);
-        // const augmentedBondingCurveSettings: AugmentedBondingCurveSettings = JSON.parse(localStorage.getItem('augmentedBondingCurveSettings')!);
-
-        // const storedOrganizationName = localStorage.getItem('organizationName');
-
-        // localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
-
-        // localStorage.getItem('tokenSettings') && setTokenSettings(JSON.parse(localStorage.getItem('tokenSettings')!));
-        
-        // localStorage.getItem('votingSettings') && setVotingSettings(JSON.parse(localStorage.getItem('votingSettings') ?? ''));
+    isUsingDefaultData(): boolean {
+        return this._isUsingDefaultData;
     }
 }
 

@@ -12,4 +12,6 @@ export interface DAOCreationRepository {
 
     // load data
     load(): Promise<void>;
+
+    isUsingDefaultData() : boolean;
 }

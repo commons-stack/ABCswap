@@ -23,7 +23,9 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
 
     useEffect(() => {
         async function init() {
-            await daoCreationRepository.load();
+            if(daoCreationRepository.isUsingDefaultData()){
+                await daoCreationRepository.load();
+            }
             const votingSettigs : VotingConfig = daoCreationRepository.getDAOInfo().getVotingConfig();//localStorage.getItem('votingSettings');
             if(votingSettigs) {
                 setVotingSettings({
