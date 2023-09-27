@@ -1,4 +1,7 @@
+import { ABCConfig } from "../domain/model/ABCConfig";
 import { DAOInfo } from "../domain/model/DAOInfo";
+import { TokenInfo } from "../domain/model/TokenInfo";
+import { VotingConfig } from "../domain/model/VotingConfig";
 import { DAOCreationRepository } from "../domain/repository/DAOCreationRepository";
 
 
@@ -28,7 +31,29 @@ export class DAOCreationLocalStorageRepository implements DAOCreationRepository 
         let daoInfo = localStorage.getItem("daoInfo");
         if (daoInfo) {
             const savedInfo = JSON.parse(daoInfo);
-            this._daoInfo = new DAOInfo(savedInfo.name, savedInfo.votingConfig, savedInfo.tokenInfo, savedInfo.tokenHolders, savedInfo.abcConfig);
+            this._daoInfo = new DAOInfo(
+                savedInfo.name, 
+                VotingConfig.create(
+                    savedInfo.votingConfig.supportRequired, 
+                    savedInfo.votingConfig.minimumAcceptanceQuorum, 
+                    savedInfo.votingConfig.voteDurationDays, 
+                    savedInfo.votingConfig.voteDurationHours, 
+                    savedInfo.votingConfig.voteDurationMinutes
+                ),
+                new TokenInfo(
+                    savedInfo.tokenInfo.name,
+                    savedInfo.tokenInfo.symbol,
+                    savedInfo.tokenInfo.address
+                ), 
+                savedInfo.tokenHolders,
+                new ABCConfig(
+                    savedInfo.abcConfig.reserveRatio,
+                    savedInfo.abcConfig.reserveInitialBalance,
+                    savedInfo.abcConfig.entryTribute,
+                    savedInfo.abcConfig.exitTribute,
+                    savedInfo.abcConfig.collateralToken
+                )
+            );
         }
         this._isUsingDefaultData = false;
     }
