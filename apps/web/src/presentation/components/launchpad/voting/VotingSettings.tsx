@@ -2,84 +2,24 @@ import { VStack, Text, InputGroup, HStack, FormControl, FormLabel, Slider, Slide
 import { useEffect, useState } from "react";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
+import { useVotingSettingsModelController } from "./VotingSettingsModelController";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface VotingSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
+    daoCreationRepository : DAOCreationRepository;
 }
 
-type VotingSettings = {
-    support: number,
-    minApproval: number,
-    days: number,
-    hours: number,
-    minutes: number
-}
+export default function VotingSettings({ onStepCompletionChanged, daoCreationRepository }: VotingSettingsProps) {
 
-export default function VotingSettings({ onStepCompletionChanged }: VotingSettingsProps) {
-
-    const [votingSettings, setVotingSettings] = useState<VotingSettings>({
-        support: 50,
-        minApproval: 15,
-        days: 7,
-        hours: 0,
-        minutes: 0,
-    });
-
-    const handleSupportChange = (value: number) => {
-        const updatedSettings = {
-            ...votingSettings,
-            support: value
-        };
-        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
-        setVotingSettings(updatedSettings);
-    };
-
-    const handleMinApprovalChange = (value: number) => {
-        const updatedSettings = {
-            ...votingSettings,
-            minApproval: value
-        };
-        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
-        setVotingSettings(updatedSettings);
-    };
-
-    const handleDaysChange = (value: number) => {
-        const updatedSettings = {
-            ...votingSettings,
-            days: value
-        };
-        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
-        setVotingSettings(updatedSettings);
-    };
-
-    const handleHoursChange = (value: number) => {
-        const updatedSettings = {
-            ...votingSettings,
-            hours: value
-        };
-        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
-        setVotingSettings(updatedSettings);
-    };
-
-    const handleMinutesChange = (value: number) => {
-        const updatedSettings = {
-            ...votingSettings,
-            minutes: value
-        };
-        localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
-        setVotingSettings(updatedSettings);
-    };
-
-    useEffect(() => {
-        localStorage.getItem('votingSettings') && setVotingSettings(JSON.parse(localStorage.getItem('votingSettings') ?? ''));
-    }, []);
-
-    useEffect(() => {
-        const isCompleted = votingSettings.support > 0 && (votingSettings.days > 0 || votingSettings.hours > 0 || votingSettings.minutes > 0)
-        if (onStepCompletionChanged) {
-            onStepCompletionChanged(isCompleted);
-        }
-    }, [votingSettings]);
+    const {
+        handleSupportChange,
+        handleMinApprovalChange,
+        handleDaysChange,
+        handleHoursChange,
+        handleMinutesChange,
+        votingSettings
+    } = useVotingSettingsModelController(onStepCompletionChanged, daoCreationRepository);
 
     return (
         <VStack spacing={4} pt="130px">

@@ -118,13 +118,13 @@ export default function NewDao({daoCreationRepository} : NewDaoProps) {
         },
         {
             title: 'Configure voting',
-            content: <VotingSettings onStepCompletionChanged={votingSettingsChanged} />,
+            content: <VotingSettings onStepCompletionChanged={votingSettingsChanged} daoCreationRepository={daoCreationRepository} />,
             index: 2,
             completed: votingSettingsStatus
         },
         {
             title: 'Configure token',
-            content: <TokenSettings onStepCompletionChanged={tokenSettingsChanged} />,
+            content: <TokenSettings onStepCompletionChanged={tokenSettingsChanged} daoCreationRepository={daoCreationRepository}/>,
             index: 3,
             completed: tokenSettingsStatus
         },

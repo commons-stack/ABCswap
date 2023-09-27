@@ -29,6 +29,9 @@ export class DAOCreationLocalStorageRepository implements DAOCreationRepository 
         //localStorage.getItem('augmentedBondingCurveSettings') && setAugmentedBondingCurveSettings(JSON.parse(localStorage.getItem('augmentedBondingCurveSettings') ?? ''));
 
         // localStorage.setItem('organizationName', organizationName); 
+        //localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
+
+        // localStorage.setItem('votingSettings', JSON.stringify(updatedSettings));
     }
 
     async load(): Promise<void> {
@@ -44,6 +47,12 @@ export class DAOCreationLocalStorageRepository implements DAOCreationRepository 
         // const augmentedBondingCurveSettings: AugmentedBondingCurveSettings = JSON.parse(localStorage.getItem('augmentedBondingCurveSettings')!);
 
         // const storedOrganizationName = localStorage.getItem('organizationName');
+
+        // localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
+
+        // localStorage.getItem('tokenSettings') && setTokenSettings(JSON.parse(localStorage.getItem('tokenSettings')!));
+        
+        // localStorage.getItem('votingSettings') && setVotingSettings(JSON.parse(localStorage.getItem('votingSettings') ?? ''));
     }
 }
 

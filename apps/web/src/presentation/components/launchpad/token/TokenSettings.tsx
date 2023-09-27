@@ -3,57 +3,29 @@ import React, { useEffect, useState } from 'react'
 import { CloseIcon } from "@chakra-ui/icons";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
+import { useTokenSettingsModelController } from "./TokenSettingsModelController";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface TokenHolder {
     address: string;
     balance: string;
 }
 
-interface TokenSettings {
-    tokenName: string;
-    tokenSymbol: string;
-    tokenHolders: TokenHolder[];
-}
-
 interface TokenSettingProps {
     onStepCompletionChanged: (completed: boolean) => void;
+    daoCreationRepository : DAOCreationRepository;
 }
 
-export default function TokenHoldersComponent({ onStepCompletionChanged }: TokenSettingProps) {
-    const [tokenSettings, setTokenSettings] = useState<TokenSettings>({
-        tokenName: '',
-        tokenSymbol: '',
-        tokenHolders: [{address: '', balance: ''}]
-    });
-
-    function handleHolderChange(i: number, event: React.ChangeEvent<HTMLInputElement>, field: boolean) {
-        const values = [...tokenSettings.tokenHolders];
-        values[i] = { ...values[i], [field ? 'address' : 'balance']: event.target.value };
-        setTokenSettings({ ...tokenSettings, tokenHolders: values });
-        localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
-    }
-
-    function handleRemoveHolder(i: number) {
-        const values = [...tokenSettings.tokenHolders];
-        if (values.length === 1) {
-            values[i] = { address: '', balance: '' };
-        } else {
-            values.splice(i, 1);
-        }
-        setTokenSettings({ ...tokenSettings, tokenHolders: values });
-        localStorage.setItem('tokenSettings', JSON.stringify(tokenSettings));
-    }
-
-    useEffect(() => {
-        const isCompleted = !!(tokenSettings.tokenName && tokenSettings.tokenSymbol && tokenSettings.tokenHolders.length > 0);
-        if (onStepCompletionChanged) {
-            onStepCompletionChanged(isCompleted);
-        }
-    }, [tokenSettings]);
-
-    useEffect(() => {
-        localStorage.getItem('tokenSettings') && setTokenSettings(JSON.parse(localStorage.getItem('tokenSettings')!));
-    }, []);
+export default function TokenHoldersComponent({ onStepCompletionChanged, daoCreationRepository }: TokenSettingProps) {
+    
+    const { 
+        tokenSettings,
+        handleHolderChange,
+        handleRemoveHolder,
+        handleAddEmptyHolder,
+        handleChangeTokenName,
+        handleChangeTokenSymbol
+    } = useTokenSettingsModelController(daoCreationRepository, onStepCompletionChanged);
 
     return (
         <VStack spacing={4} pt="130px">
@@ -69,11 +41,7 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
                         placeholder="My Organization Token"
                         value={tokenSettings.tokenName}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            const newTokenSettings = {
-                                ...tokenSettings,
-                                tokenName: e.target.value,
-                            };
-                            setTokenSettings(newTokenSettings);
+                            handleChangeTokenName(e.target.value);
                         }}
                     />
                 </FormControl>
@@ -85,11 +53,7 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
                         placeholder="MOT"
                         value={tokenSettings.tokenSymbol}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            const newTokenSettings = {
-                                ...tokenSettings,
-                                tokenSymbol: e.target.value,
-                            };
-                            setTokenSettings(newTokenSettings);
+                            handleChangeTokenSymbol(e.target.value)
                         }}
                     />
                 </FormControl>
@@ -137,15 +101,7 @@ export default function TokenHoldersComponent({ onStepCompletionChanged }: Token
             <HStack w="45%" alignSelf="start" spacing={3}>
                 <Button
                     onClick={() => {
-                        const newHolders = [
-                            ...tokenSettings.tokenHolders,
-                            { address: '', balance: '' },
-                        ];
-                        const newTokenSettings = {
-                            ...tokenSettings,
-                            tokenHolders: newHolders,
-                        };
-                        setTokenSettings(newTokenSettings);
+                        handleAddEmptyHolder();
                     }}
                 >
                     + Add more

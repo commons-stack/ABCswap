@@ -3,14 +3,28 @@ const DEFAULT_MINIMUM_ACCEPTANCE_QUORUM = 15;
 const DEFAULT_VOTE_DURATION_MINUTES = 60 * 24 * 7; // 7 days
 
 export class VotingConfig {
-    supportRequired: number;
-    minimumAcceptanceQuorum: number;
-    voteDurationMinutes: number;
+    private supportRequired: number;
+    private minimumAcceptanceQuorum: number;
+    private voteDurationMinutes: number;
 
     constructor(supportRequired?: number, minimumAcceptanceQuorum?: number, voteDurationMinutes?: number) {
         this.supportRequired = supportRequired ?? DEFAULT_SUPPORT_REQUIRED;
         this.minimumAcceptanceQuorum = minimumAcceptanceQuorum ?? DEFAULT_MINIMUM_ACCEPTANCE_QUORUM;
         this.voteDurationMinutes = voteDurationMinutes ?? DEFAULT_VOTE_DURATION_MINUTES;
+    }
+
+    public static create = (supportRequired?: number, minimumAcceptanceQuorum?: number, voteDurationDays?: number, voteDurationHours?: number, voteDurationMinutes?: number) : VotingConfig  => {
+        const votingConfig = new VotingConfig(supportRequired, minimumAcceptanceQuorum);
+        if (voteDurationDays) {
+            votingConfig.setVoteDurationDays(voteDurationDays);
+        }
+        if (voteDurationHours) {
+            votingConfig.setVoteDurationHours(voteDurationHours);
+        }
+        if (voteDurationMinutes) {
+            votingConfig.setVoteDurationMinutes(voteDurationMinutes);
+        }
+        return votingConfig;
     }
 
     // setting values
@@ -60,7 +74,7 @@ export class VotingConfig {
         return this.voteDurationMinutes % 60;
     }
 
-    public getVoteTotalDurationInSeconds(): number {ç
+    public getVoteTotalDurationInSeconds(): number {
         return this.voteDurationMinutes * 60;
     }
 }

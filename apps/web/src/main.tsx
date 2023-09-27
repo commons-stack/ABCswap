@@ -15,12 +15,14 @@ import NewDao from './presentation/pages/new-dao.tsx';
 import { TransactionProvider } from './presentation/providers/TransactionProvider.tsx';
 import { DAOCreationLocalStorageRepository } from './data/DAOCreationLocalStorageRepository.ts';
 
+const daoCreationLocalStorageRepository = new DAOCreationLocalStorageRepository();
+
 const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="swap" element={<Swap />} />
       <Route path="launchpad" element={<Launchpad />} />
-      <Route path="launchpad/new-dao" element={<NewDao daoCreationRepository={new DAOCreationLocalStorageRepository()} />} />
+      <Route path="launchpad/new-dao" element={<NewDao daoCreationRepository={daoCreationLocalStorageRepository} />} />
     </Route>
   ));
 

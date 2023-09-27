@@ -33,7 +33,7 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
           setABCConfig(daoCreationRepository.getDAOInfo().getABCConfig());
         }
         init();
-      }, []);
+    }, []);
 
     // Prepare contract
 
