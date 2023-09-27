@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, HStack, InputGroup, Box, Flex, Select, Text, VStack } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, HStack, InputGroup, Box, Image, Flex, Select, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
@@ -91,7 +91,10 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                                 <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol() || ''} onChange={handleCollateralTokenChange}>
                                     {collateralTokenList.map((token) => (
                                         <option key={token.address} value={token.symbol}>
-                                            {token.symbol}
+                                            <HStack>
+                                                <Image src={token.logo} boxSize="24px" />
+                                                <Text>{token.symbol}</Text>
+                                            </HStack>
                                         </option>
                                     ))}
                                 </Select>

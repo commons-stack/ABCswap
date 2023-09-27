@@ -14,10 +14,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
     ));
 
     const collateralTokenList = [
-        { address: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d", symbol: "WXDAI" },
-        { address: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", symbol: "USDC" },
-        { address: "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb", symbol: "GNO" },
-        { address: "0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75", symbol: "GIV" },
+        { address: "0x00000", symbol: "OP", logo: "/token-logos/optimism-ethereum-op-logo.svg" },
+        { address: "0x00000", symbol: "USDT", logo: "../"},
+        { address: "0x00000", symbol: "DAI", logo: "../"},
+        { address: "0x00000", symbol: "USDC", logo: "../" }, 
+        { address: "0x00000", symbol: "GNO", logo: "../" },
+        { address: "0x00000", symbol: "GIV", logo: "../" },
     ];
 
     useEffect(() => {
