@@ -16,11 +16,11 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
     const [txData, setTxData] = useState<any>(); // Type correctly
 
     // visual info
-    const [daoName, setDAOName] = useState<string>(daoCreationRepository.getDAOInfo().name!);
-    const [votingSettings, setVotingSettings] = useState<VotingConfig>(daoCreationRepository.getDAOInfo().votingConfig);
-    const [tokenInfo, setTokenInfo] = useState<TokenInfo>(daoCreationRepository.getDAOInfo().tokenInfo);
-    const [tokenHolders, setTokenHolders] = useState<TokenHolder[]>(daoCreationRepository.getDAOInfo().tokenHolders);
-    const [abcConfig, setABCConfig] = useState<ABCConfig>(daoCreationRepository.getDAOInfo().abcConfig);
+    const [daoName, setDAOName] = useState<string>(daoCreationRepository.getDAOInfo().getName()!);
+    const [votingSettings, setVotingSettings] = useState<VotingConfig>(daoCreationRepository.getDAOInfo().getVotingConfig());
+    const [tokenInfo, setTokenInfo] = useState<TokenInfo>(daoCreationRepository.getDAOInfo().getTokenInfo());
+    const [tokenHolders, setTokenHolders] = useState<TokenHolder[]>(daoCreationRepository.getDAOInfo().getTokenHolders());
+    const [abcConfig, setABCConfig] = useState<ABCConfig>(daoCreationRepository.getDAOInfo().getABCConfig());
 
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
           if(daoCreationRepository.isUsingDefaultData()){
             await daoCreationRepository.load();
           }
-          setDAOName(daoCreationRepository.getDAOInfo().name ?? "");
+          setDAOName(daoCreationRepository.getDAOInfo().getName() ?? "");
           setVotingSettings(daoCreationRepository.getDAOInfo().getVotingConfig());
           setTokenInfo(daoCreationRepository.getDAOInfo().getTokenInfo());
           setTokenHolders(daoCreationRepository.getDAOInfo().getTokenHolders());
@@ -47,8 +47,8 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
             await daoCreationRepository.load();
         }
         // Process holder adresses and balances
-        const addresses = daoCreationRepository.getDAOInfo().tokenHolders?.map((holder) => holder.address);
-        const balances = daoCreationRepository.getDAOInfo().tokenHolders?.map((holder) => {
+        const addresses = daoCreationRepository.getDAOInfo().getTokenHolders()?.map((holder) => holder.address);
+        const balances = daoCreationRepository.getDAOInfo().getTokenHolders()?.map((holder) => {
             if (holder.balance === null) {
                 return null;
             }
@@ -96,11 +96,8 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
 
     return {
         isSending,
-        setIsSending,
         isLoading,
-        setIsLoading,
         txData,
-        setTxData,
         daoName,
         votingSettings,
         tokenInfo,

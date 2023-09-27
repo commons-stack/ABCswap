@@ -1,15 +1,10 @@
-import { Button, InputGroup, Text, VStack, HStack, FormControl, FormLabel } from "@chakra-ui/react";
-import React, { useEffect, useState } from 'react'
 import { CloseIcon } from "@chakra-ui/icons";
+import { Button, FormControl, FormLabel, HStack, InputGroup, Text, VStack } from "@chakra-ui/react";
+import React from 'react';
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 import { useTokenSettingsModelController } from "./TokenSettingsModelController";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-
-interface TokenHolder {
-    address: string;
-    balance: string;
-}
 
 interface TokenSettingProps {
     onStepCompletionChanged: (completed: boolean) => void;

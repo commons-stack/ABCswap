@@ -24,7 +24,7 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
             if(daoCreationRepository.isUsingDefaultData()){
               await daoCreationRepository.load();
             }
-            if (daoCreationRepository.getDAOInfo().name) {
+            if (daoCreationRepository.getDAOInfo().getName()) {
                 setTokenSettings({
                     tokenName: daoCreationRepository.getDAOInfo().getTokenInfo().tokenName ?? "",
                     tokenSymbol: daoCreationRepository.getDAOInfo().getTokenInfo().tokenSymbol ?? "",

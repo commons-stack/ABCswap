@@ -1,21 +1,6 @@
-import { Box, Button, Spinner, Text, HStack, Checkbox, VStack } from "@chakra-ui/react";
-import {
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-} from '@chakra-ui/react'
-import {
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-} from '@chakra-ui/react'
-import { useNavigate } from "react-router-dom";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, HStack, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import { useDAOCreationSummaryModelController } from "./DAOCreationSummaryModelController";
@@ -28,11 +13,8 @@ export default function Summary({daoCreationRepository} : SummaryViewProps) {
     // use cases
     const {
         isSending,
-        setIsSending,
         isLoading,
-        setIsLoading,
         txData,
-        setTxData,
         daoName,
         votingSettings,
         tokenInfo,

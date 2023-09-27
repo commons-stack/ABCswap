@@ -1,9 +1,9 @@
-import { Box, VStack, Text, InputGroup } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, InputGroup, Text, VStack } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 import { useDAONameModelController } from "./DAONameModelController";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface OrganizationNameProps {
     onStepCompletionChanged: (completed: boolean) => void;

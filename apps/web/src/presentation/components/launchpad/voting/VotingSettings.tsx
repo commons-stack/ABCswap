@@ -1,9 +1,8 @@
-import { VStack, Text, InputGroup, HStack, FormControl, FormLabel, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack } from "@chakra-ui/react";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 import { useVotingSettingsModelController } from "./VotingSettingsModelController";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface VotingSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;

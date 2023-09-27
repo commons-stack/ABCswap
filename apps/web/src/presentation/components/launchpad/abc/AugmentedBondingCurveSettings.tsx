@@ -1,9 +1,9 @@
-import { Button, FormControl, FormLabel, HStack, InputGroup, Box, Image, Flex, Select, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 import { useABCSettingsModelController } from "./ABCSettingsModelController";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
 interface AugmentedBondingCurveSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;

@@ -11,8 +11,8 @@ export function useDAONameModelController(daoCreationRepository: DAOCreationRepo
             if(daoCreationRepository.isUsingDefaultData()){
                 await daoCreationRepository.load();
             }
-            if (daoCreationRepository.getDAOInfo().name) {
-                setOrganizationName(daoCreationRepository.getDAOInfo().name!);
+            if (daoCreationRepository.getDAOInfo().getName()) {
+                setOrganizationName(daoCreationRepository.getDAOInfo().getName()!);
                 setUserInteracted(true);
             }
         }
