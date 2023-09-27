@@ -63,11 +63,11 @@ export class VotingConfig {
     }
 
     public getVoteDurationDays(): number {
-        return this.voteDurationMinutes / 60 / 24;
+        return Math.floor(this.voteDurationMinutes / 60 / 24);
     }
 
     public getVoteDurationHours(): number {
-        return (this.voteDurationMinutes / 60)%24;
+        return Math.floor(this.voteDurationMinutes / 60)%24;
     }
 
     public getVoteDurationMinutes(): number {
