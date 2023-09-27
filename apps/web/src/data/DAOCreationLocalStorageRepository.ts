@@ -27,7 +27,8 @@ export class DAOCreationLocalStorageRepository implements DAOCreationRepository 
     async load(): Promise<void> {
         let daoInfo = localStorage.getItem("daoInfo");
         if (daoInfo) {
-            this._daoInfo = JSON.parse(daoInfo);
+            const savedInfo = JSON.parse(daoInfo);
+            this._daoInfo = new DAOInfo(savedInfo.name, savedInfo.votingConfig, savedInfo.tokenInfo, savedInfo.tokenHolders, savedInfo.abcConfig);
         }
         this._isUsingDefaultData = false;
     }

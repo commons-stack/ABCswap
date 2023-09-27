@@ -1,4 +1,5 @@
 import { ABCConfig } from "../model/ABCConfig";
+import { DAOInfo } from "../model/DAOInfo";
 import { TokenHolder } from "../model/TokenHolder";
 import { TokenInfo } from "../model/TokenInfo";
 import { VotingConfig } from "../model/VotingConfig";
@@ -9,8 +10,8 @@ export async function setDAOName(
     value: string,
     repository: DAOCreationRepository
 ): Promise<void> {
-    var daoInfo = repository.getDAOInfo();
-    daoInfo.name = value;
+    var daoInfo : DAOInfo = repository.getDAOInfo();
+    daoInfo.setName(value);
     repository.setDAOInfo(daoInfo);
     repository.save();
 }
@@ -21,7 +22,7 @@ export async function setVotingConfig(
     repository: DAOCreationRepository
 ): Promise<void> {
     var daoInfo = repository.getDAOInfo();
-    daoInfo.votingConfig = value;
+    daoInfo.setVotingConfig(value);
     repository.setDAOInfo(daoInfo);
     repository.save();
 }
@@ -32,7 +33,7 @@ export async function setTokenInfo(
     repository: DAOCreationRepository
 ): Promise<void> {
     var daoInfo = repository.getDAOInfo();
-    daoInfo.tokenInfo = value;
+    daoInfo.setTokenInfo(value);
     repository.setDAOInfo(daoInfo);
     repository.save();
 }
@@ -43,7 +44,7 @@ export async function setTokenHolders(
     repository: DAOCreationRepository
 ): Promise<void> {
     var daoInfo = repository.getDAOInfo();
-    daoInfo.tokenHolders = value;
+    daoInfo.setTokenHolders(value);
     repository.setDAOInfo(daoInfo);
     repository.save();
 }
@@ -54,7 +55,7 @@ export async function setABCConfig(
     repository: DAOCreationRepository
 ): Promise<void> {
     var daoInfo = repository.getDAOInfo();
-    daoInfo.abcConfig = value;
+    daoInfo.setABCConfig(value);
     repository.setDAOInfo(daoInfo);
     repository.save();
 }

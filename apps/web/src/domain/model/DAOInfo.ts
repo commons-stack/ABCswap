@@ -4,11 +4,11 @@ import { TokenInfo } from "./TokenInfo";
 import { VotingConfig } from "./VotingConfig";
 
 export class DAOInfo {
-    name: string|undefined;
-    votingConfig: VotingConfig;
-    tokenInfo: TokenInfo;
-    tokenHolders: TokenHolder[];
-    abcConfig: ABCConfig;
+    private name: string|undefined;
+    private votingConfig: VotingConfig;
+    private tokenInfo: TokenInfo;
+    private tokenHolders: TokenHolder[];
+    private abcConfig: ABCConfig;
 
     constructor(name?: string, votingConfig?: VotingConfig, tokenInfo?: TokenInfo, tokenHolders?: TokenHolder[], abcConfig?: ABCConfig) {
         this.name = name;
