@@ -47,13 +47,13 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
         }
     }, [votingSettings]);
 
-    const updateVotingConfigInRepository = async () => {
+    const updateVotingConfigInRepository = async (newVotingSettings: VotingSettings) => {
         const votingConfig = VotingConfig.create(
-            votingSettings.support,
-            votingSettings.minApproval,
-            votingSettings.days,
-            votingSettings.hours,
-            votingSettings.minutes
+            newVotingSettings.support,
+            newVotingSettings.minApproval,
+            newVotingSettings.days,
+            newVotingSettings.hours,
+            newVotingSettings.minutes
         );
         await setVotingConfig(votingConfig, daoCreationRepository);
     }
@@ -64,7 +64,7 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
             support: value
         };
         setVotingSettings(updatedSettings);
-        updateVotingConfigInRepository();
+        updateVotingConfigInRepository(updatedSettings);
     };
 
     const handleMinApprovalChange = (value: number) => {
@@ -73,7 +73,7 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
             minApproval: value
         };
         setVotingSettings(updatedSettings);
-        updateVotingConfigInRepository();
+        updateVotingConfigInRepository(updatedSettings);
     };
 
     const handleDaysChange = (value: number) => {
@@ -82,7 +82,7 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
             days: value
         };
         setVotingSettings(updatedSettings);
-        updateVotingConfigInRepository();
+        updateVotingConfigInRepository(updatedSettings);
     };
 
     const handleHoursChange = (value: number) => {
@@ -91,7 +91,7 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
             hours: value
         };
         setVotingSettings(updatedSettings);
-        updateVotingConfigInRepository();
+        updateVotingConfigInRepository(updatedSettings);
     };
 
     const handleMinutesChange = (value: number) => {
@@ -100,7 +100,7 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
             minutes: value
         };
         setVotingSettings(updatedSettings);
-        updateVotingConfigInRepository();
+        updateVotingConfigInRepository(updatedSettings);
     };
 
     return {
