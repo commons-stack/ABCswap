@@ -1,4 +1,6 @@
+import { DAOInfoStatus } from "../enum/DAOInfoStatus";
 import { ABCConfig } from "../model/ABCConfig";
+import { DAOCreationResult, DAOCreationResultStatus } from "../model/DAOCreationResult";
 import { DAOInfo } from "../model/DAOInfo";
 import { TokenHolder } from "../model/TokenHolder";
 import { TokenInfo } from "../model/TokenInfo";
@@ -13,7 +15,7 @@ export async function setDAOName(
     var daoInfo : DAOInfo = repository.getDAOInfo();
     daoInfo.setName(value);
     repository.setDAOInfo(daoInfo);
-    repository.save();
+    repository.saveDAOInfo();
 }
 
 // This is the use case that will be used by the UI to set the voting config.
@@ -24,7 +26,7 @@ export async function setVotingConfig(
     var daoInfo = repository.getDAOInfo();
     daoInfo.setVotingConfig(value);
     repository.setDAOInfo(daoInfo);
-    repository.save();
+    repository.saveDAOInfo();
 }
 
 // This is the use case that will be used by the UI to set the token config.
@@ -35,7 +37,7 @@ export async function setTokenInfo(
     var daoInfo = repository.getDAOInfo();
     daoInfo.setTokenInfo(value);
     repository.setDAOInfo(daoInfo);
-    repository.save();
+    repository.saveDAOInfo();
 }
 
 // This is the use case that will be used by the UI to set the token holders.
@@ -46,7 +48,7 @@ export async function setTokenHolders(
     var daoInfo = repository.getDAOInfo();
     daoInfo.setTokenHolders(value);
     repository.setDAOInfo(daoInfo);
-    repository.save();
+    repository.saveDAOInfo();
 }
 
 // This is the use case that will be used by the UI to set the ABC config.
@@ -57,5 +59,21 @@ export async function setABCConfig(
     var daoInfo = repository.getDAOInfo();
     daoInfo.setABCConfig(value);
     repository.setDAOInfo(daoInfo);
-    repository.save();
+    repository.saveDAOInfo();
+}
+
+export async function launchDAO(
+    repository: DAOCreationRepository
+): Promise<DAOCreationResult> {
+    if(repository.isUsingDefaultData()){
+        await repository.loadDAOInfo();
+    }
+    const daoInfo = repository.getDAOInfo();
+    if(repository.isDAOInfoValid(daoInfo) != DAOInfoStatus.VALID){
+        return {
+            status: DAOCreationResultStatus.NOT_STARTED_INVALID_DATA
+        }
+    }
+    const result : DAOCreationResult = await repository.createDAO();
+    return result;
 }

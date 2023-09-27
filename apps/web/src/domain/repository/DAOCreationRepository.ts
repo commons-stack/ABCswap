@@ -1,17 +1,22 @@
+import { DAOCreationResult } from "../model/DAOCreationResult";
+import { DAOInfoStatus } from "../enum/DAOInfoStatus";
 import { DAOInfo } from "../model/DAOInfo";
+
 
 export interface DAOCreationRepository {
     // ask for model data
     getDAOInfo(): DAOInfo;
-
     // set model data
     setDAOInfo(value: DAOInfo): void;
 
     // save data
-    save(): Promise<void>;
-
+    saveDAOInfo(): Promise<void>;
     // load data
-    load(): Promise<void>;
+    loadDAOInfo(): Promise<void>;
 
     isUsingDefaultData() : boolean;
+
+    // create DAO
+    isDAOInfoValid(daoInfo: DAOInfo) : DAOInfoStatus;
+    createDAO() : Promise<DAOCreationResult>;
 }

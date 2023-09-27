@@ -24,7 +24,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
 
     useEffect(() => {
         async function init() {
-          await daoCreationRepository.load();
+          await daoCreationRepository.loadDAOInfo();
           setAugmentedBondingCurveSettings(new ABCConfig(
             daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio??0,
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance()??0,

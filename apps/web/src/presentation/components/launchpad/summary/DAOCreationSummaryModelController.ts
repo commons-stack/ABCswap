@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useContractWrite, usePrepareContractWrite, useTransaction, useWaitForTransaction } from 'wagmi';
+import { useTransaction } from 'wagmi';
 import { VotingConfig } from "../../../../domain/model/VotingConfig";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 
-import { Abi } from "viem";
-import { knownContracts } from '../../../../../config.json';
-import newDaoWithABCAbi from '../../../../../utils/abi/augmented-bonding-curve.json';
 import { ABCConfig } from "../../../../domain/model/ABCConfig";
+import { DAOCreationResult, DAOCreationResultStatus } from "../../../../domain/model/DAOCreationResult";
 import { TokenHolder } from "../../../../domain/model/TokenHolder";
 import { TokenInfo } from "../../../../domain/model/TokenInfo";
+import { launchDAO } from "../../../../domain/use-case/DAOCreationUseCases";
 
 export function useDAOCreationSummaryModelController(daoCreationRepository: DAOCreationRepository) {
     const [isSending, setIsSending] = useState(false);
@@ -26,7 +25,7 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
     useEffect(() => {
         async function init() {
           if(daoCreationRepository.isUsingDefaultData()){
-            await daoCreationRepository.load();
+            await daoCreationRepository.loadDAOInfo();
           }
           setDAOName(daoCreationRepository.getDAOInfo().getName() ?? "");
           setVotingSettings(daoCreationRepository.getDAOInfo().getVotingConfig());
@@ -43,54 +42,27 @@ export function useDAOCreationSummaryModelController(daoCreationRepository: DAOC
     // Execute contract function
 
     const handleLaunch = async () => {
-        if(daoCreationRepository.isUsingDefaultData()){
-            await daoCreationRepository.load();
-        }
-        // Process holder adresses and balances
-        const addresses = daoCreationRepository.getDAOInfo().getTokenHolders()?.map((holder) => holder.address);
-        const balances = daoCreationRepository.getDAOInfo().getTokenHolders()?.map((holder) => {
-            if (holder.balance === null) {
-                return null;
-            }
-            return (BigInt(holder.balance) * BigInt(1e18)).toString()
-        });
-
         setIsLoading(true);
         setIsSending(true);
-        const { config } = usePrepareContractWrite({
-            address: knownContracts[100].NEW_DAO_WITH_ABC as `0x${string}`,
-            abi: newDaoWithABCAbi as Abi,
-            functionName: 'newTokenAndInstance',
-            args: [
-                tokenInfo.tokenName,
-                tokenInfo.tokenSymbol,
-                daoName,
-                addresses,
-                balances,
-                [(BigInt(1e16) * BigInt(votingSettings.getSupportRequiredValue())).toString(),
-                (BigInt(1e16) * BigInt(votingSettings.getMinimumAcceptanceQuorumValue())).toString(),
-                votingSettings.getVoteTotalDurationInSeconds()],
-                [(BigInt(1e16) * BigInt(abcConfig.getEntryTribute()??0)).toString(),
-                (BigInt(1e16) * BigInt(abcConfig.getExitTribute()??0)).toString()],
-                abcConfig.getCollateralToken()?.getTokenAddress(),
-                (abcConfig.getReserveRatio()??0) * 10000,
-                0
-            ]
-        });
-
-        const tx = await useContractWrite(config);
-        const data = await useWaitForTransaction({ hash: tx.data?.hash });
-        setTxData(data);
-        if (data.status === "success") {
-            setIsLoading(false);
-            setIsSending(false);
-            const receipt = await useTransaction(txData) // Retrieve hash ? Verify docs
-            console.log(receipt);
-        } else if (data.status === "error") {
-            console.log(data.error);
-            // Handle error
+        const result : DAOCreationResult = await launchDAO(daoCreationRepository);
+        // Process holder adresses and balances
+        
+        if(result.status == DAOCreationResultStatus.SUCCESS){
+            const data = result.data;
+            setTxData(data);
+            if (data.status === "success") {
+                // should always fall here if result.status is success
+                setIsLoading(false);
+                setIsSending(false);
+                const receipt = await useTransaction(txData) // Retrieve hash ? Verify docs
+                console.log(receipt);
+            } else if (data.status === "error") {
+                // should never get here
+                console.log(data.error);
+            }
+        } else {
+            // TODO: Handle error
         }
-
     }
 
 

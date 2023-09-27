@@ -9,7 +9,7 @@ export function useDAONameModelController(daoCreationRepository: DAOCreationRepo
     useEffect(() => {
         async function init() {
             if(daoCreationRepository.isUsingDefaultData()){
-                await daoCreationRepository.load();
+                await daoCreationRepository.loadDAOInfo();
             }
             if (daoCreationRepository.getDAOInfo().getName()) {
                 setOrganizationName(daoCreationRepository.getDAOInfo().getName()!);

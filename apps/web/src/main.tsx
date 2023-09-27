@@ -13,16 +13,16 @@ import Swap from './presentation/pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
 import NewDao from './presentation/pages/new-dao.tsx';
 import { TransactionProvider } from './presentation/providers/TransactionProvider.tsx';
-import { DAOCreationLocalStorageRepository } from './data/DAOCreationLocalStorageRepository.ts';
+import { DAOCreationWagmiLSRepository } from './data/DAOCreationWagmiLSRepository.ts';
 
-const daoCreationLocalStorageRepository = new DAOCreationLocalStorageRepository();
+const daoCreationRepository = new DAOCreationWagmiLSRepository();
 
 const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="swap" element={<Swap />} />
       <Route path="launchpad" element={<Launchpad />} />
-      <Route path="launchpad/new-dao" element={<NewDao daoCreationRepository={daoCreationLocalStorageRepository} />} />
+      <Route path="launchpad/new-dao" element={<NewDao daoCreationRepository={daoCreationRepository} />} />
     </Route>
   ));
 
