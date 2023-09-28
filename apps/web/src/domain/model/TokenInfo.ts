@@ -2,11 +2,13 @@ export class TokenInfo {
     tokenName: string|undefined;
     tokenSymbol: string|undefined;
     tokenAddress: string|undefined;
+    tokenLogo: string|undefined;
 
-    constructor(tokenName?: string, tokenSymbol?: string, tokenAddress?: string) {
+    constructor(tokenName?: string, tokenSymbol?: string, tokenAddress?: string, tokenLogo?: string) {
         this.tokenName = tokenName;
         this.tokenSymbol = tokenSymbol;
         this.tokenAddress = tokenAddress;
+        this.tokenLogo = tokenLogo;
     }
 
     // setting values
@@ -22,7 +24,6 @@ export class TokenInfo {
         this.tokenAddress = value;
     }
 
-
     // getting values
 
     getTokenName(): string|undefined {
@@ -35,6 +36,10 @@ export class TokenInfo {
 
     getTokenAddress(): string|undefined {
         return this.tokenAddress;
+    }
+
+    getTokenLogo(): string|undefined {
+        return this.tokenLogo;
     }
 
 }

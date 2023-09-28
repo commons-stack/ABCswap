@@ -153,15 +153,14 @@ export default function NewDao({daoCreationRepository} : NewDaoProps) {
             <>
                 <Box bg="brand.100">
                     <VStack spacing={0} pb="117px">
-                        <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">Create your DAO</Text>
-                        <Text fontSize="24px" color="brand.900">Connect your wallet to start creating your DAO</Text>
-                        <Text fontSize="24px" color="brand.900">with Augmented Bonding Curve</Text>
-                        <Text fontSize="24px" color="brand.900" pt="64px" as="b">It is simple, you just have to follow the following steps</Text>
+                        <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">Create a new DAO and</Text>
+                        <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">launch your ABC</Text>
+                        <Text fontSize="24px" color="brand.900">... in just a few steps</Text>
                         <HStack pb="32px" pt="56px" spacing={24}>
                             <VStack spacing={0}>
                                 <Image src="../../..//public/launchpad/DAOName.svg" pb="16px" />
-                                <Text fontSize="24px" color="brand.900">Choose</Text>
-                                <Text fontSize="24px" color="brand.900">DAO name</Text>
+                                <Text fontSize="24px" color="brand.900">Name your</Text>
+                                <Text fontSize="24px" color="brand.900">DAO</Text>
                             </VStack>
                             <VStack spacing={0}>
                                 <Image src="../../..//public/launchpad/ConfigureVoting.svg" pb="16px" />
