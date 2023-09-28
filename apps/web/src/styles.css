@@ -3,3 +3,12 @@
     src: url('../public/VictorSerifTrial-40Regular.otf') format('otf'), /* URL to the font file */
     /* You can also specify font-weight and font-style here if needed */
   }
+
+  :root {
+    --abcs-newdao-step-content-max-width: 800px;
+  }
+
+  .abcs-newdao-step-content {
+    max-width: var(--abcs-newdao-step-content-max-width) !important;
+    margin: 0 100px !important;
+  }
