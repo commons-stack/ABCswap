@@ -1,4 +1,4 @@
-import { Box, InputGroup, Text, VStack } from "@chakra-ui/react";
+import { Box, InputGroup, Text, VStack, Image } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
@@ -39,7 +39,7 @@ export default function OrganizationName({ onStepCompletionChanged , daoCreation
                         }}
                     />
                     <CustomInputRightAddon>
-                        {userInteracted ? (organizationName.length > 0 ? "Completed" : "Not Completed") : ""}
+                        {userInteracted ? (organizationName.length > 0 ? <Image src="../../../../public/Check.svg" boxSize="24px" /> : <Image src="../../../../public/Error.svg" boxSize="24px" />) : ""}
                     </CustomInputRightAddon>
                 </InputGroup>
             </VStack>
