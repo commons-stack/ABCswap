@@ -153,9 +153,9 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                     width="100%"
                     margin="0 auto"
                 />
-            <VStack pt="32px">
-                <Text fontSize="16px" color="brand.900">All votes must reach the support and minimum approval threshold in order to pass. </Text>
-                <Text fontSize="16px" color="brand.900">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
+            <VStack pt="32px" spacing={-1}>
+                <Text fontSize="16px" color="black">All votes must reach the support and minimum approval threshold in order to pass. </Text>
+                <Text fontSize="16px" color="black">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
             </VStack>
         </VStack>
     );
