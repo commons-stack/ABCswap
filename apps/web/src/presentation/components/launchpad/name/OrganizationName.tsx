@@ -4,6 +4,7 @@ import { DAOCreationRepository } from "../../../../domain/repository/DAOCreation
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 import { useDAONameModelController } from "./DAONameModelController";
+import "../../../../styles.css";
 
 interface OrganizationNameProps {
     onStepCompletionChanged: (completed: boolean) => void;
@@ -27,7 +28,7 @@ export default function OrganizationName({ onStepCompletionChanged , daoCreation
 
     return (
         <Box pt="100px" pb="75px">
-            <VStack spacing={0}>
+            <VStack spacing={0} className="abcs-newdao-step-content">
                 <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Name your DAO</Text>
                 <InputGroup mt="48px">
                     <CustomInput 

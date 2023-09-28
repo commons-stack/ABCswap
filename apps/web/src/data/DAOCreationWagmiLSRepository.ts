@@ -154,6 +154,18 @@ export class DAOCreationWagmiLSRepository implements DAOCreationRepository {
             }
         }
     }
+
+    async getDAOCompatibleTokens(): Promise<TokenInfo[]> {
+        return [
+            new TokenInfo("Optimism", "OP", "0x00000", "/token-logos/optimism-ethereum-op-logo.svg"),
+            new TokenInfo("USDT", "USDT", "0x00000", "../"),
+            new TokenInfo("DAI", "DAI", "0x00000", "../"),
+            new TokenInfo("USDC", "USDC", "0x00000", "../"),
+            new TokenInfo("GNO", "GNO", "0x00000", "../"),
+            new TokenInfo("GIV", "GIV", "0x00000", "../"),
+        ];
+    }
+    
 }
 
     

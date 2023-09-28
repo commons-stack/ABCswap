@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack } from "@chakra-ui/react";
+import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
@@ -90,10 +90,10 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                             <Flex>
                                 <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol() || ''} onChange={handleCollateralTokenChange}>
                                     {collateralTokenList.map((token) => (
-                                        <option key={token.address} value={token.symbol}>
+                                        <option key={token.tokenAddress} value={token.tokenSymbol}>
                                             <HStack>
-                                                <Image src={token.logo} boxSize="24px" />
-                                                <Text>{token.symbol}</Text>
+                                                <Image src={token.tokenLogo} boxSize="24px" />
+                                                <Text>{token.tokenSymbol}</Text>
                                             </HStack>
                                         </option>
                                     ))}
@@ -124,6 +124,15 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                     </HStack>
                 </VStack>
             </HStack>
+            <Divider paddingTop="24px"
+                    borderColor="brand.900"
+                    borderBottomWidth="1px"
+                    width="100%"
+                    margin="0 auto"
+            />
+            <VStack pt="32px">
+                <Text fontSize="16px" color="brand.900">Todo: puc correct text. This is a placeholder.</Text>
+            </VStack>
         </VStack>
     );
 }

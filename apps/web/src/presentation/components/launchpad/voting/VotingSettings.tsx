@@ -1,8 +1,9 @@
-import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack, Popover, PopoverTrigger, PopoverContent, Image } from "@chakra-ui/react";
+import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack, Popover, PopoverTrigger, PopoverContent, Image, Divider } from "@chakra-ui/react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
 import { useVotingSettingsModelController } from "./VotingSettingsModelController";
+import "../../../../styles.css";
 
 interface VotingSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
@@ -21,10 +22,16 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
     } = useVotingSettingsModelController(onStepCompletionChanged, daoCreationRepository);
 
     return (
-        <VStack spacing={4} pt="130px">
+        <VStack spacing={4} pt="130px" className="abcs-newdao-step-content">
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Voting</Text>
             <Text fontSize="24px" color="brand.900" pt="32px">Choose your voting settings below</Text>
-            <VStack width="80%">
+            <Divider paddingTop="24px"
+                    borderColor="brand.900"
+                    borderBottomWidth="1px"
+                    width="100%"
+                    margin="0 auto"
+            />
+            <VStack width="90%">
                 <FormControl pt="34px" pb="32px">
                     <FormLabel>
                         <HStack>
@@ -139,10 +146,16 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                         <CustomInputRightAddon children="Minutes" />
                     </InputGroup>
                 </HStack>
-                <VStack pt="32px">
-                    <Text fontSize="16px" color="brand.900">All votes must reach the support and minimum approval threshold in order to pass. </Text>
-                    <Text fontSize="16px" color="brand.900">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
-                </VStack>
+            </VStack>
+            <Divider paddingTop="24px"
+                    borderColor="brand.900"
+                    borderBottomWidth="1px"
+                    width="100%"
+                    margin="0 auto"
+                />
+            <VStack pt="32px">
+                <Text fontSize="16px" color="brand.900">All votes must reach the support and minimum approval threshold in order to pass. </Text>
+                <Text fontSize="16px" color="brand.900">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
             </VStack>
         </VStack>
     );
