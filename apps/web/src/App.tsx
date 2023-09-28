@@ -1,38 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from '@chakra-ui/react'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { Link, useLocation } from "react-router-dom";
+import Footer from './presentation/components/shared/Footer';
+import { Box } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
+import Header from "./presentation/components/shared/Header";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+
+  const location = useLocation();
+  const isInitialRoute = location.pathname === "/";
 
   return (
     <>
-      <ConnectButton />
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + Turborepo</h1>
-      <div className="card">
-        <Button colorScheme="blue" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Box width="100%" height="100vh" bgColor="brand.100">
+        <Header />
+        {isInitialRoute && (
+          <>
+            <Link to="/swap">Swap</Link>
+            <Link to="/launchpad">Launchpad</Link>
+          </>
+        )}
+        <Outlet />
+        <Footer />
+      </Box>
     </>
   )
 }
-
-export default App

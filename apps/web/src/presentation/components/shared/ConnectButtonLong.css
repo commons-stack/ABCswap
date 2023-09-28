@@ -1,0 +1,6 @@
+.connect-button-long {
+    background-color: var(--chakra-colors-brand-900);
+    color: var(--chakra-colors-brand-500);
+    padding: 8px 100px;
+    border-radius: 30px;
+}

@@ -1,7 +1,23 @@
 module.exports = {
-  extends: ["next", "turbo", "prettier"],
+  env: {
+    node: true,
+  },
+  parser: "@typescript-eslint/parser",
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+  ],
+  plugins: ["@typescript-eslint", 'react-refresh'],
+  parserOptions: {
+    sourceType: "module",
+    ecmaVersion: 2020,
+  },
   rules: {
-    "@next/next/no-html-link-for-pages": "off",
-    "react/jsx-key": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
   },
 };

@@ -1,0 +1,5 @@
+@font-face {
+    font-family: 'VictorSerifTrial'; /* Specify the desired font family name */
+    src: url('../public/VictorSerifTrial-40Regular.otf') format('otf'), /* URL to the font file */
+    /* You can also specify font-weight and font-style here if needed */
+  }

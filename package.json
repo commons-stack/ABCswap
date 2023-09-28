@@ -1,5 +1,5 @@
 {
-  "name": "osmotic",
+  "name": "abcswap-monorepo",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -11,7 +11,8 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "turbo run postinstall"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
@@ -19,8 +20,7 @@
     "turbo": "latest"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "bun": ">=1.0.0"
   },
-  "dependencies": {},
-  "packageManager": "pnpm@7.16.1"
+  "dependencies": {}
 }

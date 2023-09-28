@@ -1,33 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+   "postinstall": {},
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "cache/**",
-        "out/**",
-        "build/**",
-        "generated/**"
-      ]
+      "outputs": ["dist/**"]
+    },
+    "lint": {},
+    "dev": {
+      "cache": false,
+      "persistent": true
     },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["test/**/*.t.sol"],
       "outputs": []
-    },
-    "test:watch": {
-      "cache": false
-    },
-    "lint": {
-      "outputs": []
-    },
-    "dev": {
-      "cache": false
-    },
-    "subgraph#build": {
-      "dependsOn": ["foundry#build"]
     }
   }
 }

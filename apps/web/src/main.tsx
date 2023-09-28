@@ -6,15 +6,34 @@ import ReactDOM from 'react-dom/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { WagmiConfig } from "wagmi";
 import { chains, wagmiConfig } from "../wagmi";
+import theme from './presentation/theme/index.ts';
 import App from './App.tsx'
-import './index.css'
+import Launchpad from './presentation/pages/launchpad';
+import Swap from './presentation/pages/swap';
+import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
+import NewDao from './presentation/pages/new-dao.tsx';
+import { TransactionProvider } from './presentation/providers/TransactionProvider.tsx';
+import { DAOCreationWagmiLSRepository } from './data/DAOCreationWagmiLSRepository.ts';
+
+const daoCreationRepository = new DAOCreationWagmiLSRepository();
+
+const router = createHashRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route path="swap" element={<Swap />} />
+      <Route path="launchpad" element={<Launchpad />} />
+      <Route path="launchpad/new-dao" element={<NewDao daoCreationRepository={daoCreationRepository} />} />
+    </Route>
+  ));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
-          <App />
+          <TransactionProvider>
+            <RouterProvider router={router} />
+          </TransactionProvider>
         </RainbowKitProvider>
       </WagmiConfig>
     </ChakraProvider>
