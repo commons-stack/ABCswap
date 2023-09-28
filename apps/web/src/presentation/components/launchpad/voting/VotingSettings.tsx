@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack } from "@chakra-ui/react";
+import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack, Popover, PopoverTrigger, PopoverContent, Image } from "@chakra-ui/react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
@@ -6,7 +6,7 @@ import { useVotingSettingsModelController } from "./VotingSettingsModelControlle
 
 interface VotingSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
-    daoCreationRepository : DAOCreationRepository;
+    daoCreationRepository: DAOCreationRepository;
 }
 
 export default function VotingSettings({ onStepCompletionChanged, daoCreationRepository }: VotingSettingsProps) {
@@ -27,8 +27,18 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
             <VStack width="80%">
                 <FormControl pt="34px" pb="32px">
                     <FormLabel>
-                        <Text fontSize="16px" color="brand.900">SUPPORT</Text>
-                    </FormLabel>                    
+                        <HStack>
+                            <Text fontSize="16px" color="brand.900">SUPPORT</Text>
+                            <Popover>
+                                <PopoverTrigger>
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                    <Text fontSize="16px" color="brand.900" p="10px"><Text as="b">Support</Text> is the relative percentage of tokens that are required to vote “Yes” for a proposal to be approved. For example, if “Support” is set to 50%, then more than 50% of the tokens used to vote on a proposal must vote “Yes” for it to pass.</Text>
+                                </PopoverContent>
+                            </Popover>
+                        </HStack>
+                    </FormLabel>
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
                             aria-label='slider-ex-1'
@@ -54,7 +64,17 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                 </FormControl>
                 <FormControl>
                     <FormLabel>
-                        <Text fontSize="16px" color="brand.900">MINIMUM APPROVAL</Text>
+                        <HStack>
+                            <Text fontSize="16px" color="brand.900">MINIMUM APPROVAL</Text>
+                            <Popover>
+                                <PopoverTrigger>
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                    <Text fontSize="16px" color="brand.900" p="10px"><Text as="b">Minimum approval</Text> is the percentage of the total token supply that is required to vote “Yes” on a proposal before it can be approved. For example, if the “Minimum Approval” is set to 20%, then more than 20% of the outstanding token supply must vote “Yes” on a proposal for it to pass.</Text>
+                                </PopoverContent>
+                            </Popover>
+                        </HStack>
                     </FormLabel>
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
@@ -79,7 +99,17 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                         </InputGroup>
                     </HStack>
                 </FormControl>
-                <Text fontSize="16px" color="brand.900" alignSelf="start">VOTE DURATION</Text>
+                <HStack alignSelf="start" mt="38px">
+                    <Text fontSize="16px" color="brand.900">VOTE DURATION</Text>
+                    <Popover>
+                        <PopoverTrigger>
+                            <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <Text fontSize="16px" color="brand.900" p="10px"><Text as="b">Vote duration</Text> is the length of time that the vote will be open for participation. For example, if the Vote Duration is set to 24 hours, then token holders have 24 hours to participate in the vote.</Text>
+                        </PopoverContent>
+                    </Popover>
+                </HStack>
                 <HStack spacing={4}>
                     <InputGroup>
                         <CustomInput
