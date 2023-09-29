@@ -1,4 +1,4 @@
-import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack } from "@chakra-ui/react";
+import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack, Tooltip } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
@@ -48,11 +48,16 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Augmented Bonding Curve</Text>
             <Text fontSize="24px" color="brand.900" pt="32px">Configure the DAO's ABC parameters</Text>
             <HStack w="100%">
-                <VStack spacing={3} minW="320px" maxW="400px" w="35%" alignSelf="start">
+                <VStack spacing={3} minW="340px" maxW="400px" w="35%" alignSelf="start">
                     <HStack alignSelf="start" w="100%">
                         <FormControl w="100%">
                             <FormLabel>
-                                <Text fontSize="16px" color="brand.900">RESERVE RATIO</Text>
+                                <HStack>
+                                    <Text fontSize="16px" color="brand.900">RESERVE RATIO</Text>
+                                    <Tooltip label="The Reserve Ratio is a ratio between the market cap of the token (token supply x unit price) and the value of the Initial Reserve Balance that will be fixed for the life of the Augmented Bonding Curve.">
+                                        <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                    </Tooltip>
+                                </HStack>
                             </FormLabel>
                             <HStack justifyContent="space-between">
                                 <Button
@@ -85,7 +90,12 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                     </HStack>
                     <FormControl>
                         <FormLabel>
-                            <Text fontSize="16px" color="brand.900">RESERVE INITIAL BALANCE</Text>
+                            <HStack>
+                                <Text fontSize="16px" color="brand.900">RESERVE INITIAL BALANCE</Text>
+                                <Tooltip label="The Initial Reserve Balance refers to the amount of tokens deposited into the Reserve Pool when the ABC is initialized.">
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </Tooltip>
+                            </HStack>
                         </FormLabel>
                         <Box>
                             <Flex>
@@ -106,7 +116,12 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                     <HStack spacing={8}>
                         <FormControl>
                             <FormLabel>
+                            <HStack>
                                 <Text fontSize="16px" color="brand.900">ENTRY TRIBUTE</Text>
+                                <Tooltip label="The Entry Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single minting event.">
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </Tooltip>
+                            </HStack>
                             </FormLabel>
                             <InputGroup>
                                 <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.entryTribute ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(Number(e.target.value))} type="number" />
@@ -115,7 +130,12 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                         </FormControl>
                         <FormControl>
                             <FormLabel>
+                            <HStack>
                                 <Text fontSize="16px" color="brand.900">EXIT TRIBUTE</Text>
+                                <Tooltip label="The Exit Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single burning event.">
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </Tooltip>
+                            </HStack>
                             </FormLabel>
                             <InputGroup>
                                 <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.exitTribute ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(Number(e.target.value))} type="number" />
