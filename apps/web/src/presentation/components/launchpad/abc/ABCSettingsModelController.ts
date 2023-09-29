@@ -3,6 +3,8 @@ import { DAOCreationRepository } from "../../../../domain/repository/DAOCreation
 import { setABCConfig } from "../../../../domain/use-case/DAOCreationUseCases";
 import { ABCConfig } from "../../../../domain/model/ABCConfig";
 import { TokenInfo } from "../../../../domain/model/TokenInfo";
+import { fetchBalance, getAccount } from "@wagmi/core";
+import { parseEther } from "viem";
 
 export function useABCSettingsModelController(daoCreationRepository: DAOCreationRepository) {
     const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState<ABCConfig>(new ABCConfig(
@@ -19,6 +21,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
     ));
 
     const [collateralTokenList, setCollateralTokenList] = useState<TokenInfo[]>([]);
+    const [enoughBalance, setEnoughBalance] = useState<boolean>(true);
     
     useEffect(() => {
         async function init() {
@@ -44,10 +47,19 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
 
     useEffect(() => {
         async function checkBalance() {
-            console.log(daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance());
-            console.log(augmentedBondingCurveSettings);
-
-            console.log(daoCreationRepository.getDAOCompatibleTokens());
+            const account = await getAccount();
+            const balance = await fetchBalance({
+                address: account.address as `0x${string}`,
+                token: daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress as `0x${string}`
+            });
+            const initialBalance = daoCreationRepository?.getDAOInfo()?.getABCConfig()?.getReserveInitialBalance() ?? 0
+            const parsedInitialBalance = parseEther(String(initialBalance));
+            if (initialBalance && balance.value >= parsedInitialBalance || initialBalance == 0) {
+                setEnoughBalance(true);
+            } else {
+                setEnoughBalance(false);
+            }   
+            console.log(enoughBalance);
         }
         checkBalance();
     }, [
@@ -144,6 +156,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
     return {
         augmentedBondingCurveSettings,
         collateralTokenList,
+        enoughBalance,
         handleReserveRatioChange,
         handleCollateralTokenChange,
         handleInitialReserveChange,
