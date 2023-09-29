@@ -1,6 +1,32 @@
+:root {
+    --chain-icon-margin: 8px;
+}
+
 .connect-button {
-    background-color: var(--chakra-colors-brand-900);
-    color: var(--chakra-colors-brand-500);
     padding: 8px 20px;
     border-radius: 30px;
+}
+
+.connect-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:0px!important;
+    width: fit-content!important;
+}
+
+.connect-button-wrapper.connected {
+    
+}
+
+.connect-button-wrapper.unsupported {
+    background-color: var(--chakra-colors-brand-1200);
+    color: white;
+    outline-color: var(--chakra-colors-brand-1200);
+    outline-offset: 0px;
+}
+
+.connect-button-wrapper.unsupported:hover {
+    background-color: white;
+    color: var(--chakra-colors-brand-1200);
 }
