@@ -5,19 +5,12 @@ export const CustomConnectButton = () => {
     return (
         <ConnectButton.Custom>
             {({
-                account,
-                chain,
-                openAccountModal,
-                openChainModal,
-                openConnectModal,
-                authenticationStatus,
-                mounted,
+                account, chain, openAccountModal, openChainModal, openConnectModal, authenticationStatus, mounted,
             }) => {
                 // Note: If your app doesn't use authentication, you
                 // can remove all 'authenticationStatus' checks
                 const ready = mounted && authenticationStatus !== 'loading';
-                const connected =
-                    ready &&
+                const connected = ready &&
                     account &&
                     chain &&
                     (!authenticationStatus ||
@@ -32,6 +25,7 @@ export const CustomConnectButton = () => {
                                 userSelect: 'none',
                             },
                         })}
+                        className={'css-hpbuxn connect-button-wrapper ' + (connected ? 'connected ' : 'disconnected ') + (chain?.unsupported ? 'unsupported ' : '')}
                     >
                         {(() => {
                             if (!connected) {
@@ -55,40 +49,57 @@ export const CustomConnectButton = () => {
                                         style={{ display: 'flex', alignItems: 'center' }}
                                         type="button"
                                     >
-                                        {chain.hasIcon && (
-                                            <div
-                                                style={{
-                                                    background: chain.iconBackground,
-                                                    width: 12,
-                                                    height: 12,
-                                                    borderRadius: 999,
-                                                    overflow: 'hidden',
-                                                    marginRight: 4,
-                                                }}
-                                            >
-                                                {chain.iconUrl && (
-                                                    <img
-                                                        alt={chain.name ?? 'Chain icon'}
-                                                        src={chain.iconUrl}
-                                                        style={{ width: 12, height: 12 }}
-                                                    />
-                                                )}
-                                            </div>
-                                        )}
-                                        {chain.name}
+                                        <div
+                                            style={{
+                                                background: chain.iconBackground,
+                                                width: "calc(var(--chakra-sizes-10) - var(--chain-icon-margin))",
+                                                height: "calc(var(--chakra-sizes-10) - var(--chain-icon-margin))",
+                                                borderRadius: "calc( (var(--chakra-sizes-10))/2)",
+                                                overflow: 'hidden',
+                                                marginRight: 4,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: 'var(--chakra-colors-brand-500)',
+                                                color:'var(--chakra-colors-brand-900)',
+                                                margin: "var(--chain-icon-margin) 0px",
+                                                border: "1px solid var(--chakra-colors-brand-900)",
+                                            }}
+                                        >
+                                            {
+                                                chain.hasIcon ? 
+                                                (
+                                                    chain.iconUrl ? 
+                                                    (
+                                                        <img
+                                                            alt={chain.name ?? 'Chain icon'}
+                                                            src={chain.iconUrl}
+                                                            style={{ width: "calc(var(--chakra-sizes-10) - var(--chain-icon-margin))", height: "calc(var(--chakra-sizes-10) -var(--chain-icon-margin))" }} />
+                                                        ) :
+                                                        (
+                                                            <></>
+                                                        )
+                                                ):
+                                                (
+                                                    <>
+                                                        {((chain?.name?.length ?? 0) > 0) ? chain!.name![0] : ""}
+                                                    </>
+                                                )
+                                            }
+                                        </div>
                                     </button>
                                     <button onClick={openAccountModal} type="button">
                                         {account.displayName}
-                                        {account.displayBalance
+                                        {/* {account.displayBalance
                                             ? ` (${account.displayBalance})`
-                                            : ''}
+                                            : ''} */}
                                     </button>
                                 </div>
                             );
                         })()}
                     </div>
                 );
-            }}
+            } }
         </ConnectButton.Custom>
     );
 };
