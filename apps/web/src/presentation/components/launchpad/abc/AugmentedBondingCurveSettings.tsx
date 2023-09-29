@@ -7,7 +7,7 @@ import { useABCSettingsModelController } from "./ABCSettingsModelController";
 
 interface AugmentedBondingCurveSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
-    daoCreationRepository : DAOCreationRepository;
+    daoCreationRepository: DAOCreationRepository;
 }
 
 type AugmentedBondingCurveSettings = {
@@ -23,7 +23,7 @@ type CollateralToken = {
     symbol: string;
 }
 
-export default function AugmentedBondingCurveSettings({ onStepCompletionChanged , daoCreationRepository}: AugmentedBondingCurveSettingsProps) {
+export default function AugmentedBondingCurveSettings({ onStepCompletionChanged, daoCreationRepository }: AugmentedBondingCurveSettingsProps) {
 
     const {
         augmentedBondingCurveSettings,
@@ -36,7 +36,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
     } = useABCSettingsModelController(daoCreationRepository);
 
     useEffect(() => {
-        const isCompleted = (augmentedBondingCurveSettings.getReserveRatio()??0) > 0 && (augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol()?.length??0) > 0 && (augmentedBondingCurveSettings.getReserveInitialBalance()??0) > 0;
+        const isCompleted = (augmentedBondingCurveSettings.getReserveRatio() ?? 0) > 0 && (augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol()?.length ?? 0) > 0 && (augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0) > 0;
         if (onStepCompletionChanged) {
             onStepCompletionChanged(isCompleted);
         }
@@ -125,13 +125,18 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged 
                 </VStack>
             </HStack>
             <Divider paddingTop="24px"
-                    borderColor="brand.900"
-                    borderBottomWidth="1px"
-                    width="100%"
-                    margin="0 auto"
+                borderColor="brand.900"
+                borderBottomWidth="1px"
+                width="100%"
+                margin="0 auto"
             />
             <VStack pt="32px">
-                <Text fontSize="16px" color="brand.900">Todo: puc correct text. This is a placeholder.</Text>
+                <VStack spacing={-1}>
+                    <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
+                    <Text fontSize="16px" color="black">from your wallet to the Reserve Pool.  You can only proceed if your wallet contains funds equal to or</Text>
+                    <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
+                </VStack>
+                <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
             </VStack>
         </VStack>
     );

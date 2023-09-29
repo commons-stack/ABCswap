@@ -14,7 +14,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
     ));
 
     const [collateralTokenList, setCollateralTokenList] = useState<TokenInfo[]>([]);
-
+    
     useEffect(() => {
         async function init() {
             await daoCreationRepository.loadDAOInfo();
@@ -32,6 +32,18 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         init();
     }, []);
 
+    useEffect(() => {
+        async function checkBalance() {
+            console.log(daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance());
+            console.log(augmentedBondingCurveSettings);
+
+            console.log(daoCreationRepository.getDAOCompatibleTokens());
+        }
+        checkBalance();
+    }, [
+        daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance(), 
+        daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol
+    ])
 
     const handleReserveRatioChange = (value: string) => {
         const re = /[^0-9]+/g;
@@ -41,7 +53,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -55,7 +72,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
                 daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-                new TokenInfo(selectedToken.tokenAddress, selectedToken.tokenSymbol),
+                new TokenInfo(selectedToken.tokenName, selectedToken.tokenSymbol, selectedToken.tokenAddress, selectedToken.tokenLogo)
             );
 
             setAugmentedBondingCurveSettings(updatedSettings);
@@ -69,7 +86,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             value,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -81,7 +103,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             value,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -93,7 +120,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             value,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
