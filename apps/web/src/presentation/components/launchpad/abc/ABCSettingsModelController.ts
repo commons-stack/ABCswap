@@ -10,7 +10,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
         daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
         daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-        new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+        new TokenInfo(
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+        ),    
     ));
 
     const [collateralTokenList, setCollateralTokenList] = useState<TokenInfo[]>([]);
@@ -23,7 +28,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
                 daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-                new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+                new TokenInfo(
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+                ),            
             ));
             await daoCreationRepository.getDAOCompatibleTokens().then((tokens) => {
                 setCollateralTokenList(tokens);
