@@ -161,7 +161,6 @@ export class DAOCreationWagmiLSRepository implements DAOCreationRepository {
             new TokenInfo("USDT", "USDT", "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58", "../"),
             new TokenInfo("DAI", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", "../"),
             new TokenInfo("USDC", "USDC", "0x7f5c764cbc14f9669b88837ca1490cca17c31607", "../"),
-            new TokenInfo("GNO", "GNO", "0x00000", "../"),
             new TokenInfo("GIV", "GIV", "0x528cdc92eab044e1e39fe43b9514bfdab4412b98", "../"),
         ];
     }
