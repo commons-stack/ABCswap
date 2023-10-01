@@ -53,11 +53,12 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
     function handleHolderChange(i: number, event: React.ChangeEvent<HTMLInputElement>, field: boolean) {
         const values = [...tokenSettings.tokenHolders];
         values[i] = { ...values[i], [field ? 'address' : 'balance']: event.target.value };
+        const newTotalSupply = values.reduce((sum, holder) => sum + Number(holder.balance), 0);
+        setInitialTokenSupply(newTotalSupply); 
         setTokenSettings({ ...tokenSettings, tokenHolders: values });
         updateTokenHoldersInRepository(values);
-        setInitialTokenSupply(tokenSettings.tokenHolders.reduce((sum, holder) => sum + Number(holder.balance), 0));
     }
-
+    
     function handleRemoveHolder(i: number) {
         const values = [...tokenSettings.tokenHolders];
         if (values.length === 1) {
@@ -65,9 +66,10 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
         } else {
             values.splice(i, 1);
         }
+        const newTotalSupply = values.reduce((sum, holder) => sum + Number(holder.balance), 0);
+        setInitialTokenSupply(newTotalSupply); 
         setTokenSettings({ ...tokenSettings, tokenHolders: values });
         updateTokenHoldersInRepository(values);
-        setInitialTokenSupply(tokenSettings.tokenHolders.reduce((sum, holder) => sum + Number(holder.balance), 0));
     }
 
     function handleAddEmptyHolder() {
