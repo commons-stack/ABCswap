@@ -23,6 +23,7 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
 
     useEffect(() => {
         async function init() {
+            const initTokenHolders = daoCreationRepository.getDAOInfo().getTokenHolders() ?? [{address: '', balance: ''}]
             if(daoCreationRepository.isUsingDefaultData()){
               await daoCreationRepository.loadDAOInfo();
             }
@@ -30,10 +31,10 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
                 setTokenSettings({
                     tokenName: daoCreationRepository.getDAOInfo().getTokenInfo().tokenName ?? "",
                     tokenSymbol: daoCreationRepository.getDAOInfo().getTokenInfo().tokenSymbol ?? "",
-                    tokenHolders: daoCreationRepository.getDAOInfo().getTokenHolders() ?? [{address: '', balance: ''}]
+                    tokenHolders: initTokenHolders
                 });
             }
-            setInitialTokenSupply(tokenSettings.tokenHolders.reduce((sum, holder) => sum + Number(holder.balance), 0));
+            setInitialTokenSupply(initTokenHolders.reduce((sum, holder) => sum + Number(holder.balance), 0));
         }
         init();
     }, []);
