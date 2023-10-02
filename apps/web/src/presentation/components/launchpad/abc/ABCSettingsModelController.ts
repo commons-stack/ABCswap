@@ -63,8 +63,8 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         }
         checkBalance();
     }, [
-        daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance(), 
-        daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol
+        augmentedBondingCurveSettings.reserveInitialBalance,
+        augmentedBondingCurveSettings.collateralToken?.tokenSymbol
     ])
 
     const handleReserveRatioChange = (value: string) => {
