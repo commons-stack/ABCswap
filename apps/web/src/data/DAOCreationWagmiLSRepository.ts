@@ -47,8 +47,8 @@ export class DAOCreationWagmiLSRepository implements DAOCreationRepository {
                     savedInfo.votingConfig.voteDurationMinutes
                 ),
                 new TokenInfo(
-                    savedInfo.tokenInfo.name,
-                    savedInfo.tokenInfo.symbol,
+                    savedInfo.tokenInfo.tokenName,
+                    savedInfo.tokenInfo.tokenSymbol,
                     savedInfo.tokenInfo.address
                 ), 
                 savedInfo.tokenHolders,
@@ -157,12 +157,11 @@ export class DAOCreationWagmiLSRepository implements DAOCreationRepository {
 
     async getDAOCompatibleTokens(): Promise<TokenInfo[]> {
         return [
-            new TokenInfo("Optimism", "OP", "0x00000", "/token-logos/optimism-ethereum-op-logo.svg"),
-            new TokenInfo("USDT", "USDT", "0x00000", "../"),
-            new TokenInfo("DAI", "DAI", "0x00000", "../"),
-            new TokenInfo("USDC", "USDC", "0x00000", "../"),
-            new TokenInfo("GNO", "GNO", "0x00000", "../"),
-            new TokenInfo("GIV", "GIV", "0x00000", "../"),
+            new TokenInfo("Optimism", "OP", "0x4200000000000000000000000000000000000042", "/token-logos/optimism-ethereum-op-logo.svg"),
+            new TokenInfo("USDT", "USDT", "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58", "../"),
+            new TokenInfo("DAI", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", "../"),
+            new TokenInfo("USDC", "USDC", "0x7f5c764cbc14f9669b88837ca1490cca17c31607", "../"),
+            new TokenInfo("GIV", "GIV", "0x528cdc92eab044e1e39fe43b9514bfdab4412b98", "../"),
         ];
     }
     

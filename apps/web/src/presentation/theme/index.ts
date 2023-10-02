@@ -6,6 +6,7 @@ import fonts from "./fonts";
 import Button from "./components/button";
 import Select from "./components/select";
 import Slider from "./components/slider";
+import Tooltip from "./components/tooltip";
 
 const theme = extendTheme({ 
     colors,
@@ -14,6 +15,7 @@ const theme = extendTheme({
         Button,
         Select,
         Slider,
+        Tooltip
     },
 });
 

@@ -1,4 +1,4 @@
-import { Divider, FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack } from "@chakra-ui/react";
+import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack, Image, Divider, Tooltip } from "@chakra-ui/react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
 import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
@@ -7,7 +7,7 @@ import "../../../../styles.css";
 
 interface VotingSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
-    daoCreationRepository : DAOCreationRepository;
+    daoCreationRepository: DAOCreationRepository;
 }
 
 export default function VotingSettings({ onStepCompletionChanged, daoCreationRepository }: VotingSettingsProps) {
@@ -26,16 +26,21 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Voting</Text>
             <Text fontSize="24px" color="brand.900" pt="32px">Choose your voting settings below</Text>
             <Divider paddingTop="24px"
-                    borderColor="brand.900"
-                    borderBottomWidth="1px"
-                    width="100%"
-                    margin="0 auto"
+                borderColor="brand.900"
+                borderBottomWidth="1px"
+                width="100%"
+                margin="0 auto"
             />
             <VStack width="90%">
                 <FormControl pt="34px" pb="32px">
                     <FormLabel>
-                        <Text fontSize="16px" color="brand.900">SUPPORT</Text>
-                    </FormLabel>                    
+                        <HStack>
+                            <Text fontSize="16px" color="brand.900">SUPPORT</Text>
+                            <Tooltip label="Support is the relative percentage of tokens that are required to vote “Yes” for a proposal to be approved. For example, if “Support” is set to 50%, then more than 50% of the tokens used to vote on a proposal must vote “Yes” for it to pass.">
+                                <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                            </Tooltip>
+                        </HStack>
+                    </FormLabel>
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
                             aria-label='slider-ex-1'
@@ -61,7 +66,12 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                 </FormControl>
                 <FormControl>
                     <FormLabel>
-                        <Text fontSize="16px" color="brand.900">MINIMUM APPROVAL</Text>
+                        <HStack>
+                            <Text fontSize="16px" color="brand.900">MINIMUM APPROVAL</Text>
+                            <Tooltip label="Minimum approval is the percentage of the total token supply that is required to vote “Yes” on a proposal before it can be approved. For example, if the “Minimum Approval” is set to 20%, then more than 20% of the outstanding token supply must vote “Yes” on a proposal for it to pass.">
+                                <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                            </Tooltip>
+                        </HStack>
                     </FormLabel>
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
@@ -86,7 +96,12 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                         </InputGroup>
                     </HStack>
                 </FormControl>
-                <Text fontSize="16px" color="brand.900" alignSelf="start">VOTE DURATION</Text>
+                <HStack alignSelf="start" mt="38px">
+                    <Text fontSize="16px" color="brand.900">VOTE DURATION</Text>
+                    <Tooltip label="Vote duration is the length of time that the vote will be open for participation. For example, if the Vote Duration is set to 24 hours, then token holders have 24 hours to participate in the vote.">
+                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                    </Tooltip>
+                </HStack>
                 <HStack spacing={4}>
                     <InputGroup>
                         <CustomInput
@@ -118,14 +133,14 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                 </HStack>
             </VStack>
             <Divider paddingTop="24px"
-                    borderColor="brand.900"
-                    borderBottomWidth="1px"
-                    width="100%"
-                    margin="0 auto"
-                />
-            <VStack pt="32px">
-                <Text fontSize="16px" color="brand.900">All votes must reach the support and minimum approval threshold in order to pass. </Text>
-                <Text fontSize="16px" color="brand.900">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
+                borderColor="brand.900"
+                borderBottomWidth="1px"
+                width="100%"
+                margin="0 auto"
+            />
+            <VStack pt="32px" spacing={-1}>
+                <Text fontSize="16px" color="black">All votes must reach the support and minimum approval threshold in order to pass. </Text>
+                <Text fontSize="16px" color="black">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
             </VStack>
         </VStack>
     );

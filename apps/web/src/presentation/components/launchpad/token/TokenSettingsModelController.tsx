@@ -19,8 +19,11 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
         tokenHolders: [{address: '', balance: ''}]
     });
 
+    const [initialTotalSupply, setInitialTokenSupply] = useState<number>(0);
+
     useEffect(() => {
         async function init() {
+            const initTokenHolders = daoCreationRepository.getDAOInfo().getTokenHolders() ?? [{address: '', balance: ''}]
             if(daoCreationRepository.isUsingDefaultData()){
               await daoCreationRepository.loadDAOInfo();
             }
@@ -28,9 +31,10 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
                 setTokenSettings({
                     tokenName: daoCreationRepository.getDAOInfo().getTokenInfo().tokenName ?? "",
                     tokenSymbol: daoCreationRepository.getDAOInfo().getTokenInfo().tokenSymbol ?? "",
-                    tokenHolders: daoCreationRepository.getDAOInfo().getTokenHolders() ?? [{address: '', balance: ''}]
+                    tokenHolders: initTokenHolders
                 });
             }
+            setInitialTokenSupply(initTokenHolders.reduce((sum, holder) => sum + Number(holder.balance), 0));
         }
         init();
     }, []);
@@ -50,10 +54,12 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
     function handleHolderChange(i: number, event: React.ChangeEvent<HTMLInputElement>, field: boolean) {
         const values = [...tokenSettings.tokenHolders];
         values[i] = { ...values[i], [field ? 'address' : 'balance']: event.target.value };
+        const newTotalSupply = values.reduce((sum, holder) => sum + Number(holder.balance), 0);
+        setInitialTokenSupply(newTotalSupply); 
         setTokenSettings({ ...tokenSettings, tokenHolders: values });
         updateTokenHoldersInRepository(values);
     }
-
+    
     function handleRemoveHolder(i: number) {
         const values = [...tokenSettings.tokenHolders];
         if (values.length === 1) {
@@ -61,6 +67,8 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
         } else {
             values.splice(i, 1);
         }
+        const newTotalSupply = values.reduce((sum, holder) => sum + Number(holder.balance), 0);
+        setInitialTokenSupply(newTotalSupply); 
         setTokenSettings({ ...tokenSettings, tokenHolders: values });
         updateTokenHoldersInRepository(values);
     }
@@ -97,6 +105,7 @@ export function useTokenSettingsModelController(daoCreationRepository: DAOCreati
 
     return {
         tokenSettings,
+        initialTotalSupply,
         handleHolderChange,
         handleRemoveHolder,
         handleAddEmptyHolder,

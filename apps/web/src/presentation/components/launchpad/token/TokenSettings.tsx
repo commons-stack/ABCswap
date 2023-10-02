@@ -1,5 +1,4 @@
-import { CloseIcon } from "@chakra-ui/icons";
-import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Text, VStack } from "@chakra-ui/react";
+import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Text, VStack, Image, Tooltip } from "@chakra-ui/react";
 import React from 'react';
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../shared/CustomInput";
@@ -9,13 +8,14 @@ import "../../../../styles.css";
 
 interface TokenSettingProps {
     onStepCompletionChanged: (completed: boolean) => void;
-    daoCreationRepository : DAOCreationRepository;
+    daoCreationRepository: DAOCreationRepository;
 }
 
 export default function TokenHoldersComponent({ onStepCompletionChanged, daoCreationRepository }: TokenSettingProps) {
-    
-    const { 
+
+    const {
         tokenSettings,
+        initialTotalSupply,
         handleHolderChange,
         handleRemoveHolder,
         handleAddEmptyHolder,
@@ -28,16 +28,21 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Tokens</Text>
             <Text fontSize="24px" color="brand.900" pt="32px">Choose your Tokens settings below</Text>
             <Divider paddingTop="24px"
-                    borderColor="brand.900"
-                    borderBottomWidth="1px"
-                    width="100%"
-                    margin="0 auto"
+                borderColor="brand.900"
+                borderBottomWidth="1px"
+                width="100%"
+                margin="0 auto"
             />
             <VStack width="90%">
                 <HStack width="100%">
-                    <FormControl width="70%">
+                    <FormControl width="65%">
                         <FormLabel>
-                            <Text fontSize="16px" color="brand.900">TOKEN NAME</Text>
+                            <HStack>
+                                <Text fontSize="16px" color="brand.900">TOKEN NAME</Text>
+                                <Tooltip label="Token Name is the name you can assign to the token that will be minted when creating this organization.">
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </Tooltip>
+                            </HStack>
                         </FormLabel>
                         <CustomInput
                             placeholder="My Organization Token"
@@ -47,9 +52,14 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                             }}
                         />
                     </FormControl>
-                    <FormControl width="30%">
+                    <FormControl width="35%">
                         <FormLabel>
-                            <Text fontSize="16px" color="brand.900">TOKEN SYMBOL</Text>
+                            <HStack>
+                                <Text fontSize="16px" color="brand.900">TOKEN SYMBOL</Text>
+                                <Tooltip label="Token symbol or ticker is a shortened name (typically in capital letters) that refers to a token or coin on a trading platform. For example: ANT.">
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </Tooltip>
+                            </HStack>
                         </FormLabel>
                         <CustomInput
                             placeholder="MOT"
@@ -61,9 +71,14 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                     </FormControl>
                 </HStack>
                 <HStack width="100%">
-                    <FormControl width="70%">
+                    <FormControl width="65%">
                         <FormLabel>
-                            <Text fontSize="16px" color="brand.900">TOKEN HOLDERS</Text>
+                            <HStack>
+                                <Text fontSize="16px" color="brand.900">TOKEN HOLDERS</Text>
+                                <Tooltip label="Token holders are the individuals who will receive the initial token distribution.">
+                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                </Tooltip>
+                            </HStack>
                         </FormLabel>
                         {tokenSettings.tokenHolders.map((holder, i) => (
                             <InputGroup key={i} mb="17px">
@@ -77,12 +92,12 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                                     }
                                 />
                                 <CustomInputRightAddon onClick={() => handleRemoveHolder(i)} >
-                                    <CloseIcon />
+                                    <Image src="../../../../public/Delete.svg" boxSize="16px" />
                                 </CustomInputRightAddon>
                             </InputGroup>
                         ))}
                     </FormControl>
-                    <FormControl width="30%">
+                    <FormControl width="35%">
                         <FormLabel>
                             <Text fontSize="16px" color="brand.900">BALANCES</Text>
                         </FormLabel>
@@ -101,28 +116,45 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                     </FormControl>
                 </HStack>
                 <HStack w="45%" alignSelf="start" spacing={3}>
-                <Button
-                    onClick={() => {
-                        handleAddEmptyHolder();
-                    }}
-                >
-                    + Add more
-                </Button>
-                <Button>
-                    Import xls
-                </Button>
-            </HStack>
+                    <Button
+                        onClick={() => {
+                            handleAddEmptyHolder();
+                        }}
+                    >
+                        + Add more
+                    </Button>
+                    <Button>
+                        Import xls
+                    </Button>
+                </HStack>
             </VStack>
             <Divider paddingTop="24px"
-                    borderColor="brand.900"
-                    borderBottomWidth="1px"
-                    width="100%"
-                    margin="0 auto"
+                borderColor="brand.900"
+                borderBottomWidth="1px"
+                width="100%"
+                margin="0 auto"
             />
-            <VStack pt="32px">
-                <Text fontSize="16px" color="brand.900">This settings will determine the name and symbol of the token that will be created for your organization. Add members  to define the initial distribution of this token.</Text>
+            <HStack justifyContent="space-between" w="90%">
+                <HStack>
+                    <Text fontSize="16px" color="brand.900">INITIAL TOTAL SUPPLY</Text>
+                    <Tooltip label="ADD!!!">
+                        <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                    </Tooltip>
+                </HStack>
+                <Text>{initialTotalSupply}</Text>
+            </HStack>
+            <Divider paddingTop="0px"
+                borderColor="brand.900"
+                borderBottomWidth="1px"
+                width="100%"
+                margin="0 auto"
+            />
+            <VStack pt="32px" spacing={-1}>
+                <Text fontSize="16px" color="black">Once you set the token name and symbol, you will not be able to change it later.</Text>
+                <Text fontSize="16px" color="black">The addresses you add here will receive the initial token distribution.</Text>
+                <Text fontSize="16px" color="black">The sum of all balances will determine the initial token supply.</Text>
             </VStack>
         </VStack>
-    )
+    );
 }
 

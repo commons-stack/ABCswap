@@ -3,6 +3,8 @@ import { DAOCreationRepository } from "../../../../domain/repository/DAOCreation
 import { setABCConfig } from "../../../../domain/use-case/DAOCreationUseCases";
 import { ABCConfig } from "../../../../domain/model/ABCConfig";
 import { TokenInfo } from "../../../../domain/model/TokenInfo";
+import { fetchBalance, getAccount } from "@wagmi/core";
+import { parseEther } from "viem";
 
 export function useABCSettingsModelController(daoCreationRepository: DAOCreationRepository) {
     const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState<ABCConfig>(new ABCConfig(
@@ -10,11 +12,17 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
         daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
         daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-        new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+        new TokenInfo(
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+            daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+        ),    
     ));
 
     const [collateralTokenList, setCollateralTokenList] = useState<TokenInfo[]>([]);
-
+    const [enoughBalance, setEnoughBalance] = useState<boolean>(true);
+    
     useEffect(() => {
         async function init() {
             await daoCreationRepository.loadDAOInfo();
@@ -23,7 +31,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
                 daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-                new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+                new TokenInfo(
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                    daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+                ),            
             ));
             await daoCreationRepository.getDAOCompatibleTokens().then((tokens) => {
                 setCollateralTokenList(tokens);
@@ -32,6 +45,27 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         init();
     }, []);
 
+    useEffect(() => {
+        async function checkBalance() {
+            const account = await getAccount();
+            const balance = await fetchBalance({
+                address: account.address as `0x${string}`,
+                token: daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress as `0x${string}`
+            });
+            const initialBalance = daoCreationRepository?.getDAOInfo()?.getABCConfig()?.getReserveInitialBalance() ?? 0
+            const parsedInitialBalance = parseEther(String(initialBalance));
+            if (initialBalance && balance.value >= parsedInitialBalance || initialBalance == 0) {
+                setEnoughBalance(true);
+            } else {
+                setEnoughBalance(false);
+            }   
+            console.log(enoughBalance);
+        }
+        checkBalance();
+    }, [
+        augmentedBondingCurveSettings.reserveInitialBalance,
+        augmentedBondingCurveSettings.collateralToken?.tokenSymbol
+    ])
 
     const handleReserveRatioChange = (value: string) => {
         const re = /[^0-9]+/g;
@@ -41,7 +75,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -55,7 +94,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
                 daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
                 daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-                new TokenInfo(selectedToken.tokenAddress, selectedToken.tokenSymbol),
+                new TokenInfo(selectedToken.tokenName, selectedToken.tokenSymbol, selectedToken.tokenAddress, selectedToken.tokenLogo)
             );
 
             setAugmentedBondingCurveSettings(updatedSettings);
@@ -69,7 +108,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             value,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -81,7 +125,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             value,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -93,7 +142,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             value,
-            new TokenInfo(daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '', daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? ''),
+            new TokenInfo(
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenAddress ?? '',
+                daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenLogo ?? '',
+            ),
         );
         setAugmentedBondingCurveSettings(updatedSettings);
         setABCConfig(updatedSettings, daoCreationRepository);
@@ -102,6 +156,7 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
     return {
         augmentedBondingCurveSettings,
         collateralTokenList,
+        enoughBalance,
         handleReserveRatioChange,
         handleCollateralTokenChange,
         handleInitialReserveChange,
