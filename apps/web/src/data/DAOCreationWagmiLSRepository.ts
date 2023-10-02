@@ -47,8 +47,8 @@ export class DAOCreationWagmiLSRepository implements DAOCreationRepository {
                     savedInfo.votingConfig.voteDurationMinutes
                 ),
                 new TokenInfo(
-                    savedInfo.tokenInfo.name,
-                    savedInfo.tokenInfo.symbol,
+                    savedInfo.tokenInfo.tokenName,
+                    savedInfo.tokenInfo.tokenSymbol,
                     savedInfo.tokenInfo.address
                 ), 
                 savedInfo.tokenHolders,
