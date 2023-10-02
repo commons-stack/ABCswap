@@ -25,7 +25,7 @@ export const CustomConnectButton = () => {
                                 userSelect: 'none',
                             },
                         })}
-                        className={'css-hpbuxn connect-button-wrapper ' + (connected ? 'connected ' : 'disconnected ') + (chain?.unsupported ? 'unsupported ' : '')}
+                        className={'connect-button-wrapper ' + (connected ? 'connected ' : 'disconnected ') + (chain?.unsupported ? 'unsupported ' : '')}
                     >
                         {(() => {
                             if (!connected) {
@@ -63,7 +63,7 @@ export const CustomConnectButton = () => {
                                                 backgroundColor: 'var(--chakra-colors-brand-500)',
                                                 color:'var(--chakra-colors-brand-900)',
                                                 margin: "var(--chain-icon-margin) 0px",
-                                                border: "1px solid var(--chakra-colors-brand-900)",
+                                                border: "1px solid var(--chakra-colors-brand-1200)",
                                             }}
                                         >
                                             {
