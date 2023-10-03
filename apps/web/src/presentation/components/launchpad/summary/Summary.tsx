@@ -1,6 +1,5 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, HStack, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import { useDAOCreationSummaryModelController } from "./DAOCreationSummaryModelController";
@@ -20,17 +19,10 @@ export default function Summary({daoCreationRepository} : SummaryViewProps) {
         tokenInfo,
         tokenHolders,
         abcConfig,
-        handleLaunch,
     } = useDAOCreationSummaryModelController(daoCreationRepository);
 
-
-    
-
-    // Initialize useRouter
-    const navigate = useNavigate()
-
     // Handle user confirmation of summary
-    const [validated, setValidated] = useState(false)
+    const [_validated, setValidated] = useState(false)
 
 
     return (
