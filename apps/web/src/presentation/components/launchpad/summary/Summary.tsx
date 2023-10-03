@@ -146,10 +146,6 @@ export default function Summary({daoCreationRepository} : SummaryViewProps) {
                             </AccordionItem>
                         </Accordion>
                         <Checkbox onChange={(e) => setValidated(e.target.checked)}>Did you verify that all the information is correct?</Checkbox>
-                        <HStack>
-                            <Button alignSelf="flex-start" onClick={() => navigate('/augmented-bonding-curve')} colorScheme="blue">Back</Button>
-                            <Button alignSelf="flex-end" isDisabled={!validated} onClick={handleLaunch} colorScheme="red">Launch</Button>
-                        </HStack>
                     </VStack>
                 </Box>
             )}

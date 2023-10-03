@@ -115,7 +115,7 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
             title: 'Choose DAO name',
             content: <OrganizationName onStepCompletionChanged={organizationNameChanged} daoCreationRepository={daoCreationRepository}/>,
             index: 1,
-            completed: organizationNameStatus
+            completed: organizationNameStatus,
         },
         {
             title: 'Configure voting',
@@ -139,7 +139,8 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
             title: 'Launch your DAO',
             content: <Summary daoCreationRepository={daoCreationRepository}/>,
             index: 5,
-            completed: false
+            completed: false,
+            nextStepText: 'Launch'
         }
     ]
 

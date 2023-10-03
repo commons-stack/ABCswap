@@ -1,15 +1,15 @@
-import { Box, Button, HStack, VStack, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, VStack, Flex, Image, Text, Step } from "@chakra-ui/react";
 
 type Step = {
     title: string;
     content: JSX.Element;
     index: number;
     completed: boolean;
+    nextStepText?: string;
+    previousStepText?: string;
 }
 
 interface DAOLayoutProps {
-    nextStepText?: string,
-    previousStepCheck?: string,
     onNextStep: () => void,
     onPreviousStep: () => void,
     steps: Step[];
@@ -99,11 +99,13 @@ export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousSt
                 {steps[currentStep].content}
 
                 <HStack spacing={4} pb="50px" pt="40px">
-                    <Button onClick={() => onPreviousStep()}  variant="outline">Back</Button>
+                    <Button onClick={() => onPreviousStep()}  variant="outline">
+                        {steps[currentStep].previousStepText ? steps[currentStep].previousStepText : 'Previous'}
+                    </Button>
                     <Button
                         onClick={() => onNextStep()}
                         isDisabled={!steps[currentStep].completed}>
-                        Next
+                        {steps[currentStep].nextStepText ? steps[currentStep].nextStepText : 'Next'}
                     </Button>
                 </HStack>
             </VStack>
