@@ -95,8 +95,12 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         setAugmentedBondingCurveSettingsStatus(data);
     }
 
-    const stepChanged = (data: number) => {
-        setStep(data);
+    const nextStep = () => {
+        setStep(step + 1);
+    }
+
+    const previousStep = () => {
+        setStep(step - 1);
     }
 
     // Steps
@@ -145,6 +149,7 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         step,
         steps,
         handleStart,
-        stepChanged,
+        nextStep,
+        previousStep
     }
 }

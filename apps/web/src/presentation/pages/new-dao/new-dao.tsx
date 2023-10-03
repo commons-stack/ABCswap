@@ -16,13 +16,14 @@ export default function NewDao({daoCreationRepository} : NewDaoProps) {
         step,
         steps,
         handleStart,
-        stepChanged,
+        nextStep,
+        previousStep
     } = useNewDaoModelController({daoCreationRepository});
 
     if (step !== 0) {
         return (
             <>
-                <DAOLayout steps={steps} currentStep={step} onStepChanged={stepChanged} />
+                <DAOLayout steps={steps} currentStep={step} onNextStep={nextStep} onPreviousStep={previousStep}/>
             </>
         )
     } else {
