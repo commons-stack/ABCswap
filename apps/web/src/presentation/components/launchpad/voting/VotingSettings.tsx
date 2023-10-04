@@ -53,7 +53,7 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                             <SliderTrack><SliderFilledTrack /></SliderTrack>
                             <SliderThumb />
                         </Slider>
-                        <InputGroup width="20%">
+                        <InputGroup width="20%" ml="10px">
                             <CustomInput
                                 rightAddon={true}
                                 value={votingSettings.support ?? 0}
@@ -85,7 +85,7 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                             <SliderTrack><SliderFilledTrack /></SliderTrack>
                             <SliderThumb />
                         </Slider>
-                        <InputGroup width="20%">
+                        <InputGroup width="20%" ml="10px">
                             <CustomInput
                                 rightAddon={true}
                                 value={votingSettings.minApproval ?? 0}
