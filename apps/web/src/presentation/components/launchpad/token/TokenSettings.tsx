@@ -135,13 +135,8 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                 margin="0 auto"
             />
             <HStack justifyContent="space-between" w="90%">
-                <HStack>
-                    <Text fontSize="16px" color="brand.900">INITIAL TOTAL SUPPLY</Text>
-                    <Tooltip label="ADD!!!">
-                        <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
-                    </Tooltip>
-                </HStack>
-                <Text>{initialTotalSupply}</Text>
+                <Text fontSize="16px" color="brand.900">INITIAL SUPPLY</Text>
+                <Text mr="10px" as="b" color="brand.900">{initialTotalSupply}</Text>
             </HStack>
             <Divider paddingTop="0px"
                 borderColor="brand.900"
@@ -150,9 +145,9 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                 margin="0 auto"
             />
             <VStack pt="32px" spacing={-1}>
-                <Text fontSize="16px" color="black">Once you set the token name and symbol, you will not be able to change it later.</Text>
-                <Text fontSize="16px" color="black">The addresses you add here will receive the initial token distribution.</Text>
-                <Text fontSize="16px" color="black">The sum of all balances will determine the initial token supply.</Text>
+                <Text fontSize="16px" color="black">Attention! The token name and symbol cannot easily be changed later.</Text>
+                <Text fontSize="16px" color="black">Also, the above addresses will receive the initial token distribution, </Text>
+                <Text fontSize="16px" color="black">the sum of which determines  the initial supply for the token.</Text>
             </VStack>
         </VStack>
     );
