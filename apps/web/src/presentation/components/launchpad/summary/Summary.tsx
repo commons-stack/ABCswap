@@ -1,14 +1,15 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
 import { useDAOCreationSummaryModelController } from "./DAOCreationSummaryModelController";
 
 interface SummaryViewProps {
+    onStepCompletionChanged: (completed: boolean) => void;
     daoCreationRepository : DAOCreationRepository;
 };
 
-export default function Summary({daoCreationRepository} : SummaryViewProps) {
+export default function Summary({onStepCompletionChanged, daoCreationRepository} : SummaryViewProps) {
     // use cases
     const {
         isSending,
@@ -24,6 +25,12 @@ export default function Summary({daoCreationRepository} : SummaryViewProps) {
     // Handle user confirmation of summary
     const [_validated, setValidated] = useState(false)
 
+    useEffect(() => {
+        const isCompleted = _validated;
+        if (onStepCompletionChanged) {
+            onStepCompletionChanged(isCompleted);
+        }
+    }, [_validated]);
 
     return (
         <div>
@@ -137,6 +144,10 @@ export default function Summary({daoCreationRepository} : SummaryViewProps) {
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
+                        <VStack spacing={-1}>
+                            <Text fontSize="16px">Review all the settings.</Text>
+                            <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
+                        </VStack>
                         <Checkbox onChange={(e) => setValidated(e.target.checked)}>Did you verify that all the information is correct?</Checkbox>
                     </VStack>
                 </Box>
