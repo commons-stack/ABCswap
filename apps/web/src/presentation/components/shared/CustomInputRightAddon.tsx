@@ -8,7 +8,7 @@ export default function CustomInputRightAddon(props: any) {
             bg="white"
             color="black"
             border="1px solid"
-            borderRadius="15px"
+            borderRadius="8px"
             borderLeft="none !important"
             borderTopLeftRadius="0 !important"
             borderBottomLeftRadius="0 !important"
