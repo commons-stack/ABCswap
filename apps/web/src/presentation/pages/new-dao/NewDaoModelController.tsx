@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useAccount, useBalance } from 'wagmi'
 import { parseEther } from 'viem'
 import { DAOCreationRepository } from '../../../domain/repository/DAOCreationRepository'
+import { launchDAO } from '../../../domain/use-case/DAOCreationUseCases'
 
 type VotingSettings = {
     support: number,
@@ -78,6 +79,9 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
     // Augmented bonding curve settings
     const [augmentedBondingCurveSettingsStatus, setAugmentedBondingCurveSettingsStatus] = useState<boolean>(false);
 
+    // Summary status
+    const [summaryStatus, setSummaryStatus] = useState<boolean>(false);
+
     // Handle childrent components events
     const organizationNameChanged = (data: boolean) => {
         setOrganizationNameStatus(data);
@@ -93,6 +97,10 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
 
     const augmentedBondingCurveSettingsChanged = (data: boolean) => {
         setAugmentedBondingCurveSettingsStatus(data);
+    }
+
+    const summaryChanged = (data: boolean) => {
+        setSummaryStatus(data);
     }
 
     const nextStep = () => {
@@ -137,10 +145,11 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         },
         {
             title: 'Launch your DAO',
-            content: <Summary daoCreationRepository={daoCreationRepository}/>,
+            content: <Summary onStepCompletionChanged={summaryChanged} daoCreationRepository={daoCreationRepository}/>,
             index: 5,
-            completed: false,
-            nextStepText: 'Launch'
+            completed: summaryStatus,
+            nextStepText: 'Launch',
+            nextStepAction: () => launchDAO(daoCreationRepository)
         }
     ]
 

@@ -7,6 +7,7 @@ type Step = {
     completed: boolean;
     nextStepText?: string;
     previousStepText?: string;
+    lastStepAction?: () => void;
 }
 
 interface DAOLayoutProps {
@@ -17,6 +18,8 @@ interface DAOLayoutProps {
 }
 
 export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousStep }: DAOLayoutProps) {
+    console.log(steps[currentStep].lastStepAction);
+    
     return (
         <Flex justify="center" align="center" height="auto" bg="brand.100" pb="100px">
             <VStack
@@ -99,11 +102,19 @@ export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousSt
                 {steps[currentStep].content}
 
                 <HStack spacing={4} pb="50px" pt="40px">
-                    <Button onClick={() => onPreviousStep()}  variant="outline">
+                    <Button onClick={() => onPreviousStep()} variant="outline">
                         {steps[currentStep].previousStepText ? steps[currentStep].previousStepText : 'Previous'}
                     </Button>
                     <Button
-                        onClick={() => onNextStep()}
+                        onClick={() => {
+                            console.log(steps[currentStep + 1]);
+                            const action = steps[currentStep + 1].lastStepAction;
+                            if (typeof action === "function") {
+                                action();                                
+                            } else {
+                                onNextStep();
+                            }
+                        }}
                         isDisabled={!steps[currentStep].completed}>
                         {steps[currentStep].nextStepText ? steps[currentStep].nextStepText : 'Next'}
                     </Button>
