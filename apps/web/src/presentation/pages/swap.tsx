@@ -1,12 +1,22 @@
+import { useState } from 'react'
 import SimpleConvert from '../components/swap/SimpleConvert'
+import SwapHome from '../components/swap/SwapHome';
 
-function Swap() {
+export default function Swap() {
 
-  return (
-    <>
-      <SimpleConvert />
-    </>
-  )
+  const [start, setStart] = useState(false);
+
+  if(start) {
+    return (
+      <>
+        <SimpleConvert />
+      </>
+    )
+  } else {
+    return(
+      <>
+        <SwapHome onNextButtonClick={setStart} />
+      </>
+    )
+  }
 }
-
-export default Swap
