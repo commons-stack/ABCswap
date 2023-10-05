@@ -1,12 +1,30 @@
+import { useState } from 'react'
 import SimpleConvert from '../components/swap/SimpleConvert'
+import SwapHome from '../components/swap/SwapHome';
 
-function Swap() {
+export default function Swap() {
 
-  return (
-    <>
-      <SimpleConvert />
-    </>
-  )
+  const [start, setStart] = useState(false);
+  const [selectedDao, setSelectedDao] = useState<string>("");
+
+  const handleNextButtonClick = (clicked: boolean, dao: string) => {
+    setStart(clicked);
+    setSelectedDao(dao);
+  };
+
+  console.log(selectedDao);
+
+  if(start) {
+    return (
+      <>
+        <SimpleConvert dao={selectedDao}/>
+      </>
+    )
+  } else {
+    return(
+      <>
+        <SwapHome onNextButtonClick={handleNextButtonClick} />
+      </>
+    )
+  }
 }
-
-export default Swap
