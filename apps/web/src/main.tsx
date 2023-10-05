@@ -11,7 +11,7 @@ import App from './App.tsx'
 import Launchpad from './presentation/pages/launchpad';
 import Swap from './presentation/pages/swap';
 import { createHashRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
-import NewDao from './presentation/pages/new-dao.tsx';
+import NewDao from './presentation/pages/new-dao/new-dao.tsx';
 import { TransactionProvider } from './presentation/providers/TransactionProvider.tsx';
 import { DAOCreationWagmiLSRepository } from './data/DAOCreationWagmiLSRepository.ts';
 

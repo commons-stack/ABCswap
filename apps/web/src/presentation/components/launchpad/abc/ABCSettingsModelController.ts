@@ -59,7 +59,6 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
             } else {
                 setEnoughBalance(false);
             }   
-            console.log(enoughBalance);
         }
         checkBalance();
     }, [

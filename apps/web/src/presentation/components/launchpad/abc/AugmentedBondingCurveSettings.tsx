@@ -99,7 +99,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                         </FormLabel>
                         <Box>
                             <Flex>
-                                <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="15px" borderBottomLeftRadius="15px" value={augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol() || ''} onChange={handleCollateralTokenChange}>
+                                <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="8px" borderBottomLeftRadius="8px" value={augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol() || ''} onChange={handleCollateralTokenChange}>
                                     {collateralTokenList.map((token) => (
                                         <option key={token.tokenAddress} value={token.tokenSymbol}>
                                             <HStack>
@@ -109,7 +109,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                                         </option>
                                     ))}
                                 </Select>
-                                <CustomInput placeholder="Enter value" borderRadius="15px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number" />
+                                <CustomInput placeholder="Enter value" borderRadius="8px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number" />
                             </Flex>
                         </Box>
                     </FormControl>

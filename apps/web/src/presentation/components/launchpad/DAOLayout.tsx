@@ -1,19 +1,25 @@
-import { Box, Button, HStack, VStack, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, VStack, Flex, Image, Text, Step } from "@chakra-ui/react";
 
 type Step = {
     title: string;
     content: JSX.Element;
     index: number;
     completed: boolean;
+    nextStepText?: string;
+    previousStepText?: string;
+    lastStepAction?: () => void;
 }
 
 interface DAOLayoutProps {
+    onNextStep: () => void,
+    onPreviousStep: () => void,
     steps: Step[];
     currentStep: number;
-    onStepChanged: (data: number) => void;
 }
 
-export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayoutProps) {
+export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousStep }: DAOLayoutProps) {
+    console.log(steps[currentStep].lastStepAction);
+    
     return (
         <Flex justify="center" align="center" height="auto" bg="brand.100" pb="100px">
             <VStack
@@ -96,11 +102,21 @@ export default function DAOLayout({ steps, currentStep, onStepChanged }: DAOLayo
                 {steps[currentStep].content}
 
                 <HStack spacing={4} pb="50px" pt="40px">
-                    <Button onClick={() => onStepChanged(currentStep - 1)} variant="outline">Back</Button>
+                    <Button onClick={() => onPreviousStep()} variant="outline">
+                        {steps[currentStep].previousStepText ? steps[currentStep].previousStepText : 'Previous'}
+                    </Button>
                     <Button
-                        onClick={() => onStepChanged(currentStep + 1)}
+                        onClick={() => {
+                            console.log(steps[currentStep + 1]);
+                            const action = steps[currentStep + 1].lastStepAction;
+                            if (typeof action === "function") {
+                                action();                                
+                            } else {
+                                onNextStep();
+                            }
+                        }}
                         isDisabled={!steps[currentStep].completed}>
-                        Next
+                        {steps[currentStep].nextStepText ? steps[currentStep].nextStepText : 'Next'}
                     </Button>
                 </HStack>
             </VStack>
