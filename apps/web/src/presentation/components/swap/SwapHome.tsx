@@ -4,7 +4,7 @@ import CustomInput from '../shared/CustomInput';
 import CustomInputRightAddon from '../shared/CustomInputRightAddon';
 
 interface SwapHomeProps {
-    onNextButtonClick: (clicked: boolean) => void;
+    onNextButtonClick: (clicked: boolean, dao: string) => void;
 }
 
 export default function SwapHome({onNextButtonClick}: SwapHomeProps) {
@@ -67,7 +67,7 @@ export default function SwapHome({onNextButtonClick}: SwapHomeProps) {
                         {userInteracted ? (dao.length > 0 ? <Image src="../../../../public/Check.svg" boxSize="24px" /> : <Image src="../../../../public/Error.svg" boxSize="24px" />) : ""}
                     </CustomInputRightAddon>
                 </InputGroup>
-                <Button mt="40px" onClick={() => onNextButtonClick(true)} disabled={!completed} w="310px">Next</Button>
+                <Button mt="40px" onClick={() => onNextButtonClick(true, dao)} disabled={!completed} w="310px">Next</Button>
             </VStack>
         </VStack>
     )
