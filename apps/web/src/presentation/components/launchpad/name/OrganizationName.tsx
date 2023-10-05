@@ -1,8 +1,8 @@
 import { Box, InputGroup, Text, VStack, Image } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import CustomInput from "../../shared/CustomInput";
-import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
+import CustomInput from "../../../../../../shared/presentation/components/CustomInput";
+import CustomInputRightAddon from "../../../../../../shared/presentation/components/CustomInputRightAddon";
 import { useDAONameModelController } from "./DAONameModelController";
 import "../../../../styles.css";
 

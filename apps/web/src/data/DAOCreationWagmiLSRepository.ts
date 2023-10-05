@@ -1,7 +1,7 @@
 import { Abi } from "viem";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
-import { knownContracts } from '../../config.json';
-import newDaoWithABCAbi from '../../utils/abi/augmented-bonding-curve.json';
+import { knownContracts } from '../../../shared/config.json';
+import newDaoWithABCAbi from '../../../shared/utils/abi/augmented-bonding-curve.json';
 import { DAOInfoStatus } from "../domain/enum/DAOInfoStatus";
 import { ABCConfig } from "../domain/model/ABCConfig";
 import { DAOCreationResult, DAOCreationResultStatus } from "../domain/model/DAOCreationResult";

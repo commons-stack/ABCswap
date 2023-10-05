@@ -1,20 +1,20 @@
-import { collateral, bonded } from '../../../../config.json';
+import { collateral, bonded } from '../../../../shared/config.json';
 import { Button, Checkbox, Flex, Input, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { fetchBalance } from '@wagmi/core';
-import { getCollateral } from '../../../../utils/getCollateral';
-import { getBondingCurvePrice } from '../../../../utils/getBondingCurvePrice';
-import { getTributePcts } from '../../../../utils/getTributePcts';
+import { getCollateral } from '../../../../shared/utils/getCollateral';
+import { getBondingCurvePrice } from '../../utils/getBondingCurvePrice';
+import { getTributePcts } from '../../utils/getTributePcts';
 import { formatEther, formatUnits, parseUnits } from 'viem';
-import Transaction from '../TransactionModal';
+import Transaction from './TransactionModal';
 
-import useProcessTransactions from '../../hooks/useProcessTransactions';
-import useConvertSteps from '../../hooks/useConvertSteps';
+import useProcessTransactions from '../../../../shared/presentation/hooks/useProcessTransactions';
+import useConvertSteps from '../../../../shared/presentation/hooks/useConvertSteps';
 
 import { Image, VStack, HStack, Box, InputGroup } from "@chakra-ui/react";
-import CustomInput from '../shared/CustomInput';
-import CustomInputRightAddon from '../shared/CustomInputRightAddon';
+import CustomInput from '../../../../shared/presentation/components/CustomInput';
+import CustomInputRightAddon from '../../../../shared/presentation/components/CustomInputRightAddon';
 
 interface SwapHomeProps {
     dao: string;

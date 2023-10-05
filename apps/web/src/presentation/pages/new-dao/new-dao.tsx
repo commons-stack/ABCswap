@@ -1,5 +1,5 @@
 import { Box, HStack, Text, VStack, Image, Button } from '@chakra-ui/react'
-import { CustomConnectButtonLong } from '../../components/shared/ConnectButtonLong'
+import { CustomConnectButtonLong } from '../../../../../shared/presentation/components/ConnectButtonLong'
 import DAOLayout from '../../components/launchpad/DAOLayout'
 import { DAOCreationRepository } from '../../../domain/repository/DAOCreationRepository'
 import { useNewDaoModelController } from './NewDaoModelController'

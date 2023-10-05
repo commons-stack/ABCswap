@@ -1,5 +1,6 @@
 import { Input } from "@chakra-ui/react";
 import "./CustomInput.css";
+import React from "react"
 
 
 type CustomInputProps = {

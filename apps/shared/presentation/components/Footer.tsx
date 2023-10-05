@@ -1,4 +1,4 @@
-import { Text, Box, HStack, VStack, Divider, Image } from "@chakra-ui/react";
+import { Box, Divider, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import SubscribeButton from "./footer/SubscribeButton";
 import SubscribeInput from "./footer/SubscribeInput";
 

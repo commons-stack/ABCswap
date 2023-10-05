@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import SimpleConvert from '../components/swap/SimpleConvert'
-import SwapHome from '../components/swap/SwapHome';
+import SimpleConvert from '../components/SimpleConvert'
+import SwapHome from '../components/SwapHome';
 
 export default function Swap() {
 

@@ -1,7 +1,7 @@
 import { Divider, HStack, Text, VStack, Image, Button, InputGroup } from '@chakra-ui/react';
 import { useState } from 'react';
-import CustomInput from '../shared/CustomInput';
-import CustomInputRightAddon from '../shared/CustomInputRightAddon';
+import CustomInput from '../../../..//shared/presentation/components/CustomInput';
+import CustomInputRightAddon from '../../../..//shared/presentation/components/CustomInputRightAddon';
 
 interface SwapHomeProps {
     onNextButtonClick: (clicked: boolean, dao: string) => void;

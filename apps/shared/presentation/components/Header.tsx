@@ -1,4 +1,4 @@
-import { Text, Box, HStack, Image } from "@chakra-ui/react"
+import { Box, HStack, Image, Text } from "@chakra-ui/react"
 import { CustomConnectButton } from "./ConnectButton"
 
 export default function Header() {

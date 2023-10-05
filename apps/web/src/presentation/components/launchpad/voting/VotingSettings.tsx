@@ -1,7 +1,7 @@
 import { FormControl, FormLabel, HStack, InputGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, VStack, Image, Divider, Tooltip } from "@chakra-ui/react";
 import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import CustomInput from "../../shared/CustomInput";
-import CustomInputRightAddon from "../../shared/CustomInputRightAddon";
+import CustomInput from "../../../../../../shared/presentation/components/CustomInput";
+import CustomInputRightAddon from "../../../../../../shared/presentation/components/CustomInputRightAddon";
 import { useVotingSettingsModelController } from "./VotingSettingsModelController";
 import "../../../../styles.css";
 
