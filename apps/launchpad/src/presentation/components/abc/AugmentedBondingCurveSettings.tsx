@@ -4,6 +4,7 @@ import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRep
 import CustomInput from "../../../../../shared/src/presentation/components/CustomInput";
 import CustomInputRightAddon from "../../../../../shared/src/presentation/components/CustomInputRightAddon";
 import { useABCSettingsModelController } from "./ABCSettingsModelController";
+import ABCGraph from "../../../../../shared/src/presentation/components/abcgraph/ABCGraph";
 
 interface AugmentedBondingCurveSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
@@ -143,6 +144,12 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                             </InputGroup>
                         </FormControl>
                     </HStack>
+                </VStack>
+                <VStack minW="400px" w="65%" h="100%" alignItems="center" justifyContent="center">
+                    <ABCGraph
+                        style={{ margin:"16px"}} 
+                        reserveInitialBalance={augmentedBondingCurveSettings.getReserveInitialBalance()} 
+                        reserveRatio={augmentedBondingCurveSettings.getReserveRatio()}/>
                 </VStack>
             </HStack>
             <Divider paddingTop="24px"
