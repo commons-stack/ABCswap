@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import { setTokenHolders, setTokenInfo } from "../../../../domain/use-case/DAOCreationUseCases";
-import { TokenHolder } from "../../../../domain/model/TokenHolder";
-import { TokenInfo } from "../../../../domain/model/TokenInfo";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
+import { setTokenHolders, setTokenInfo } from "../../../domain/use-case/DAOCreationUseCases";
+import { TokenHolder } from "../../../domain/model/TokenHolder";
+import { TokenInfo } from "../../../domain/model/TokenInfo";
 import { tokenHolderIsValid } from "./TokenSettingsValidators";
 
 export interface TokenSettings {

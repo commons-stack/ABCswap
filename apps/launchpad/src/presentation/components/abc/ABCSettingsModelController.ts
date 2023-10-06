@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import { setABCConfig } from "../../../../domain/use-case/DAOCreationUseCases";
-import { ABCConfig } from "../../../../domain/model/ABCConfig";
-import { TokenInfo } from "../../../../domain/model/TokenInfo";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
+import { setABCConfig } from "../../../domain/use-case/DAOCreationUseCases";
+import { ABCConfig } from "../../../domain/model/ABCConfig";
+import { TokenInfo } from "../../../domain/model/TokenInfo";
 import { fetchBalance, getAccount } from "@wagmi/core";
 import { parseEther } from "viem";
 

@@ -1,7 +1,7 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
 import { useDAOCreationSummaryModelController } from "./DAOCreationSummaryModelController";
 
 interface SummaryViewProps {

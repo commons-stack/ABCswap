@@ -1,8 +1,8 @@
 import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack, Tooltip } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import CustomInput from "../../../../../../shared/presentation/components/CustomInput";
-import CustomInputRightAddon from "../../../../../../shared/presentation/components/CustomInputRightAddon";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
+import CustomInput from "../../../../../shared/presentation/components/CustomInput";
+import CustomInputRightAddon from "../../../../../shared/presentation/components/CustomInputRightAddon";
 import { useABCSettingsModelController } from "./ABCSettingsModelController";
 
 interface AugmentedBondingCurveSettingsProps {

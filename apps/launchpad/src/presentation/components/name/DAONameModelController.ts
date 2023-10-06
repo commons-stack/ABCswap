@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import { setDAOName } from "../../../../domain/use-case/DAOCreationUseCases";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
+import { setDAOName } from "../../../domain/use-case/DAOCreationUseCases";
 
 export function useDAONameModelController(daoCreationRepository: DAOCreationRepository) {
     const [organizationName, setOrganizationName] = useState<string>('');

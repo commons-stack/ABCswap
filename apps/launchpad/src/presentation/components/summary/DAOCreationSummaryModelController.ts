@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useTransaction } from 'wagmi';
-import { VotingConfig } from "../../../../domain/model/VotingConfig";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
+import { VotingConfig } from "../../../domain/model/VotingConfig";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
 
-import { ABCConfig } from "../../../../domain/model/ABCConfig";
-import { DAOCreationResult, DAOCreationResultStatus } from "../../../../domain/model/DAOCreationResult";
-import { TokenHolder } from "../../../../domain/model/TokenHolder";
-import { TokenInfo } from "../../../../domain/model/TokenInfo";
-import { launchDAO } from "../../../../domain/use-case/DAOCreationUseCases";
+import { ABCConfig } from "../../../domain/model/ABCConfig";
+import { DAOCreationResult, DAOCreationResultStatus } from "../../../domain/model/DAOCreationResult";
+import { TokenHolder } from "../../../domain/model/TokenHolder";
+import { TokenInfo } from "../../../domain/model/TokenInfo";
+import { launchDAO } from "../../../domain/use-case/DAOCreationUseCases";
 
 export function useDAOCreationSummaryModelController(daoCreationRepository: DAOCreationRepository) {
     const [isSending, setIsSending] = useState(false);

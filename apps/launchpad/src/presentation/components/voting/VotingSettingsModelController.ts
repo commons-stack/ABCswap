@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { DAOCreationRepository } from "../../../../domain/repository/DAOCreationRepository";
-import { VotingConfig } from "../../../../domain/model/VotingConfig";
-import { setVotingConfig } from "../../../../domain/use-case/DAOCreationUseCases";
+import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
+import { VotingConfig } from "../../../domain/model/VotingConfig";
+import { setVotingConfig } from "../../../domain/use-case/DAOCreationUseCases";
 
 export type VotingSettings = {
     support: number,
