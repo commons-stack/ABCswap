@@ -1,8 +1,8 @@
 import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Text, VStack, Image, Tooltip } from "@chakra-ui/react";
 import React from 'react';
 import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
-import CustomInput from "../../../../../shared/presentation/components/CustomInput";
-import CustomInputRightAddon from "../../../../../shared/presentation/components//CustomInputRightAddon";
+import CustomInput from "../../../../../shared/src/presentation/components/CustomInput";
+import CustomInputRightAddon from "../../../../../shared/src/presentation/components//CustomInputRightAddon";
 import { useTokenSettingsModelController } from "./TokenSettingsModelController";
 import "../../../styles.css";
 

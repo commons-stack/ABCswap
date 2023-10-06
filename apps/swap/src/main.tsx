@@ -7,10 +7,10 @@ import { Route, RouterProvider, createHashRouter, createRoutesFromElements } fro
 import { WagmiConfig } from "wagmi";
 import { chains, wagmiConfig } from "../wagmi";
 import App from './App.tsx';
-import '../../shared/polyfills.ts';
+import '../../shared/src/polyfills.ts';
 import Swap from './presentation/pages/swap';
-import { TransactionProvider } from '../../shared/presentation/providers/TransactionProvider.tsx';
-import theme from '../../shared/presentation/theme/index.ts';
+import { TransactionProvider } from '../../shared/src/presentation/providers/TransactionProvider.tsx';
+import theme from '../../shared/src/presentation/theme/index.ts';
 
 const router = createHashRouter(
   createRoutesFromElements(

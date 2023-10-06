@@ -1,4 +1,4 @@
-import { knownContracts } from '../../config.json';
+import { knownContracts } from '../../../config.json';
 import bondingCurveAbi from '../../utils/abi/augmented-bonding-curve.json';
 import tokenAbi from '../../utils/abi/token.json';
 import { Abi, parseUnits } from 'viem';

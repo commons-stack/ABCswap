@@ -3,18 +3,18 @@ import { Button, Checkbox, Flex, Input, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { fetchBalance } from '@wagmi/core';
-import { getCollateral } from '../../../../shared/utils/getCollateral';
+import { getCollateral } from '../../../../shared/src/utils/getCollateral';
 import { getBondingCurvePrice } from '../../utils/getBondingCurvePrice';
 import { getTributePcts } from '../../utils/getTributePcts';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import Transaction from './TransactionModal';
 
-import useProcessTransactions from '../../../../shared/presentation/hooks/useProcessTransactions';
-import useConvertSteps from '../../../../shared/presentation/hooks/useConvertSteps';
+import useProcessTransactions from '../../../../shared/src/presentation/hooks/useProcessTransactions';
+import useConvertSteps from '../../../../shared/src/presentation/hooks/useConvertSteps';
 
 import { Image, VStack, HStack, Box, InputGroup } from "@chakra-ui/react";
-import CustomInput from '../../../../shared/presentation/components/CustomInput';
-import CustomInputRightAddon from '../../../../shared/presentation/components/CustomInputRightAddon';
+import CustomInput from '../../../../shared/src/presentation/components/CustomInput';
+import CustomInputRightAddon from '../../../../shared/src/presentation/components/CustomInputRightAddon';
 
 interface SwapHomeProps {
     dao: string;
