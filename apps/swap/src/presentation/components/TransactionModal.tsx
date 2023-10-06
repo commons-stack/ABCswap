@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons';
 import { useCallback, useContext } from 'react';
-import { TransactionContext } from '../../../../shared/presentation/providers/TransactionProvider';
+import { TransactionContext } from '../../../../shared/src/presentation/providers/TransactionProvider';
 
 export default function TransactionModal() {
 

@@ -1,8 +1,8 @@
 import { knownContracts } from '../../../shared/config.json';
 import { readContract } from '@wagmi/core';
 import { Abi } from 'viem';
-import bancorAbi from '../../../shared/utils/abi/bancor.json'
-import tokenAbi from '../../../shared/utils/abi/token.json'
+import bancorAbi from '../../../shared/src/utils/abi/bancor.json'
+import tokenAbi from '../../../shared/src/utils/abi/token.json'
 
 type BondingCurvePriceProps = {
     amount: bigint,

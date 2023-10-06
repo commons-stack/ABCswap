@@ -1,5 +1,5 @@
 import { knownContracts } from '../../../shared/config.json';
-import bondingCurveAbi from '../../../shared/utils/abi/augmented-bonding-curve.json'
+import bondingCurveAbi from '../../../shared/src/utils/abi/augmented-bonding-curve.json'
 import { readContract } from '@wagmi/core'
 import { Abi } from 'viem'
 

@@ -1,7 +1,7 @@
 {
-  "name": "swap-web",
+  "name": "shared-web",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -22,8 +22,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
     "viem": "^1.10.13",
-    "wagmi": "^1.4.1",
-    "shared-web": "workspace:*"
+    "wagmi": "^1.4.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
