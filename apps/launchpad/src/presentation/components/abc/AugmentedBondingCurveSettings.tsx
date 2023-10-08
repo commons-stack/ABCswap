@@ -109,7 +109,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                                         </option>
                                     ))}
                                 </Select>
-                                <CustomInput placeholder="Enter value" borderRadius="8px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange(Number(e.target.value))} type="number" />
+                                <CustomInput placeholder="Enter value" borderRadius="8px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={(augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange((e.target.value))} style={{ pattern: "[0-9]" }} />
                             </Flex>
                         </Box>
                     </FormControl>
@@ -124,7 +124,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                             </HStack>
                             </FormLabel>
                             <InputGroup>
-                                <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.entryTribute ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(Number(e.target.value))} type="number" />
+                                <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.entryTribute ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(e.target.value)} style={{ pattern: "[0-9]"}}/>
                                 <CustomInputRightAddon children="%" />
                             </InputGroup>
                         </FormControl>
@@ -138,7 +138,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                             </HStack>
                             </FormLabel>
                             <InputGroup>
-                                <CustomInput rightAddon={true} value={augmentedBondingCurveSettings.exitTribute ?? 0} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(Number(e.target.value))} type="number" />
+                                <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.exitTribute ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(e.target.value)} style={{ pattern: "[0-9]"}} />
                                 <CustomInputRightAddon children="%" />
                             </InputGroup>
                         </FormControl>

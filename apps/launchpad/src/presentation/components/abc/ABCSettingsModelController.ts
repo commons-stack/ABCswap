@@ -101,10 +101,12 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         }
     };
 
-    const handleInitialReserveChange = (value: number) => {
+    const handleInitialReserveChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        const numericValue = Number(value.replaceAll(re, ''));
         const updatedSettings = new ABCConfig(
             daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio ?? 0,
-            value,
+            numericValue,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
             new TokenInfo(
@@ -118,11 +120,13 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         setABCConfig(updatedSettings, daoCreationRepository);
     };
 
-    const handleEntryTributeChange = (value: number) => {
+    const handleEntryTributeChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        const numericValue = Number(value.replaceAll(re, ''));
         const updatedSettings = new ABCConfig(
             daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
-            value,
+            numericValue,
             daoCreationRepository.getDAOInfo().getABCConfig().exitTribute ?? 0,
             new TokenInfo(
                 daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
@@ -135,12 +139,14 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         setABCConfig(updatedSettings, daoCreationRepository);
     };
 
-    const handleExitTributeChange = (value: number) => {
+    const handleExitTributeChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        const numericValue = Number(value.replaceAll(re, ''));
         const updatedSettings = new ABCConfig(
             daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
             daoCreationRepository.getDAOInfo().getABCConfig().entryTribute ?? 0,
-            value,
+            numericValue,
             new TokenInfo(
                 daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenName ?? '',
                 daoCreationRepository.getDAOInfo().getABCConfig().collateralToken?.tokenSymbol ?? '', 
