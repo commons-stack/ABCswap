@@ -1,0 +1,7 @@
+{
+  "name": "hardhat-project",
+  "dependencies": {
+    "@aragon/templates-shared": "^1.0.1",
+    "hardhat": "^2.18.0"
+  }
+}
