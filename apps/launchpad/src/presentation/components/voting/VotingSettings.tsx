@@ -106,27 +106,27 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                     <InputGroup>
                         <CustomInput
                             rightAddon={true}
-                            value={votingSettings.days ?? 0}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDaysChange(Number(e.target.value))}
-                            type="number"
+                            value={(votingSettings.days ?? 0).toString()}
+                            style={{ pattern: "[0-9]" }}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDaysChange(e.target.value)}
                         />
                         <CustomInputRightAddon children="Days" />
                     </InputGroup>
                     <InputGroup>
                         <CustomInput
                             rightAddon={true}
-                            value={votingSettings.hours ?? 0}
-                            type="number"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleHoursChange(Number(e.target.value))}
+                            value={(votingSettings.hours ?? 0).toString()}
+                            style={{ pattern: "[0-9]" }}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleHoursChange(e.target.value)}
                         />
                         <CustomInputRightAddon children="Hours" />
                     </InputGroup>
                     <InputGroup>
                         <CustomInput
                             rightAddon={true}
-                            value={votingSettings.minutes ?? 0}
-                            type="number"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMinutesChange(Number(e.target.value))}
+                            value={(votingSettings.minutes ?? 0).toString()}
+                            style={{ pattern: "[0-9]" }}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMinutesChange(e.target.value)}
                         />
                         <CustomInputRightAddon children="Minutes" />
                     </InputGroup>

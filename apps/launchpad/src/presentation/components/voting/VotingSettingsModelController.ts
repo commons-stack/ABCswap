@@ -76,33 +76,43 @@ export function useVotingSettingsModelController(onStepCompletionChanged: (compl
         updateVotingConfigInRepository(updatedSettings);
     };
 
-    const handleDaysChange = (value: number) => {
+    const handleDaysChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        const numericValue = Number(value.replaceAll(re, ''));
         const updatedSettings = {
             ...votingSettings,
-            days: value
+            days: numericValue
         };
         setVotingSettings(updatedSettings);
         updateVotingConfigInRepository(updatedSettings);
     };
 
-    const handleHoursChange = (value: number) => {
+    const handleHoursChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        let numericValue = Number(value.replaceAll(re, ''));
+        numericValue = numericValue > 23 ? 23 : numericValue;
         const updatedSettings = {
             ...votingSettings,
-            hours: value
+            hours: numericValue
         };
         setVotingSettings(updatedSettings);
         updateVotingConfigInRepository(updatedSettings);
     };
 
-    const handleMinutesChange = (value: number) => {
+    const handleMinutesChange = (value: string) => {
+        const re = /[^0-9]+/g;
+        let numericValue = Number(value.replaceAll(re, ''));
+    
+        numericValue = numericValue > 59 ? 59 : numericValue;
+    
         const updatedSettings = {
             ...votingSettings,
-            minutes: value
+            minutes: numericValue
         };
         setVotingSettings(updatedSettings);
         updateVotingConfigInRepository(updatedSettings);
     };
-
+    
     return {
         handleSupportChange,
         handleMinApprovalChange,
