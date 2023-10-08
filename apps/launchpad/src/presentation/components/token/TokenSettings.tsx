@@ -123,9 +123,9 @@ export default function TokenHoldersComponent({ onStepCompletionChanged, daoCrea
                     >
                         + Add more
                     </Button>
-                    <Button>
+                    {/*<Button>
                         Import xls
-                    </Button>
+                    </Button>*/}
                 </HStack>
             </VStack>
             <Divider paddingTop="24px"

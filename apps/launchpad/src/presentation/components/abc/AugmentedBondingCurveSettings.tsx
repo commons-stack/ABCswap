@@ -48,7 +48,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Augmented Bonding Curve</Text>
             <Text fontSize="24px" color="brand.900" pt="32px">Configure the DAO's ABC parameters</Text>
             <HStack w="100%">
-                <VStack spacing={3} minW="340px" maxW="400px" w="35%" alignSelf="start">
+                <VStack spacing={3} minW="340px" maxW="400px" w="100%" justifyContent="center">
                     <HStack alignSelf="start" w="100%">
                         <FormControl w="100%">
                             <FormLabel>
