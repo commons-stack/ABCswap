@@ -18,6 +18,9 @@
             "BONDED_TOKEN": "0x5dF8339c5E282ee48c0c7cE8A7d01a73D38B3B27",
             "TOKEN_MANAGER": "0x080C696B7bD6d830BF5092Fe7DFcb72B42BdD8b7",
             "NEW_DAO_WITH_ABC": "0xafbb787a94c9bf664294b9d6c7148db538f82f0f"
+        }, 
+        "10": {
+            "NEW_DAO_WITH_ABC": "0x65e4D3410CF41eAa906Ff3685D537a232144A559"
         }
     }
 }
