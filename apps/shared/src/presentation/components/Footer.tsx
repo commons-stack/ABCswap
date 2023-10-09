@@ -1,6 +1,6 @@
-import { Box, Divider, HStack, Image, Text, VStack } from "@chakra-ui/react";
-import SubscribeButton from "./footer/SubscribeButton";
-import SubscribeInput from "./footer/SubscribeInput";
+import { Box } from "@chakra-ui/react";
+//import SubscribeButton from "./footer/SubscribeButton";
+//import SubscribeInput from "./footer/SubscribeInput";
 
 export default function Footer() {
     return (
@@ -10,8 +10,8 @@ export default function Footer() {
             bgColor="brand.900"
             textAlign="center"
         >
-            <HStack>
-                <VStack flex="auto" alignItems="baseline" spacing={0}>
+            {/*<HStack>*/}
+                {/*<VStack flex="auto" alignItems="baseline" spacing={0}>
                     <Text color="brand.500" fontSize="18px" fontWeight="600">Join our newsletter</Text>
                     <Text color="brand.500" fontSize="16px">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
                 </VStack>
@@ -23,20 +23,19 @@ export default function Footer() {
                         </HStack>
                         <Text color="brand.500" fontSize="12px" alignSelf="baseline">By subscribing you agree to with our privacy policy</Text>
                     </VStack>
-                </HStack>
-            </HStack>
+    </HStack>*/}
+            {/*</HStack>
             <Box pt="80px">
                 <Divider
                     borderColor="brand.500"
-                    borderBottomWidth="1px" 
-                    width="100%"            
+                    borderBottomWidth="1px"
+                    width="100%"
                     margin="0 auto"
                 />
-            </Box>
-            <HStack justifyContent="space-between" pt="32px">
-                <Image src="../../..//public/CS Logo.svg" />
+</Box>*/}
+            {/*<HStack justifyContent="space-between" pt="32px">
                 <Text color="brand.500" fontSize="14px">2023 Commons Stack. All rights reserved.</Text>
-            </HStack>
+            </HStack>*/}
         </Box>
     )
 }
