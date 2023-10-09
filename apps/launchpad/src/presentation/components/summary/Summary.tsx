@@ -1,5 +1,6 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Checkbox, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
+import './Summary.css'
 
 import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
 import { useDAOCreationSummaryModelController } from "./DAOCreationSummaryModelController";
@@ -148,7 +149,7 @@ export default function Summary({ onStepCompletionChanged, daoCreationRepository
                             <Text fontSize="16px">Review all the settings.</Text>
                             <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
                         </VStack>
-                        <Checkbox onChange={(e) => setValidated(e.target.checked)} >Did you verify that all the information is correct?</Checkbox>
+                        <Checkbox onChange={(e) => setValidated(e.target.checked)}>Did you verify that all the information is correct?</Checkbox>
                     </VStack>
                 </Box>
             )}

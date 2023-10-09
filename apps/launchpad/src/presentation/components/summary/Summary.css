@@ -1,0 +1,9 @@
+.chakra-checkbox__control {
+    background-color: white;
+    border: 1px solid black !important;
+    border-radius: 0px !important;
+}
+
+.chakra-checkbox__control[data-checked] {
+    background-color: black !important;
+}
