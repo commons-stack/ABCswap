@@ -1,4 +1,4 @@
-import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack, Tooltip, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { Divider, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack, Tooltip, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../../../../shared/src/presentation/components/CustomInput";
