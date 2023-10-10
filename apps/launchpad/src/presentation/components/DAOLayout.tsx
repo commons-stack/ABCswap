@@ -18,7 +18,6 @@ interface DAOLayoutProps {
 }
 
 export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousStep }: DAOLayoutProps) {
-    console.log(steps[currentStep].lastStepAction);
     
     return (
         <Flex justify="center" align="center" height="auto" bg="brand.100" pb="100px">

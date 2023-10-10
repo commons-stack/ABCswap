@@ -3,12 +3,12 @@ import { parseAbi, parseUnits } from 'viem';
 import { DAOInfo } from '../domain/model/DAOInfo';
 
 interface DaoLaunchStepsProps {
-    launcherAddress: string;
+    address: string | undefined;
     DAOInfo: DAOInfo;
 }
 
 export default function useLaunchSteps({
-    launcherAddress,
+    address,
     DAOInfo,
 }: DaoLaunchStepsProps) {
 
@@ -24,8 +24,8 @@ export default function useLaunchSteps({
                     abi: approveAbi,
                     functionName: 'approve',
                     args: [
-                        launcherAddress as `0x${string}`,
-                        parseUnits(DAOInfo.getABCConfig().reserveInitialBalance?.toString()?? "", 16)
+                        address as `0x${string}`,
+                        parseUnits(DAOInfo.getABCConfig().reserveInitialBalance?.toString() ?? "", 16)
                     ]
                 }
             },
@@ -42,13 +42,13 @@ export default function useLaunchSteps({
                         DAOInfo.getTokenHolders().map((holder) => holder.address),
                         DAOInfo.getTokenHolders().map((holder) => holder.balance),
                         [
-                            parseUnits(DAOInfo.getVotingConfig().setSupportRequiredValue.toString(), 4),
-                            parseUnits(DAOInfo.getVotingConfig().getMinimumAcceptanceQuorumValue.toString(), 4),
+                            parseUnits(DAOInfo.getVotingConfig().getSupportRequiredValue.toString() ?? 0, 4),
+                            parseUnits(DAOInfo.getVotingConfig().getMinimumAcceptanceQuorumValue.toString() ?? 0, 4),
                             DAOInfo.getVotingConfig().getVoteTotalDurationInSeconds()
                         ],
                         [
-                            parseUnits(DAOInfo.getABCConfig().getEntryTribute()?.toString()?? "", 16),
-                            parseUnits(DAOInfo.getABCConfig().getExitTribute()?.toString()?? "".toString(), 16),
+                            parseUnits(DAOInfo.getABCConfig().getEntryTribute()?.toString() ?? "", 16),
+                            parseUnits(DAOInfo.getABCConfig().getExitTribute()?.toString() ?? "".toString(), 16),
                             DAOInfo.getABCConfig().collateralToken?.tokenAddress,
                             parseUnits(DAOInfo.getABCConfig().getReserveRatio()?.toString() ?? "", 4),
                             parseUnits(DAOInfo.getABCConfig().getReserveInitialBalance()?.toString() ?? "", 16)

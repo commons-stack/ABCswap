@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react'
 import { useAccount, useBalance } from 'wagmi'
 import { parseEther } from 'viem'
 import { DAOCreationRepository } from '../../../domain/repository/DAOCreationRepository'
-import { launchDAO } from '../../../domain/use-case/DAOCreationUseCases'
+import useProcessTransactions from '../../../../../shared/src/presentation/hooks/useProcessTransactions'
+import useLaunchSteps from '../../../hooks/useLaunchSteps'
 
 type VotingSettings = {
     support: number,
@@ -52,6 +53,7 @@ export function useNewDaoModelController({ daoCreationRepository }: NewDaoProps)
     const { address } = useAccount();
     const [enoughBalance, setEnoughBalance] = useState<boolean>(false);
     const { data: balance } = useBalance({ address });
+    
 
     const [step, setStep] = useState(0);
 
@@ -59,8 +61,10 @@ export function useNewDaoModelController({ daoCreationRepository }: NewDaoProps)
         setStep(1);
     }
 
-    console.log(enoughBalance)
-    console.log(balance?.value)
+    const DAOInfo = daoCreationRepository.getDAOInfo();
+
+    const launchSteps = useLaunchSteps({ address, DAOInfo });
+    const { processTransactions } = useProcessTransactions();
 
     useEffect(() => {
 
@@ -155,7 +159,7 @@ export function useNewDaoModelController({ daoCreationRepository }: NewDaoProps)
             index: 5,
             completed: summaryStatus,
             nextStepText: 'Launch',
-            nextStepAction: () => launchDAO(daoCreationRepository)
+            nextStepAction: () => processTransactions(launchSteps)
         }
     ]
 
