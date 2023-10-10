@@ -1,6 +1,6 @@
 .initial-balance:hover {
-    border-left: 0px;
-    border-right: 1px solid black;
+    border-left: 0px!important;
+    border-right: 1px solid black!important;
 }
 
 .initial-balance {
