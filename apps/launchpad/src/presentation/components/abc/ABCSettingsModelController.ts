@@ -7,6 +7,7 @@ import { fetchBalance, getAccount } from "@wagmi/core";
 import { parseEther } from "viem";
 
 export function useABCSettingsModelController(daoCreationRepository: DAOCreationRepository) {
+
     const [augmentedBondingCurveSettings, setAugmentedBondingCurveSettings] = useState<ABCConfig>(new ABCConfig(
         daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio ?? 0,
         daoCreationRepository.getDAOInfo().getABCConfig().getReserveInitialBalance() ?? 0,
@@ -88,8 +89,9 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
         setABCConfig(updatedSettings, daoCreationRepository);
     };
 
-    const handleCollateralTokenChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedToken = collateralTokenList.find(token => token.tokenSymbol === event.target.value);
+    const handleCollateralTokenChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const selectedToken = collateralTokenList.find(token => token.tokenSymbol === (event.target as HTMLButtonElement).value);
+        console.log(selectedToken)
         if (selectedToken) {
             const updatedSettings = new ABCConfig(
                 daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio ?? 0,

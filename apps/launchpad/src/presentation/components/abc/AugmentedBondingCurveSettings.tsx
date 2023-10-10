@@ -1,9 +1,11 @@
-import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack, Tooltip } from "@chakra-ui/react";
+import { Divider, Box, Button, Flex, FormControl, FormLabel, HStack, Image, InputGroup, Select, Text, VStack, Tooltip, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { DAOCreationRepository } from "../../../domain/repository/DAOCreationRepository";
 import CustomInput from "../../../../../shared/src/presentation/components/CustomInput";
 import CustomInputRightAddon from "../../../../../shared/src/presentation/components/CustomInputRightAddon";
 import { useABCSettingsModelController } from "./ABCSettingsModelController";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import './AugmentedBondingCurveSettings.css';
 
 interface AugmentedBondingCurveSettingsProps {
     onStepCompletionChanged: (completed: boolean) => void;
@@ -35,6 +37,8 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
         handleEntryTributeChange,
         handleExitTributeChange
     } = useABCSettingsModelController(daoCreationRepository);
+
+    console.log(augmentedBondingCurveSettings);
 
     useEffect(() => {
         const isCompleted = (augmentedBondingCurveSettings.getReserveRatio() ?? 0) > 0 && (augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol()?.length ?? 0) > 0 && (augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0) > 0 && enoughBalance;
@@ -82,7 +86,7 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                                     80%
                                 </Button>
                                 <InputGroup w="91px" display="inline-flex">
-                                    <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.reserveRatio ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} style={{ pattern: "[0-9]" }} />
+                                    <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.reserveRatio ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} style={{ pattern: "[0-9]" }}/>
                                     <CustomInputRightAddon children="%" />
                                 </InputGroup>
                             </HStack>
@@ -97,48 +101,73 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
                                 </Tooltip>
                             </HStack>
                         </FormLabel>
-                        <Box>
-                            <Flex>
-                                <Select placeholder="Select option" borderRight="1px solid" borderColor="brand.900" borderRadius="0" borderTopLeftRadius="8px" borderBottomLeftRadius="8px" value={augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol() || ''} onChange={handleCollateralTokenChange}>
+                        <HStack spacing={0}>
+                            <Menu>
+                                <MenuButton as={Button}
+                                    color="brand.900"
+                                    backgroundColor="white"
+                                    w="193px"
+                                    h="40px"
+                                    border="1px solid"
+                                    borderRight="1px solid"
+                                    borderColor="brand.900"
+                                    borderRadius="0"
+                                    borderTopLeftRadius="8px"
+                                    borderBottomLeftRadius="8px"
+                                    rightIcon={<ChevronDownIcon />}
+                                >
+                                    {augmentedBondingCurveSettings.collateralToken?.tokenSymbol && (
+                                        <HStack justifyContent="center">
+                                            <Image w="24px" h="24px" src={augmentedBondingCurveSettings.collateralToken.tokenLogo}></Image>
+                                            <Text>{augmentedBondingCurveSettings.collateralToken?.tokenSymbol}</Text>
+                                        </HStack>
+                                    )}
+                                    {!augmentedBondingCurveSettings.collateralToken?.tokenSymbol && (
+                                        <Text>Select token</Text>
+                                    )}
+                                </MenuButton>
+                                <MenuList>
                                     {collateralTokenList.map((token) => (
-                                        <option key={token.tokenAddress} value={token.tokenSymbol}>
+                                        <MenuItem key={token.tokenAddress} value={token.tokenSymbol} onClick={(e) => handleCollateralTokenChange(e)}>
                                             <HStack>
                                                 <Image src={token.tokenLogo} boxSize="24px" />
                                                 <Text>{token.tokenSymbol}</Text>
                                             </HStack>
-                                        </option>
+                                        </MenuItem>
                                     ))}
-                                </Select>
-                                <CustomInput placeholder="Enter value" borderRadius="8px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={(augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange((e.target.value))} style={{ pattern: "[0-9]" }} />
+                                </MenuList>
+                            </Menu>
+                            <Flex>
+                                <CustomInput placeholder="Enter value" borderRadius="8px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={(augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange((e.target.value))} style={{ pattern: "[0-9]" }} className="initial-balance" />
                             </Flex>
-                        </Box>
+                        </HStack>
                     </FormControl>
                     <HStack spacing={8}>
                         <FormControl>
                             <FormLabel>
-                            <HStack>
-                                <Text fontSize="16px" color="brand.900">ENTRY TRIBUTE</Text>
-                                <Tooltip label="The Entry Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single minting event.">
-                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
-                                </Tooltip>
-                            </HStack>
+                                <HStack>
+                                    <Text fontSize="16px" color="brand.900">ENTRY TRIBUTE</Text>
+                                    <Tooltip label="The Entry Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single minting event.">
+                                        <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                    </Tooltip>
+                                </HStack>
                             </FormLabel>
                             <InputGroup>
-                                <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.entryTribute ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(e.target.value)} style={{ pattern: "[0-9]"}}/>
+                                <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.entryTribute ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(e.target.value)} style={{ pattern: "[0-9]" }} />
                                 <CustomInputRightAddon children="%" />
                             </InputGroup>
                         </FormControl>
                         <FormControl>
                             <FormLabel>
-                            <HStack>
-                                <Text fontSize="16px" color="brand.900">EXIT TRIBUTE</Text>
-                                <Tooltip label="The Exit Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single burning event.">
-                                    <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
-                                </Tooltip>
-                            </HStack>
+                                <HStack>
+                                    <Text fontSize="16px" color="brand.900">EXIT TRIBUTE</Text>
+                                    <Tooltip label="The Exit Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single burning event.">
+                                        <Image src="../../../../public/InformationIcon.svg" boxSize="16px" />
+                                    </Tooltip>
+                                </HStack>
                             </FormLabel>
                             <InputGroup>
-                                <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.exitTribute ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(e.target.value)} style={{ pattern: "[0-9]"}} />
+                                <CustomInput rightAddon={true} value={(augmentedBondingCurveSettings.exitTribute ?? 0).toString()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(e.target.value)} style={{ pattern: "[0-9]" }} />
                                 <CustomInputRightAddon children="%" />
                             </InputGroup>
                         </FormControl>
