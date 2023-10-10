@@ -94,7 +94,7 @@ export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousSt
                                     </Text>
                                 )}
                             </Box>
-                            <Text fontSize="20px" color="brand.900" textAlign="center">{step.title}</Text>
+                            <Text fontSize="20px" color="brand.900" textAlign="center" pl="10px" pr="10px">{step.title}</Text>
                         </VStack>
                     ))}
                 </Box>
