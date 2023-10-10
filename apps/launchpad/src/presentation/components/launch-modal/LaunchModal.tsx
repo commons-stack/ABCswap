@@ -20,7 +20,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { useCallback, useContext } from 'react';
 import { TransactionContext } from '../../../../../shared/src/presentation/providers/TransactionProvider';
 import useProcessTransactions from '../../../../../shared/src/presentation/hooks/useProcessTransactions';
-import useConvertSteps from '../../../../../shared/src/presentation/hooks/useConvertSteps';
+import useLaunchSteps from '../../../hooks/useLaunchSteps';
 
 export default function TransactionModal() {
 
