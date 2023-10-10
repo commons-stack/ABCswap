@@ -8,7 +8,7 @@ export function useDAONameModelController(daoCreationRepository: DAOCreationRepo
 
     useEffect(() => {
         async function init() {
-            if(daoCreationRepository.isUsingDefaultData()){
+            if (daoCreationRepository.isUsingDefaultData()) {
                 await daoCreationRepository.loadDAOInfo();
             }
             if (daoCreationRepository.getDAOInfo().getName()) {
@@ -19,10 +19,16 @@ export function useDAONameModelController(daoCreationRepository: DAOCreationRepo
         init();
     }, []);
 
-    const handleChangeName = (value: string):void => {
-        setOrganizationName(value);
-        setUserInteracted(true);
-        setDAOName(value, daoCreationRepository);
+    const handleChangeName = (value: string): void => {
+        const validChars = /^[a-z0-9-]*$/.test(value);
+
+        if (!validChars) {
+            setUserInteracted(true);
+        } else {
+            setOrganizationName(value);
+            setUserInteracted(true);
+            setDAOName(value, daoCreationRepository);
+        }
     }
 
     return {
