@@ -1,8 +1,9 @@
 import { knownContracts } from '../../../config.json';
-import { Abi, parseAbi, parseUnits } from 'viem';
+import { parseAbi, parseUnits } from 'viem';
 import calculateTimeInSeconds from '../../utils/calculateTimeInSeconds';
 
 interface DaoLaunchStepsProps {
+    launcherAddress: string;
     tokenName: string;
     tokenSymbol: string;
     daoName: string;
@@ -18,10 +19,10 @@ interface DaoLaunchStepsProps {
     reserveTokenContract: string;
     reserveRatio: number;
     reserveInitialSupply: number;
-    reserveTokenAbi: Abi;
 }
 
 export default function useLaunchSteps({
+    launcherAddress,
     tokenName,
     tokenSymbol,
     daoName,
@@ -37,10 +38,10 @@ export default function useLaunchSteps({
     reserveTokenContract,
     reserveRatio,
     reserveInitialSupply,
-    reserveTokenAbi
 }: DaoLaunchStepsProps) {
 
-    const abi = parseAbi(["function newTokenAndInstsance(string,string,string,address[],uint256[],uint64[3],uint256[5])"])
+    const daoAbi = parseAbi(["function newTokenAndInstsance(string,string,string,address[],uint256[],uint64[3],uint256[5])"])
+    const approveAbi = parseAbi(["function approve(address,uint256)"]);
 
     const voteDuration = calculateTimeInSeconds({
         days: voteDurationDays,
@@ -54,10 +55,10 @@ export default function useLaunchSteps({
                 title: 'Raise approval',
                 data: {
                     address: reserveTokenContract as `0x${string}`,
-                    abi: reserveTokenAbi as Abi,
+                    abi: approveAbi,
                     functionName: 'approve',
                     args: [
-                        knownContracts[10].NEW_DAO_WITH_ABC as `0x${string}`,
+                        launcherAddress as `0x${string}`,
                         parseUnits(reserveInitialSupply.toString(), 16)
                     ]
                 }
@@ -66,7 +67,7 @@ export default function useLaunchSteps({
                 title: 'Launch DAO',
                 data: {
                     address: knownContracts[10].NEW_DAO_WITH_ABC as `0x${string}`,
-                    abi: abi,
+                    abi: daoAbi,
                     functionName: 'newTokenAndInstance',
                     args: [
                         tokenName,
