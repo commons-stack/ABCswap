@@ -45,10 +45,10 @@ type CollateralToken = {
 }
 
 interface NewDaoProps {
-    daoCreationRepository : DAOCreationRepository;
+    daoCreationRepository: DAOCreationRepository;
 }
 
-export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) {
+export function useNewDaoModelController({ daoCreationRepository }: NewDaoProps) {
     const { address } = useAccount();
     const [enoughBalance, setEnoughBalance] = useState<boolean>(false);
     const { data: balance } = useBalance({ address });
@@ -59,13 +59,19 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         setStep(1);
     }
 
+    console.log(enoughBalance)
+    console.log(balance?.value)
+
     useEffect(() => {
-        if (!balance?.value || balance?.value > (parseEther('0.0005'))) {
-            setEnoughBalance(true);
-        } else {
-            setEnoughBalance(false);
+
+        if (balance) {
+            if (parseEther(balance?.formatted) > parseEther('0.0005')) {
+                setEnoughBalance(true);
+            } else {
+                setEnoughBalance(false);
+            }
         }
-    }, [address, balance]);
+    }, [address, balance])
 
     // Organization name 
     const [organizationNameStatus, setOrganizationNameStatus] = useState<boolean>(false);
@@ -121,7 +127,7 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         },
         {
             title: 'Choose DAO name',
-            content: <OrganizationName onStepCompletionChanged={organizationNameChanged} daoCreationRepository={daoCreationRepository}/>,
+            content: <OrganizationName onStepCompletionChanged={organizationNameChanged} daoCreationRepository={daoCreationRepository} />,
             index: 1,
             completed: organizationNameStatus,
         },
@@ -133,7 +139,7 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         },
         {
             title: 'Configure token',
-            content: <TokenSettings onStepCompletionChanged={tokenSettingsChanged} daoCreationRepository={daoCreationRepository}/>,
+            content: <TokenSettings onStepCompletionChanged={tokenSettingsChanged} daoCreationRepository={daoCreationRepository} />,
             index: 3,
             completed: tokenSettingsStatus
         },
@@ -145,7 +151,7 @@ export function useNewDaoModelController({daoCreationRepository} : NewDaoProps) 
         },
         {
             title: 'Launch your DAO',
-            content: <Summary onStepCompletionChanged={summaryChanged} daoCreationRepository={daoCreationRepository}/>,
+            content: <Summary onStepCompletionChanged={summaryChanged} daoCreationRepository={daoCreationRepository} />,
             index: 5,
             completed: summaryStatus,
             nextStepText: 'Launch',
