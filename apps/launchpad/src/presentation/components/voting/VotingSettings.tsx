@@ -49,6 +49,7 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                             value={votingSettings.support}
                             onChange={handleSupportChange}
                             flexGrow={1}
+                            focusThumbOnChange={false}
                         >
                             <SliderTrack><SliderFilledTrack /></SliderTrack>
                             <SliderThumb />
@@ -75,6 +76,7 @@ export default function VotingSettings({ onStepCompletionChanged, daoCreationRep
                     </FormLabel>
                     <HStack justifyContent="space-between" width="100%">
                         <Slider
+                            focusThumbOnChange={false}
                             aria-label='slider-ex-1'
                             min={0}
                             max={100}
