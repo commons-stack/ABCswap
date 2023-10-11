@@ -12,8 +12,6 @@ export default function Swap() {
     setSelectedDao(dao);
   };
 
-  console.log(selectedDao);
-
   if(start) {
     return (
       <>

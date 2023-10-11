@@ -38,8 +38,6 @@ export default function AugmentedBondingCurveSettings({ onStepCompletionChanged,
         handleExitTributeChange
     } = useABCSettingsModelController(daoCreationRepository);
 
-    console.log(augmentedBondingCurveSettings);
-
     useEffect(() => {
         const isCompleted = (augmentedBondingCurveSettings.getReserveRatio() ?? 0) > 0 && (augmentedBondingCurveSettings.getCollateralToken()?.getTokenSymbol()?.length ?? 0) > 0 && (augmentedBondingCurveSettings.getReserveInitialBalance() ?? 0) > 0 && enoughBalance;
         if (onStepCompletionChanged) {

@@ -15,6 +15,9 @@ export default function useLaunchSteps({
     const daoAbi = parseAbi(["function newTokenAndInstsance(string,string,string,address[],uint256[],uint64[3],uint256[5])"])
     const approveAbi = parseAbi(["function approve(address,uint256)"]);
 
+    console.log(DAOInfo.getVotingConfig().getSupportRequiredValue().toString())
+    console.log(DAOInfo.getVotingConfig().getMinimumAcceptanceQuorumValue.toString())
+
     return (
         [
             {
@@ -42,8 +45,8 @@ export default function useLaunchSteps({
                         DAOInfo.getTokenHolders().map((holder) => holder.address),
                         DAOInfo.getTokenHolders().map((holder) => holder.balance),
                         [
-                            parseUnits(DAOInfo.getVotingConfig().getSupportRequiredValue.toString() ?? 0, 4),
-                            parseUnits(DAOInfo.getVotingConfig().getMinimumAcceptanceQuorumValue.toString() ?? 0, 4),
+                            parseUnits(DAOInfo.getVotingConfig().getSupportRequiredValue().toString(), 4),
+                            parseUnits("15", 4),
                             DAOInfo.getVotingConfig().getVoteTotalDurationInSeconds()
                         ],
                         [

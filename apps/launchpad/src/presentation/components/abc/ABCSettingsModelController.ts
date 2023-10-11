@@ -91,7 +91,6 @@ export function useABCSettingsModelController(daoCreationRepository: DAOCreation
 
     const handleCollateralTokenChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const selectedToken = collateralTokenList.find(token => token.tokenSymbol === (event.target as HTMLButtonElement).value);
-        console.log(selectedToken)
         if (selectedToken) {
             const updatedSettings = new ABCConfig(
                 daoCreationRepository.getDAOInfo().getABCConfig().reserveRatio ?? 0,
