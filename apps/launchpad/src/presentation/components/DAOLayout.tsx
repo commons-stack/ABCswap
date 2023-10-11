@@ -106,8 +106,7 @@ export default function DAOLayout({ steps, currentStep, onNextStep, onPreviousSt
                     </Button>
                     <Button
                         onClick={() => {
-                            console.log(steps[currentStep + 1]);
-                            const action = steps[currentStep + 1].lastStepAction;
+                            const action = steps[currentStep].lastStepAction;
                             if (typeof action === "function") {
                                 action();                                
                             } else {
