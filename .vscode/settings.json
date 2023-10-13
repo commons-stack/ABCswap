@@ -1,9 +1,8 @@
 {
-  "solidity.packageDefaultDependenciesContractsDirectory": "pkg/contracts/src",
-  "solidity.packageDefaultDependenciesDirectory": "lib",
   "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity",
     "editor.formatOnSave": true
   },
   "solidity.formatter": "forge",
+  "solidity.compileUsingRemoteVersion": "v0.4.24",
 }
