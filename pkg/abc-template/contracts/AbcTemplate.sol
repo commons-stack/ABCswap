@@ -125,7 +125,8 @@ contract AbcTemplate is AbcBaseTemplate, TokenCache {
             uint256 initialBalance
         ) = _unwrapAbcSettings(_abcSettings);
 
-        Vault reserve = Vault(_installNonDefaultApp(_dao, VAULT_APP_ID, new bytes(0)));
+        Vault reserve =
+            Vault(_installNonDefaultApp(_dao, VAULT_APP_ID, abi.encodeWithSelector(Vault(0).initialize.selector)));
         IAugmentedBondingCurve abc = _installAbcApp(_dao, _tokenManager, reserve, _agent, entryTribute, exitTribute);
         _configureAbcApp(_acl, abc, collateralToken, reserveRatio);
         if (initialBalance > 0) {

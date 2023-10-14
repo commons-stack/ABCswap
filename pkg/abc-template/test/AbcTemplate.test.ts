@@ -1,5 +1,4 @@
-// const { expect } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers, network } = require("hardhat");
 
 // Optimism:
 const daoFactory = "0x0a42106615233D0E6F9811d0cBb7ddC83170Fe5E"
@@ -16,6 +15,13 @@ describe("AbcTemplate contract", function () {
   it("Deployment should work", async function () {
     const [owner] = await ethers.getSigners();
 
+    const daiHolder = '0x2de373887b9742162c9a5885ddb5debea8e4486d'
+    await network.provider.request({
+      method: "hardhat_impersonateAccount",
+      params: [daiHolder],
+    });
+    const signer = await ethers.getSigner(daiHolder);
+
     const abcTemplate = await ethers.deployContract("AbcTemplate", [
         daoFactory,
         _ens,
@@ -24,18 +30,19 @@ describe("AbcTemplate contract", function () {
         _formula
     ]);
 
-    const reserveToken = new ethers.Contract(_reserveToken, ["function approve(address spender, uint256 value) public returns (bool)"], owner);
+    const reserveToken = new ethers.Contract(_reserveToken, ["function approve(address spender, uint256 value) public returns (bool)"], signer);
 
-    await reserveToken.approve(await abcTemplate.getAddress(), wad(3));
+    await reserveToken.approve(await abcTemplate.getAddress(), wad(3n * 10n ** 18n));
 
-    await abcTemplate.newTokenAndInstance(
+    await abcTemplate.connect(signer).newTokenAndInstance(
         "Token Name",
         "TKN",
         "daoname",
         [owner.address],
         [wad(1)],
         [pct(50), pct(15), 7 * 24 * 60 * 60],
-        [pct(1), pct(2), _reserveToken, 20e4, wad(3)]
+        [pct(1), pct(2), _reserveToken, 20e4, wad(3n * 10n ** 18n)],
+        { from : daiHolder }
     );
 
   });
