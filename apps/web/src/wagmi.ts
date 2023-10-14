@@ -1,12 +1,12 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig } from "wagmi";
-import { localhost } from "wagmi/chains";
+import { optimism } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
 export const { chains, publicClient } = configureChains(
-  [localhost],
+  [optimism],
   import.meta.env.ALCHEMY_ID
     ? [
         alchemyProvider({ apiKey: import.meta.env.ALCHEMY_ID }),
