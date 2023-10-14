@@ -1,4 +1,0 @@
-{
-  "extends": "tsconfig/vite-react.json",
-  "include": ["src", "vite.config.ts", "test/domain/model/TokenConfig.test.ts", "../shared", "../launchpad/src/hooks/useLaunchSteps.ts"]
-}
