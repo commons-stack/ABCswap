@@ -12,7 +12,7 @@ import { TokenSelector } from "ui/src/components/token_selector/TokenSelector";
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
-import {formatWithFixedDecimals} from "ui/src/utils"
+import { formatWithFixedDecimals } from "ui/src/utils"
 
 export default function SimpleConvert() {
 
@@ -148,9 +148,19 @@ export default function SimpleConvert() {
                 <HStack>
                     <Box w="452px" h="268px" mt="31px" ml="19px" bgColor="white" borderRadius="16px">
                         <Text mt="24px" ml="31px">You Send</Text>
-                        <TokenSelector token={fromToken} mr="auto" ml="26px" mt="16px"/>
+                        <TokenSelector token={fromToken} mr="auto" ml="26px" mt="16px" />
                         <NumberInput mt='2' value={amount}>
-                            <NumberInputField autoFocus onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setAmount(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' />
+                            <NumberInputField autoFocus w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0'
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (/^\d*\.?\d*$/.test(value)) {
+                                        if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
+                                            setAmount(value.slice(1));
+                                        } else {
+                                            setAmount(value);
+                                        }
+                                    }
+                                }} />
                         </NumberInput>
                         <VStack ml="26px" mt="8px" alignItems="initial">
                             <HStack>
@@ -177,8 +187,8 @@ export default function SimpleConvert() {
                     </div>
                     <Box w="452px" h="268px" mt="31px" mr="19px" bgColor="white" borderRadius="16px">
                         <Text mt="24px" mr="31px" textAlign="right">You Receive</Text>
-                        <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px"/>
-                        
+                        <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px" />
+
                         <Flex direction="column" align="flex-end" mr="26px" mt="8px">
                             <Input w="100%" mt="50px" pr='0' value={convertedAmountFormatted} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
                             <VStack ml="26px" mt="8px" alignItems="end">
