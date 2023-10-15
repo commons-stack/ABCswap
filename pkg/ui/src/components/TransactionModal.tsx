@@ -20,7 +20,7 @@ import {
     Button
 } from '@chakra-ui/react';
 import { useCallback, useContext } from 'react';
-import { TransactionContext } from '../providers/TransactionProvider';
+import { TransactionContext } from 'transactions-modal';
 
 export default function TransactionModal() {
 
@@ -41,7 +41,7 @@ export default function TransactionModal() {
                 <ModalCloseButton />
                 <ModalBody>
                     <VStack pt="145px" pb="105px">
-                        <Text fontSize="40px" fontWeight={500}>
+                        <Text fontSize="40px" fontWeight={500} color="brand.900" fontFamily="VictorSerifTrial">
                             {title.length > 0 ? title : (steps.length > 1 ? 'Confirm Transactions' : 'Confirm Transaction')}
                         </Text>
                         {subtitle &&

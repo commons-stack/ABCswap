@@ -33,9 +33,10 @@ const TransactionContext = React.createContext<TransactionContextData>({
 
 interface Props {
     children: ReactNode;
+    transactionModal?: JSX.Element;
 }
 
-const TransactionProvider: FC<Props> = ({ children }) => {
+const TransactionProvider: FC<Props> = ({ children, transactionModal }) => {
     const [title, setTitle] = useState("");
     const [subtitle, setSubtitle] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -88,7 +89,7 @@ const TransactionProvider: FC<Props> = ({ children }) => {
             onClose
         }}>
             {children}
-            <TransactionModal />
+            {transactionModal ? transactionModal : <TransactionModal />}
         </TransactionContext.Provider>
     );
 };

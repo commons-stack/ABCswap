@@ -10,6 +10,7 @@ import { TransactionProvider } from "transactions-modal";
 import { chains, wagmiConfig } from "./wagmi.ts";
 import Home from "./pages/Home.tsx";
 import Swap from "./pages/Swap.tsx";
+import TransactionModal from "ui/src/components/TransactionModal.tsx";
 
 
 const router = createHashRouter(
@@ -27,7 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <CSSReset />
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
-          <TransactionProvider>
+          <TransactionProvider transactionModal={<TransactionModal/>}>
             <Layout>
               <RouterProvider router={router} />
             </Layout>
