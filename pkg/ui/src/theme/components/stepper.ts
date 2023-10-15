@@ -26,6 +26,12 @@ const Stepper = {
                 '&[data-status="complete"]': {
                     bgColor: "brand.900",
                 }
+            },
+            description: {
+                fontSize: '14px'
+            },
+            title:{
+                fontSize: '18px'
             }
         }),
     },
