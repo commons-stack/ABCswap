@@ -11,22 +11,11 @@ function applyFee(amount: bigint | undefined, fee: bigint): bigint | undefined {
 }
 
 export function useBondingCurvePrice(amount: bigint, forwards = true, reserveToken: `0x${string}`, bondingCurve: `0x${string}`) {
-
     const {data: info} = useAbcInfo(bondingCurve);
-
     const { buyFeePct, sellFeePct, token: tokenAddr, reserve: reserveAddr, formula: formulaAddr } = info;
-
-    if (buyFeePct === undefined || sellFeePct === undefined || tokenAddr === undefined || reserveAddr === undefined || formulaAddr === undefined) {
-        return null;
-    }
-
     const { data: collateral } = useCollateral(reserveToken, bondingCurve);
 
     const { reserveRatio, virtualBalance, virtualSupply } = collateral;
-
-    if (reserveRatio === undefined || virtualBalance === undefined || virtualSupply === undefined) {
-        return null;
-    }
 
     const {data: abcToken } = useToken({
         address: tokenAddr
@@ -34,20 +23,12 @@ export function useBondingCurvePrice(amount: bigint, forwards = true, reserveTok
 
     const totalSupply = abcToken?.totalSupply.value;
 
-    if (totalSupply === undefined) {
-        return null;
-    }
-
     const { data: reserveBalance } = useBalance({
         address: reserveAddr,
         token: reserveToken
     })
 
     const balance = reserveBalance?.value;
-
-    if (balance === undefined) {
-        return null;
-    }
 
     const formulaContract = {
         address: formulaAddr,
@@ -61,15 +42,19 @@ export function useBondingCurvePrice(amount: bigint, forwards = true, reserveTok
         const { data: purchaseReturn } = useContractRead({
             ...formulaContract,
             functionName: 'calculatePurchaseReturn',
-            args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, applyFee(amount, buyFeePct)!]
+            args: [(totalSupply??BigInt(0)) + (virtualSupply??BigInt(0)), 
+                (balance??BigInt(0)) + (virtualBalance??BigInt(0)), 
+                reserveRatio??0, applyFee(amount, buyFeePct??BigInt(0))!]
         })
         return purchaseReturn
     } else {
         const { data: saleReturn } = useContractRead({
             ...formulaContract,
             functionName: 'calculateSaleReturn',
-            args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, amount]
+            args: [(totalSupply??BigInt(0)) + (virtualSupply??BigInt(0)), 
+                (balance??BigInt(0)) + (virtualBalance??BigInt(0)),
+                reserveRatio??0, amount]
         })
-        return applyFee(saleReturn, sellFeePct);
+        return applyFee(saleReturn, sellFeePct??BigInt(0));
     }
 }

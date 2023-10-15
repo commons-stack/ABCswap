@@ -16,7 +16,7 @@ const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="/"  element={<Home />} />
-      <Route path="/:dao" element={<Swap />} />
+      <Route path="/:dao" element={<Swap />} errorElement={<div>Something went wrong</div>} />
     </>
   )
 );
