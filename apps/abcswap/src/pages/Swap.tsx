@@ -15,7 +15,7 @@ export default function SimpleConvert() {
     const navigate = useNavigate();
     const { abcToken, reserveToken, bondingCurve } = {
         abcToken: {
-            address: '0x080c5AE6061702be9dB5F1042b046E25C182922e' as `0x${string}`,
+            address: '0x571f2b23eb4666db617d9bae5725aedd72e2349f' as `0x${string}`,
             symbol: 'ABC',
             decimals: 18,
         },
@@ -25,7 +25,7 @@ export default function SimpleConvert() {
             decimals: 18,
         },
         bondingCurve: {
-            address: '0xf5894c43909ec110cc9901ac0bca882896c843f0' as `0x${string}`,
+            address: '0xc36d0b658dc46fd6e9b5bd6bed7536aa3fa43dfd' as `0x${string}`,
         },
     };
 
@@ -108,7 +108,7 @@ export default function SimpleConvert() {
                             <Text color="brand.900">{fromToken.symbol}</Text>
                         </HStack>
                         <NumberInput mt='2' value={amount}>
-                            <NumberInputField autoFocus onChange={(e) => setAmount(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' />
+                            <NumberInputField autoFocus onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setAmount(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' />
                         </NumberInput>
                         <VStack ml="26px" mt="8px" alignItems="initial">
                             <HStack>

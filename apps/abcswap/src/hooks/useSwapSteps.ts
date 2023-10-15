@@ -28,7 +28,7 @@ export default function useSwapSteps(bondingCurve: `0x${string}`, reserveToken: 
                 data: {
                     address: bondingCurve,
                     abi: parseAbi([
-                        'function makeBuyOrder(address _buyer, address _collateralToken, uint256 _collateralAmount, uint256 _minReturn) external returns (uint256 amount)'
+                        'function makeBuyOrder(address _onBehalfOf, address _collateral, uint256 _depositAmount, uint256 _minReturnAmountAfterFee)'
                     ]),
                     functionName: 'makeBuyOrder',
                     args: [
@@ -45,7 +45,7 @@ export default function useSwapSteps(bondingCurve: `0x${string}`, reserveToken: 
                 data: {
                     address: bondingCurve,
                     abi: parseAbi([
-                        'function makeSellOrder(address _seller, address _collateralToken, uint256 _abcAmount, uint256 _minReturn) external returns (uint256 amount)'
+                        'function makeSellOrder(address _onBehalfOf, address _collateral, uint256 _sellAmount, uint256 _minReturnAmountAfterFee)'
                     ]),
                     functionName: 'makeSellOrder',
                     args: [
