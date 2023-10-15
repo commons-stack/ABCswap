@@ -6,6 +6,7 @@ import { Route, RouterProvider, createHashRouter, createRoutesFromElements } fro
 import { CSSReset, ChakraProvider } from "@chakra-ui/react";
 import { WagmiConfig } from "wagmi";
 import { Layout, theme } from "ui"
+import { TransactionProvider } from "transactions-modal";
 import { chains, wagmiConfig } from "./wagmi.ts";
 import Home from "./pages/Home.tsx";
 import Swap from "./pages/Swap.tsx";
@@ -26,11 +27,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <CSSReset />
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
-          {/* <TransactionProvider> */}
+          <TransactionProvider>
             <Layout>
               <RouterProvider router={router} />
             </Layout>
-          {/* </TransactionProvider> */}
+          </TransactionProvider>
         </RainbowKitProvider>
       </WagmiConfig>
     </ChakraProvider>

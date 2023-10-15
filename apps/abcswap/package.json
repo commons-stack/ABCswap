@@ -27,6 +27,7 @@
     "@vitejs/plugin-react-swc": "^3.3.2",
     "eslint": "^8.45.0",
     "eslint-config-custom": "*",
+    "transactions-modal": "*",
     "typescript": "^5.0.2",
     "ui": "*",
     "vite": "^4.4.5"
