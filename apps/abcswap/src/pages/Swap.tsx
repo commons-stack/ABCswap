@@ -12,6 +12,7 @@ import { TokenSelector } from "ui/src/components/token_selector/TokenSelector";
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
+import {formatWithFixedDecimals} from "ui/src/utils"
 
 export default function SimpleConvert() {
 
@@ -66,7 +67,8 @@ export default function SimpleConvert() {
     }
 
     function handleSwap() {
-        processTransactions(steps);
+        const subtitle = `Swapping ${amount} ${fromToken.symbol} to ${formatWithFixedDecimals(convertedAmountFormatted, 3)} ${toToken.symbol}`;
+        processTransactions("Swapping Tokens", subtitle, steps);
     }
 
     function ActionButton(params: { title: string, isDisabled: boolean, onClick: () => void }): JSX.Element {

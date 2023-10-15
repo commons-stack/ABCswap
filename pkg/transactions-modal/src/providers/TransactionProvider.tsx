@@ -4,11 +4,13 @@ import TransactionModal from "../components/TransactionModal";
 
 
 interface TransactionContextData {
+    title: string;
+    subtitle: string;
     isOpen: boolean;
     steps: Step[];
     stepStatus: ("notsigned" | "pending" | "success" | "error")[];
     activeStep: number;
-    processTransactions: (newSteps: Step[]) => void;
+    processTransactions: (title:string, subtitle:string|undefined, newSteps: Step[]) => void;
     onTransactionSuccess: () => void;
     onTransactionSent: () => void;
     onTransactionError: () => void;
@@ -16,6 +18,8 @@ interface TransactionContextData {
 }
 
 const TransactionContext = React.createContext<TransactionContextData>({
+    title: "",
+    subtitle: "",
     isOpen: false,
     steps: [],
     stepStatus: [],
@@ -32,12 +36,16 @@ interface Props {
 }
 
 const TransactionProvider: FC<Props> = ({ children }) => {
+    const [title, setTitle] = useState("");
+    const [subtitle, setSubtitle] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [steps, setSteps] = useState<Step[]>([]);
     const [stepStatus, setStepStatus] = useState<("notsigned" | "pending" | "success" | "error")[]>([]);
     const [activeStep, setActiveStep] = useState(0);
 
-    const processTransactions = useCallback((newSteps: Step[]) => {
+    const processTransactions = useCallback((title:string, subtitle: string|undefined, newSteps: Step[]) => {
+        setTitle(title);
+        setSubtitle(subtitle??"");
         setSteps(newSteps);
         setStepStatus([]);
         setActiveStep(0);
@@ -67,6 +75,8 @@ const TransactionProvider: FC<Props> = ({ children }) => {
 
     return (
         <TransactionContext.Provider value={{
+            title,
+            subtitle,
             isOpen,
             steps,
             activeStep,
