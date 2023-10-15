@@ -125,7 +125,7 @@ export default function SimpleConvert() {
                     <HStack p="12px" justifyContent="space-between">
                         <HStack>
                             <Text>Entry Tribute</Text>
-                            <Tooltip>
+                            <Tooltip hasArrow label="The Entry Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single minting event.">
                                 <InfoIcon />
                             </Tooltip>
                         </HStack>
@@ -136,7 +136,7 @@ export default function SimpleConvert() {
                     <HStack p="12px" justifyContent="space-between">
                         <HStack>
                             <Text>Exit Tribute</Text>
-                            <Tooltip>
+                            <Tooltip hasArrow label="The Exit Tribute (%) is the percentage of reserve currency that is sent to the Common Pool during any single burning event.">
                                 <InfoIcon />
                             </Tooltip>
                         </HStack>
