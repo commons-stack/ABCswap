@@ -1,11 +1,15 @@
-import { Box, Button, Checkbox, Flex, HStack, Icon, IconButton, Input, Link, NumberInput, NumberInputField, Text, Tooltip, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAccount, useBalance } from "wagmi";
-import { RepeatIcon, InfoIcon, EditIcon } from '@chakra-ui/icons';
-import { useProcessTransactions } from "transactions-modal";
-import { useAbcInfo } from "../hooks/useAbcInfo";
+import { EditIcon, InfoIcon, RepeatIcon } from '@chakra-ui/icons';
+import { Box, Button, Checkbox, Flex, HStack, Icon, IconButton, Input, Link, NumberInput, NumberInputField, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatUnits, parseUnits } from "viem";
+import { useAccount, useBalance } from "wagmi";
+
+import { useProcessTransactions } from "transactions-modal";
+import { TokenSelector } from "ui/src/components/token_selector/TokenSelector";
+
+import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
 
@@ -42,20 +46,20 @@ export default function SimpleConvert() {
     const fromToken = inverted ? reserveToken : abcToken;
     const toToken = inverted ? abcToken : reserveToken;
 
-    const { address } = useAccount();
+    const { address, isConnected: isWalletConnected } = useAccount();
     const { processTransactions } = useProcessTransactions();
 
     const steps = useSwapSteps(bondingCurve.address, reserveToken.address, inverted, parseUnits(amount, fromToken.decimals));
 
-    const {data: fromTokenBalance} = useBalance({token: fromToken.address, address});
-    const {data: toTokenBalance} = useBalance({token: toToken.address, address});
+    const { data: fromTokenBalance } = useBalance({ token: fromToken.address, address });
+    const { data: toTokenBalance } = useBalance({ token: toToken.address, address });
 
     const convertedAmount = useBondingCurvePrice(parseUnits(amount, fromToken.decimals), inverted, reserveToken.address, bondingCurve.address);
     const convertedAmountFormatted = convertedAmount ? formatUnits(convertedAmount, toToken.decimals) : '';
     const priceFirstUnit = useBondingCurvePrice(parseUnits("1", fromToken.decimals), inverted, reserveToken.address, bondingCurve.address);
     const unitaryPrice = convertedAmount ? convertedAmount * 10n ** BigInt(fromToken.decimals) / parseUnits(amount, fromToken.decimals) : priceFirstUnit;
     const invertedUnitaryPrice = unitaryPrice ? (10n ** BigInt(fromToken.decimals)) ** 2n / unitaryPrice : undefined;
-    
+
     function invert() {
         setAmount((convertedAmount && formatUnits(convertedAmount, toToken.decimals) || '0'));
         setInverted(inverted => !inverted);
@@ -63,6 +67,44 @@ export default function SimpleConvert() {
 
     function handleSwap() {
         processTransactions(steps);
+    }
+
+    function ActionButton(params: { title: string, isDisabled: boolean, onClick: () => void }): JSX.Element {
+        return (
+            <Button
+                w="912px"
+                h="61px"
+                borderRadius="8px"
+                isDisabled={params.isDisabled}
+                onClick={params.onClick}
+            >
+                <Text as="b" color="white">{params.title}</Text>
+            </Button>
+        );
+    }
+
+    function ConnectOrSwapButton(): JSX.Element {
+        if (isWalletConnected)
+            return (
+                <ActionButton
+                    title="Swap"
+                    isDisabled={(!Boolean(convertedAmount) || !terms)}
+                    onClick={handleSwap} />
+            )
+        return (
+            <ConnectButton.Custom>
+                {({
+                    openConnectModal
+                }) => {
+                    return (
+                        <ActionButton
+                            title="Connect wallet"
+                            isDisabled={false}
+                            onClick={openConnectModal} />
+                    );
+                }}
+            </ConnectButton.Custom>
+        )
     }
 
     return (
@@ -104,9 +146,7 @@ export default function SimpleConvert() {
                 <HStack>
                     <Box w="452px" h="268px" mt="31px" ml="19px" bgColor="white" borderRadius="16px">
                         <Text mt="24px" ml="31px">You Send</Text>
-                        <HStack w="106px" h="40px" ml="26px" mt="16px" border="1px solid black" borderRadius="30px" justifyContent="center">
-                            <Text color="brand.900">{fromToken.symbol}</Text>
-                        </HStack>
+                        <TokenSelector token={fromToken} mr="auto" ml="26px" mt="16px"/>
                         <NumberInput mt='2' value={amount}>
                             <NumberInputField autoFocus onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setAmount(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' />
                         </NumberInput>
@@ -135,9 +175,8 @@ export default function SimpleConvert() {
                     </div>
                     <Box w="452px" h="268px" mt="31px" mr="19px" bgColor="white" borderRadius="16px">
                         <Text mt="24px" mr="31px" textAlign="right">You Receive</Text>
-                        <HStack w="106px" h="40px" mr="26px" mt="16px" border="1px solid black" borderRadius="30px" justifyContent="center" marginLeft="auto">
-                            <Text color="brand.900">{toToken.symbol}</Text>
-                        </HStack>
+                        <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px"/>
+                        
                         <Flex direction="column" align="flex-end" mr="26px" mt="8px">
                             <Input w="100%" mt="50px" pr='0' value={convertedAmountFormatted} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
                             <VStack ml="26px" mt="8px" alignItems="end">
@@ -148,9 +187,8 @@ export default function SimpleConvert() {
                     </Box>
                 </HStack>
 
-                <Button w="912px" h="61px" borderRadius="8px" isActive={!Boolean(convertedAmount) || !terms} onClick={handleSwap}>
-                    <Text as="b" color="white">Swap</Text>
-                </Button>
+                <ConnectOrSwapButton />
+
                 <HStack>
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
                         <Text mt="26px" as="b">By clicking on "Swap" you are accepting these terms</Text>
