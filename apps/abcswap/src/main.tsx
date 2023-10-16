@@ -5,12 +5,12 @@ import ReactDOM from "react-dom/client";
 import { Route, RouterProvider, createHashRouter, createRoutesFromElements } from "react-router-dom";
 import { CSSReset, ChakraProvider } from "@chakra-ui/react";
 import { WagmiConfig } from "wagmi";
-import { Layout, theme } from "ui"
+import { Layout, theme } from "commons-ui"
 import { TransactionProvider } from "transactions-modal";
 import { chains, wagmiConfig } from "./wagmi.ts";
 import Home from "./pages/Home.tsx";
 import Swap from "./pages/Swap.tsx";
-import TransactionModal from "ui/src/components/TransactionModal.tsx";
+import TransactionModal from "commons-ui/src/components/TransactionModal.tsx";
 
 
 const router = createHashRouter(

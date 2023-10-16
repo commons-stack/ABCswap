@@ -1,5 +1,5 @@
 {
-  "name": "app-web",
+  "name": "app-abcswap",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -29,7 +29,7 @@
     "eslint-config-custom": "*",
     "transactions-modal": "*",
     "typescript": "^5.0.2",
-    "ui": "*",
+    "commons-ui": "*",
     "vite": "^4.4.5"
   },
   "license": "AGPL-3.0-or-later"
