@@ -22,7 +22,9 @@
     "@chakra-ui/icons": "^2.1.1"
   },
   "dependencies": {
+    "@deamtest/ens-namehash": "^1.0.6",
     "ethjs-ens": "^2.0.1",
-    "js-sha3": "^0.9.2"
+    "js-sha3": "^0.9.2",
+    "buffer": "^6.0.3" 
   }
 }
