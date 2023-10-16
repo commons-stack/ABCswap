@@ -1,21 +1,30 @@
-import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import { Button, Divider, HStack, Image, Input, InputGroup, InputRightElement, Text, VStack } from '@chakra-ui/react';
+import { CheckCircleIcon, CloseIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import { Button, Divider, HStack, Icon, Image, Input, InputGroup, InputRightElement, Spinner, Stack, Text, VStack } from '@chakra-ui/react';
+import useFindDao from 'dao-utils/src/hooks/useFindDao';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import CustomInput from '../../../../shared/src/presentation/components/CustomInput';
+// import CustomInputRightAddon from '../../../../shared/src/presentation/components/CustomInputRightAddon';
 
 export default function Home() {
-
     const [dao, setDao] = useState<string>("");
-    const [userInteracted, setUserInteracted] = useState<boolean>(false);
-    const [completed, setCompleted] = useState<boolean>(false);
+
+    const { data: daoAddress, isError: daoAddressIsError, isLoading: daoAddressIsLoading } = useFindDao(dao);
     const navigate = useNavigate();
 
     const handleDaoChange = (dao: string) => {
-        setUserInteracted(true);
         setDao(dao);
-        // Verify if the name is valid
+    }
 
-        setCompleted(true);
+    const isDaoAddressNotFound = (): boolean => {
+        return daoAddressIsError || (daoAddress === "0x0000000000000000000000000000000000000000");
+    }
+
+    const isDaoNameValid = (): boolean => {
+        console.log("daoAddress", daoAddress)
+        return (daoAddress !== undefined) &&
+            !isDaoAddressNotFound() &&
+            !daoAddressIsLoading;
     }
 
     return (
@@ -61,21 +70,27 @@ export default function Home() {
                         backgroundColor={'white'}
                         errorBorderColor='red.500'
                         borderColor={'black'}
-                        isInvalid={userInteracted && dao.length === 0}
+                        isInvalid={!isDaoNameValid()}
                         borderRadius="15px"
-                        _hover={{'color': 'black'}}
+                        _hover={{ 'color': 'black' }}
                     />
                     <InputRightElement>
                         {
-                            userInteracted 
-                                ? (dao.length > 0 
-                                    ? <CheckCircleIcon color="brand.500" /> 
-                                    : <WarningTwoIcon color="red.500" />) 
+                            dao.length > 0
+                                ? (isDaoNameValid() ? <CheckCircleIcon color="brand.500" /> :
+                                    daoAddressIsLoading ? <Spinner size='xs' /> :
+                                        <WarningTwoIcon color="red.500" />)
                                 : ""
                         }
                     </InputRightElement>
                 </InputGroup>
-                <Button mt="40px" disabled={!completed} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
+                <HStack spacing={4} mt="40px" visibility={(dao.length == 0 || !isDaoAddressNotFound()) ? "collapse" : undefined}>
+                    <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
+                        <CloseIcon color='red.500' w="16px" h="16px" />
+                    </Stack>
+                    <Text color="red.500" fontSize="18px">The entered DAO name or contract address was not found.</Text>
+                </HStack>
+                <Button mt="40px" isDisabled={!isDaoNameValid()} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
             </VStack>
         </VStack>
     )

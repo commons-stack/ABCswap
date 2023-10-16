@@ -28,6 +28,7 @@
     "eslint": "^8.45.0",
     "eslint-config-custom": "*",
     "transactions-modal": "*",
+    "dao-utils": "*",
     "typescript": "^5.0.2",
     "commons-ui": "*",
     "vite": "^4.4.5"
