@@ -1,5 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import "./ConnectButton.css";
+import "./index.css";
 
 export const CustomConnectButton = () => {
     return (

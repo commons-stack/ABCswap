@@ -7,7 +7,7 @@ import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
 import { useProcessTransactions } from "transactions-modal";
-import { TokenSelector } from "ui/src/components/token_selector/TokenSelector";
+import { TokenSelector } from "ui/src/components/TokenSelector";
 
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";

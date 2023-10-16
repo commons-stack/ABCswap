@@ -1,5 +1,5 @@
 import { Box, HStack, Text } from "@chakra-ui/react"
-import { CustomConnectButton as ConnectButton } from './connect_button/ConnectButton';
+import { CustomConnectButton as ConnectButton } from './ConnectButton';
 
 export default function Header() {
     return (
