@@ -7,12 +7,12 @@ import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
 import { useProcessTransactions } from "transactions-modal";
-import { TokenSelector } from "ui/src/components/TokenSelector";
+import { TokenSelector } from "ui-shared/src/components/TokenSelector";
 
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
-import {formatWithFixedDecimals} from "ui/src/utils"
+import {formatWithFixedDecimals} from "ui-shared/src/utils"
 
 export default function SimpleConvert() {
 
