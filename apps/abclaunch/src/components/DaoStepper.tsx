@@ -5,7 +5,7 @@ function Steps({ steps, activeStep }: {steps: {title: string}[], activeStep: num
         <Stepper size='md' index={activeStep}>
             {steps.map((_, index) => (
                 <Step key={index}>
-                    <VStack>
+                    <VStack px="10px">
                     <StepIndicator>
                         <StepStatus
                         complete={<StepIcon />}
@@ -49,9 +49,7 @@ export default function DaoStepper(
             >
                 <Box
                     position="absolute"
-                    top="-30px"
-                    left="10%"
-                    right="10%"
+                    top="-15px"
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
