@@ -12,24 +12,24 @@ export default function ConfigureToken() {
     const enoughBalance = true;
 
     function handleReserveRatioChange(reserveRatio: string) {
-        /^\d*\.?\d*$/.test(reserveRatio) && setAbcSettings(settings => ({...settings, reserveRatio}));
+        /^\d*\.?\d*$/.test(reserveRatio) && setAbcSettings(settings => ({ ...settings, reserveRatio }));
     }
 
     function handleCollateralTokenChange(collateralToken: string) {
-        setAbcSettings(settings => ({...settings, collateralToken}));
+        setAbcSettings(settings => ({ ...settings, collateralToken }));
     }
 
     function handleInitialReserveChange(reserveInitialBalance: string) {
         console.log(reserveInitialBalance);
-        /^\d*\.?\d*$/.test(reserveInitialBalance) && setAbcSettings(settings => ({...settings, reserveInitialBalance}));
+        /^\d*\.?\d*$/.test(reserveInitialBalance) && setAbcSettings(settings => ({ ...settings, reserveInitialBalance }));
     }
 
     function handleEntryTributeChange(entryTribute: string) {
-        /^\d*\.?\d*$/.test(entryTribute) && setAbcSettings(settings => ({...settings, entryTribute}));
+        /^\d*\.?\d*$/.test(entryTribute) && setAbcSettings(settings => ({ ...settings, entryTribute }));
     }
 
     function handleExitTributeChange(exitTribute: string) {
-        /^\d*\.?\d*$/.test(exitTribute) && setAbcSettings(settings => ({...settings, exitTribute}));
+        /^\d*\.?\d*$/.test(exitTribute) && setAbcSettings(settings => ({ ...settings, exitTribute }));
     }
 
     return (
@@ -123,7 +123,9 @@ export default function ConfigureToken() {
                                 </MenuList>
                             </Menu>
                             <Flex>
-                                <Input placeholder="Enter value" borderRadius="8px" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" borderColor="brand.900" value={abcSettings.reserveInitialBalance} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange((e.target.value))} />
+                                <InputGroup>
+                                    <Input placeholder="Enter value" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" value={abcSettings.reserveInitialBalance} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange((e.target.value))} />
+                                </InputGroup>
                             </Flex>
                         </HStack>
                     </FormControl>
