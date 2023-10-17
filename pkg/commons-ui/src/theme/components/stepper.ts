@@ -1,6 +1,13 @@
 const Stepper = {
     variants: {
         "solid": (_: AsyncGeneratorFunctionConstructor) => ({
+            title: {
+                color: "brand.900",
+                fontSize: '18px',
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+            },
             indicator: {
                 borderWidth: "1px", 
                 borderColor: "brand.300",
@@ -30,9 +37,6 @@ const Stepper = {
             description: {
                 fontSize: '14px'
             },
-            title:{
-                fontSize: '18px'
-            }
         }),
     },
     defaultProps: {

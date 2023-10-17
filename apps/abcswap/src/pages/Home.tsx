@@ -1,9 +1,7 @@
 import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import { Button, Divider, HStack, Image, Input, InputGroup, InputRightAddon, InputRightElement, Text, VStack } from '@chakra-ui/react';
+import { Button, Divider, HStack, Image, Input, InputGroup, InputRightElement, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import CustomInput from '../../../../shared/src/presentation/components/CustomInput';
-// import CustomInputRightAddon from '../../../../shared/src/presentation/components/CustomInputRightAddon';
 
 export default function Home() {
 
