@@ -1,4 +1,4 @@
-import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightAddon, Text, VStack, Image, Tooltip, Menu, MenuButton, MenuList, Flex, MenuItem } from "@chakra-ui/react";
+import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightElement, Text, VStack, Image, Tooltip, Menu, MenuButton, MenuList, Flex, MenuItem } from "@chakra-ui/react";
 import { InfoOutlineIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useRecoilState } from "recoil";
@@ -72,7 +72,7 @@ export default function ConfigureToken() {
                                 </Button>
                                 <InputGroup w="91px" display="inline-flex">
                                     <Input value={abcSettings.reserveRatio} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} />
-                                    <InputRightAddon children="%" />
+                                    <InputRightElement children="%" />
                                 </InputGroup>
                             </HStack>
                         </FormControl>
@@ -139,7 +139,7 @@ export default function ConfigureToken() {
                             </FormLabel>
                             <InputGroup>
                                 <Input value={abcSettings.entryTribute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(e.target.value)} />
-                                <InputRightAddon children="%" />
+                                <InputRightElement children="%" />
                             </InputGroup>
                         </FormControl>
                         <FormControl>
@@ -153,7 +153,7 @@ export default function ConfigureToken() {
                             </FormLabel>
                             <InputGroup>
                                 <Input value={abcSettings.exitTribute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(e.target.value)} />
-                                <InputRightAddon children="%" />
+                                <InputRightElement children="%" />
                             </InputGroup>
                         </FormControl>
                     </HStack>

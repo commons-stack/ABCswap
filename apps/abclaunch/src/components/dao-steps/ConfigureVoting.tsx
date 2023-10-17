@@ -1,4 +1,4 @@
-import { InputGroup, Input, InputRightAddon, Text, VStack, Divider, FormControl, FormLabel, HStack, Tooltip, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
+import { InputGroup, Input, InputRightElement, Text, VStack, Divider, FormControl, FormLabel, HStack, Tooltip, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { newDaoVotingState } from "../../recoil";
 import { useRecoilState } from "recoil";
@@ -33,7 +33,7 @@ function SliderControl({name, value, onChange, tooltip}: {name: string, tooltip:
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                         type="number"
                     />
-                    <InputRightAddon children="%" />
+                    <InputRightElement children="%" />
                 </InputGroup>
             </HStack>
         </FormControl>
@@ -66,12 +66,12 @@ export default function ConfigureVoting() {
                 <HStack spacing={4}>
                     {['Days', 'Hours', 'Minutes'].map((key, index) => {
                         return (
-                            <InputGroup key={index}>
+                            <InputGroup key={index} variant="textRTL">
                                 <Input
                                     value={(votingSettings[`voteDuration${key}` as 'voteDurationDays' | 'voteDurationHours' | 'voteDurationMinutes'])}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVotingSettings(settings => ({...settings, [`voteDuration${key}`]: e.target.value}))}
                                 />
-                                <InputRightAddon children={key} />
+                                <InputRightElement children={key} />
                             </InputGroup>
                         )
                     })}
