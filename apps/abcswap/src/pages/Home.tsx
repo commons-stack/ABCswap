@@ -9,16 +9,22 @@ import { useNavigate } from 'react-router-dom';
 export default function Home() {
     const [dao, setDao] = useState<string>("");
 
-    const { address: daoAddress } = useFindDao(dao);
+    const { data: daoAddress, isError: daoAddressIsError, isLoading: daoAddressIsLoading } = useFindDao(dao);
     const navigate = useNavigate();
 
     const handleDaoChange = (dao: string) => {
         setDao(dao);
     }
 
+    const isDaoAddressNotFound = (): boolean => {
+        return daoAddressIsError || (daoAddress === "0x0000000000000000000000000000000000000000");
+    }
+
     const isDaoNameValid = (): boolean => {
         console.log("daoAddress", daoAddress)
-        return (daoAddress !== undefined) && (daoAddress !== "loading") && (daoAddress !== "not_found");
+        return (daoAddress !== undefined) &&
+            !isDaoAddressNotFound() &&
+            !daoAddressIsLoading;
     }
 
     return (
@@ -72,15 +78,15 @@ export default function Home() {
                         {
                             dao.length > 0
                                 ? (isDaoNameValid() ? <CheckCircleIcon color="brand.500" /> :
-                                    daoAddress === 'loading' ? <Spinner size='xs' /> :
+                                    daoAddressIsLoading ? <Spinner size='xs' /> :
                                         <WarningTwoIcon color="red.500" />)
                                 : ""
                         }
                     </InputRightElement>
                 </InputGroup>
-                <HStack spacing={4} mt="40px" visibility={(dao.length == 0||daoAddress !== "not_found")?"collapse":undefined}>
+                <HStack spacing={4} mt="40px" visibility={(dao.length == 0 || !isDaoAddressNotFound()) ? "collapse" : undefined}>
                     <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
-                        <CloseIcon color='red.500' w="16px" h="16px"/>
+                        <CloseIcon color='red.500' w="16px" h="16px" />
                     </Stack>
                     <Text color="red.500" fontSize="18px">The entered DAO name or contract address was not found.</Text>
                 </HStack>
