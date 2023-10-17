@@ -1,19 +1,19 @@
 import { Box, Button, Flex, HStack, Step, StepIcon, StepIndicator, StepNumber, StepStatus, StepTitle, Stepper, VStack, useSteps } from "@chakra-ui/react";
 
-function Steps({ steps, activeStep }: {steps: {title: string}[], activeStep: number}) {
+function Steps({ steps, activeStep }: { steps: { title: string }[], activeStep: number }) {
     return (
         <Stepper size='md' index={activeStep}>
             {steps.map((_, index) => (
                 <Step key={index}>
-                    <VStack px="10px">
-                    <StepIndicator>
-                        <StepStatus
-                        complete={<StepIcon />}
-                        incomplete={<StepNumber />}
-                        active={<StepNumber />}
-                        />
-                    </StepIndicator>
-                    <StepTitle>{steps[index].title}</StepTitle>
+                    <VStack px="25px">
+                        <StepIndicator w="70px" h="70px">
+                            <StepStatus
+                                complete={<StepIcon />}
+                                incomplete={<StepNumber />}
+                                active={<StepNumber />}
+                            />
+                        </StepIndicator>
+                        <StepTitle>{steps[index].title}</StepTitle>
                     </VStack>
                 </Step>
             ))}
@@ -23,7 +23,7 @@ function Steps({ steps, activeStep }: {steps: {title: string}[], activeStep: num
 
 export default function DaoStepper(
     { steps, onComplete, isValid }: {
-        steps: {title: string, component: React.ReactElement }[],
+        steps: { title: string, component: React.ReactElement }[],
         onComplete: () => void,
         isValid: (step: number) => boolean
     }
@@ -49,7 +49,7 @@ export default function DaoStepper(
             >
                 <Box
                     position="absolute"
-                    top="-15px"
+                    top="-32px"
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
@@ -66,11 +66,10 @@ export default function DaoStepper(
                     <Button
                         onClick={isLastStep ? onComplete : goToNext}
                         isDisabled={!valid}>
-                        {isLastStep ? 'Launch' : 'Next' }
+                        {isLastStep ? 'Launch' : 'Next'}
                     </Button>
                 </HStack>
-                </VStack>
-            </Flex>
+            </VStack>
+        </Flex>
     )
 }
-      
