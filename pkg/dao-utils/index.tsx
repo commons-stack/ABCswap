@@ -1,1 +1,1 @@
-export { default as useFindDao } from "./src/hooks/useFindDao";
+export { default as useDaoIsRegistered } from "./src/hooks/useDaoIsRegistered";

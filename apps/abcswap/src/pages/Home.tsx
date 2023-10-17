@@ -1,30 +1,34 @@
 import { CheckCircleIcon, CloseIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import { Button, Divider, HStack, Icon, Image, Input, InputGroup, InputRightElement, Spinner, Stack, Text, VStack } from '@chakra-ui/react';
-import useFindDao from 'dao-utils/src/hooks/useFindDao';
-import { useState } from 'react';
+import { Button, Divider, HStack, Image, Input, InputGroup, InputRightElement, Spinner, Stack, Text, VStack } from '@chakra-ui/react';
+import useDaoIsRegistered from 'dao-utils/src/hooks/useDaoIsRegistered';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import CustomInput from '../../../../shared/src/presentation/components/CustomInput';
-// import CustomInputRightAddon from '../../../../shared/src/presentation/components/CustomInputRightAddon';
+import { useDebounce } from 'usehooks-ts';
 
 export default function Home() {
     const [dao, setDao] = useState<string>("");
+    const debounceDao = useDebounce(dao, 500);
 
-    const { data: daoAddress, isError: daoAddressIsError, isLoading: daoAddressIsLoading } = useFindDao(dao);
+    const { isRegistered: isDaoRegistered, isError: daoAddressIsError, isLoading: daoAddressIsLoading, isDaoRegistered: getIsDaoRegistered, cleanState } = useDaoIsRegistered();
+
     const navigate = useNavigate();
 
     const handleDaoChange = (dao: string) => {
+        cleanState();
         setDao(dao);
     }
 
-    const isDaoAddressNotFound = (): boolean => {
-        return daoAddressIsError || (daoAddress === "0x0000000000000000000000000000000000000000");
-    }
+    useEffect(() => {
+        getIsDaoRegistered(debounceDao);
+    }, [debounceDao])
 
-    const isDaoNameValid = (): boolean => {
-        console.log("daoAddress", daoAddress)
-        return (daoAddress !== undefined) &&
-            !isDaoAddressNotFound() &&
-            !daoAddressIsLoading;
+    const getDaoNameInputIcon = (): JSX.Element => {
+        if (dao.length == 0) return (<></>);
+        if (daoAddressIsLoading) return (<Spinner size='xs' />);
+        if (daoAddressIsError) return (<WarningTwoIcon color="red.500" />);
+        if (isDaoRegistered) return (<CheckCircleIcon color="brand.500" />);
+        if (isDaoRegistered == undefined) return (<Spinner size='xs'/>);
+        return <WarningTwoIcon color="red.500" />;
     }
 
     return (
@@ -70,28 +74,25 @@ export default function Home() {
                         backgroundColor={'white'}
                         errorBorderColor='red.500'
                         borderColor={'black'}
-                        isInvalid={!isDaoNameValid()}
+                        isInvalid={!isDaoRegistered}
                         borderRadius="15px"
                         _hover={{ 'color': 'black' }}
                     />
                     <InputRightElement>
                         {
-                            dao.length > 0
-                                ? (isDaoNameValid() ? <CheckCircleIcon color="brand.500" /> :
-                                    daoAddressIsLoading ? <Spinner size='xs' /> :
-                                        <WarningTwoIcon color="red.500" />)
-                                : ""
+                            getDaoNameInputIcon()
                         }
                     </InputRightElement>
                 </InputGroup>
-                <HStack spacing={4} mt="40px" visibility={(dao.length == 0 || !isDaoAddressNotFound()) ? "collapse" : undefined}>
+                <HStack spacing={4} mt="40px" visibility={(dao.length == 0 || !daoAddressIsError) ? "collapse" : undefined}>
                     <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
                         <CloseIcon color='red.500' w="16px" h="16px" />
                     </Stack>
                     <Text color="red.500" fontSize="18px">The entered DAO name or contract address was not found.</Text>
                 </HStack>
-                <Button mt="40px" isDisabled={!isDaoNameValid()} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
+                <Button mt="40px" isDisabled={!isDaoRegistered} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
             </VStack>
         </VStack>
     )
 }
+
