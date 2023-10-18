@@ -14,9 +14,8 @@ export default function Home() {
     return (
         <VStack bg="brand.100" pb="100px">
             <VStack spacing={0}>
-                <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to ABC Swap</Text>
-                <Text color="brand.900" fontSize="24px" pt="32px">Where you can find and swap you</Text>
-                <Text color="brand.900" fontSize="24px">favorite DAO's ABC tokens.</Text>
+                <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to the ABC Swap</Text>
+                <Text color="brand.900" fontSize="24px" pt="32px">Find and swap ABC tokens.</Text>
                 <Divider paddingTop="48px"
                     borderColor="brand.900"
                     borderBottomWidth="1px"
@@ -50,7 +49,7 @@ export default function Home() {
                     </Stack>
                     <Text color="red.500" fontSize="18px">The entered DAO name or contract address was not found.</Text>
                 </HStack>
-                <Button mt="40px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
+                <Button mt="25px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
             </VStack>
         </VStack>
     )

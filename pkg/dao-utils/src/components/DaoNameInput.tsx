@@ -16,9 +16,9 @@ export default function DaoNameInput({ daoName, debounceDelay = 500, setDaoName}
     }
 
     return (
-        <InputGroup mt="55px" w="408px">
+        <InputGroup mt="0" w="408px">
             <Input
-                placeholder="Type an organization name"
+                placeholder="Enter the DAO's name or contract address"
                 value={daoName ?? ''}
                 autoFocus={true}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ export default function DaoNameInput({ daoName, debounceDelay = 500, setDaoName}
                 errorBorderColor='red.500'
                 borderColor={'black'}
                 isInvalid={!isDaoRegistered}
-                borderRadius="15px"
+                borderRadius="8px"
                 _hover={{ 'color': 'black' }}
             />
             <InputRightElement>
