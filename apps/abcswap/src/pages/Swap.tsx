@@ -150,7 +150,7 @@ export default function SimpleConvert() {
                         <Text mt="24px" ml="31px">You Send</Text>
                         <TokenSelector token={fromToken} mr="auto" ml="26px" mt="16px"/>
                         <NumberInput mt='2' value={amount}>
-                            <NumberInputField autoFocus onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setAmount(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' />
+                            <NumberInputField autoFocus onChange={(e) => /^\d*\.?\d*$/.test(e.target.value) && setAmount(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' _focusVisible={{boxShadow: 'none'}} />
                         </NumberInput>
                         <VStack ml="26px" mt="8px" alignItems="initial">
                             <HStack>
