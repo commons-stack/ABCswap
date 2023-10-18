@@ -1,4 +1,5 @@
 import { Box, Button, Flex, HStack, Step, StepIcon, StepIndicator, StepNumber, StepStatus, StepTitle, Stepper, VStack, useSteps } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function Steps({ steps, activeStep }: { steps: { title: string }[], activeStep: number }) {
     return (
@@ -28,6 +29,8 @@ export default function DaoStepper(
         isValid: (step: number) => boolean
     }
 ) {
+
+    const navigate = useNavigate();
 
     const { activeStep, goToNext, goToPrevious } = useSteps({
         index: 0,
@@ -60,7 +63,7 @@ export default function DaoStepper(
                 {steps[activeStep].component}
 
                 <HStack spacing={4} pb="50px" pt="40px">
-                    <Button variant="outline" onClick={goToPrevious}>
+                    <Button variant="outline" onClick={activeStep === 0 ? () => navigate(-1) : goToPrevious}>
                         Previous
                     </Button>
                     <Button

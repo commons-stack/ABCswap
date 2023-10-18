@@ -25,7 +25,7 @@ export default function Summary() {
                         </AccordionButton>
                         <AccordionPanel pb={4}>
                             <Text>
-                                Organization name: <Text as="b">{daoName}</Text>
+                                Organization name: <Text as="b">{daoName.name}</Text>
                             </Text>
                         </AccordionPanel>
                     </AccordionItem>

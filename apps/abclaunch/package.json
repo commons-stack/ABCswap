@@ -22,7 +22,8 @@
     "wagmi": "1.4.2",
     "recoil": "^0.7.7",
     "commons-ui": "*",
-    "transactions-modal": "*"
+    "transactions-modal": "*",
+    "dao-utils": "*"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

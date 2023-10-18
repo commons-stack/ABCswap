@@ -42,7 +42,7 @@ export default function Home() {
             </HStack>
             <VStack spacing={4} mt="100px" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
-                <DaoNameInput daoName={daoName} setDaoName={setDaoName} />
+                <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} />
                 <HStack spacing={4} mt="40px" visibility={(daoName.length == 0 || !error) ? "collapse" : undefined}>
                     <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
                         <CloseIcon color='red.500' w="16px" h="16px" />

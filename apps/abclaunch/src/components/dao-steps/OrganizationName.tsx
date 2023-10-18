@@ -1,30 +1,21 @@
-import { Box, InputGroup, Input, InputRightElement, Text, VStack } from "@chakra-ui/react";
-import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import { Box, Text, VStack } from "@chakra-ui/react";
 import { newDaoNameState } from "../../recoil";
+import { DaoNameInput } from "dao-utils";
 import { useRecoilState } from "recoil";
 
 export default function OrganizationName() { 
 
-    const [organizationName, setOrganizationName] = useRecoilState(newDaoNameState);
-
-    function handleNameChange(name: string) {
-        /[a-z0-9]*/.test(name) && setOrganizationName(name);
-    }
+    const [organizationSettings, setOrganizationSettings] = useRecoilState(newDaoNameState);
 
     return (
         <Box pt="100px" pb="75px">
             <VStack spacing={0} className="abcs-newdao-step-content">
-                <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Name your DAO</Text>
-                <InputGroup mt="48px">
-                    <Input
-                        placeholder="Type an organization name"
-                        value={organizationName ?? ''}
-                        onChange={(e) => handleNameChange(e.target.value)}
-                    />
-                    <InputRightElement>
-                        {(organizationName.length > 0 ? <CheckCircleIcon color="brand.500" /> : <WarningTwoIcon color="red.500" />)}
-                    </InputRightElement>
-                </InputGroup>
+                <Text mb="48px" fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Name your DAO</Text>
+                <DaoNameInput
+                    daoName={organizationSettings.name}
+                    setDaoName={setOrganizationSettings}
+                    inverted
+                />
             </VStack>
         </Box>
     );

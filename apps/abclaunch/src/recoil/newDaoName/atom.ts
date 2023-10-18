@@ -1,6 +1,14 @@
 import { atom } from "recoil";
 
-export default atom<string>({
+type NewDaoName = {
+    name: string;
+    isRegistered: boolean | undefined;
+};
+
+export default atom<NewDaoName>({
     key: 'newDaoName',
-    default: '',
+    default: {
+        name: '',
+        isRegistered: false,
+    },
 });

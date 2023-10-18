@@ -1,15 +1,14 @@
-
+import { useState, useEffect } from 'react';
 import { useDebounce } from 'usehooks-ts';
-import {  parseAbi } from 'viem';
+import { parseAbi } from 'viem';
 import { namehash, normalize } from 'viem/ens';
 import { useContractRead } from 'wagmi';
 
 const aragonEnsContract = '0x6f2CA655f58d5fb94A08460aC19A552EB19909FD';
 const zeroAddress = `0x${'0'.repeat(40)}`;
 
-function useIsRegisteredDao(name: string) {
-
-  const {data, error, isLoading } = useContractRead({
+function useIsRegisteredDaoWithoutDebounce(name: string) {
+  const { data, error, isLoading } = useContractRead({
     address: aragonEnsContract,
     abi: parseAbi([
       'function resolver(bytes32 _node) view returns (address)'
@@ -23,9 +22,22 @@ function useIsRegisteredDao(name: string) {
   return { isRegistered, error, isLoading };
 }
 
-function useDebouncedIsRegisteredDao(name: string, delay?: number) {
+function useIsRegisteredDao(name: string, delay?: number) {
+  const [isDebouncing, setIsDebouncing] = useState(true);
   const debounceDaoName = useDebounce(name, delay);
-  return useIsRegisteredDao(debounceDaoName);
+
+  useEffect(() => {
+    setIsDebouncing(true);
+    const handler = setTimeout(() => setIsDebouncing(false), delay);
+    return () => clearTimeout(handler);
+  }, [name, delay]);
+
+  const { isRegistered, error, isLoading: isFetching } = useIsRegisteredDaoWithoutDebounce(debounceDaoName);
+
+  // isLoading will be true either if we're debouncing or if the request is being made
+  const isLoading = isDebouncing || isFetching;
+
+  return { isRegistered, error, isLoading };
 }
 
-export default useDebouncedIsRegisteredDao;
+export default useIsRegisteredDao;

@@ -42,7 +42,7 @@ export default function useLaunchSteps() {
                     args: [
                         tokenSettings.tokenName,
                         tokenSettings.tokenSymbol,
-                        daoName,
+                        daoName.name,
                         tokenSettings.tokenHolders.map((holder) => holder[0]),
                         tokenSettings.tokenHolders.map((holder) => parseUnits(holder[1], 18)),
                         [

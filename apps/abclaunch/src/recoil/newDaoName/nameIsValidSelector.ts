@@ -4,7 +4,7 @@ import newDaoNameAtom from "./atom";
 export default selector({
     key: 'newDaoNameIsValid',
     get: ({get}) => {
-        const name = get(newDaoNameAtom);
-        return name.length > 0;
+        const {name, isRegistered} = get(newDaoNameAtom);
+        return name.length > 0 && isRegistered === false;
     },
 });
