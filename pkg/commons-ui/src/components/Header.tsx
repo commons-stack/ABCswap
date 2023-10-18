@@ -1,14 +1,18 @@
-import { Box, HStack, Text } from "@chakra-ui/react"
+import { Box, HStack, Text, Link } from "@chakra-ui/react"
 import { CustomConnectButton as ConnectButton } from './ConnectButton';
 
-export default function Header() {
+type HeaderProps = {
+    headerLocation: "swap" | "launchpad"
+}
+
+export default function Header({headerLocation}: HeaderProps) {
     return (
         <Box padding="64px">
             <HStack justifyContent="space-between">
                 <Text fontSize="xl">ABC Swap</Text>
                 <HStack spacing="32px" justifyContent="space-between">
-                    <Text fontSize="16px">ABC Swap</Text>
-                    <Text fontSize="16px">About ABC</Text>
+                <Text fontSize="16px">ABC {headerLocation === 'swap' ? 'Swap' : 'Launchpad'}</Text>
+                    <Link href="https://www.commonsstack.org/augmented-bonding-curve" isExternal fontSize="16px">About ABC</Link>
                     <ConnectButton />
                 </HStack>
             </HStack>
