@@ -17,8 +17,6 @@ function SliderControl({ name, value, onChange, tooltip }: { name: string, toolt
             <HStack justifyContent="space-between" width="100%">
                 <Slider
                     aria-label='slider-ex-1'
-                    min={0}
-                    max={100}
                     value={Number(value)}
                     onChange={value => onChange(value.toString())}
                     flexGrow={1}
