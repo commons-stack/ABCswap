@@ -4,7 +4,7 @@ import Footer from "./Footer"
 
 type LayoutProps = {
     children: React.ReactNode
-    headerLocation: "swap" | "launchpad"
+    headerLocation: "swap" | "launch"
 }
 
 export default function Layout({ children, headerLocation }: LayoutProps) {

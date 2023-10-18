@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <RainbowKitProvider chains={chains}>
           <TransactionProvider>
             <RecoilRoot>
-              <Layout headerLocation="launchpad">
+              <Layout headerLocation="launch">
                 <RouterProvider router={router} />
               </Layout>
             </RecoilRoot>
