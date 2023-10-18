@@ -49,7 +49,7 @@ export default function Home() {
             </HStack>
             <VStack spacing={4} mt="100px" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
-                <InputGroup mt="20px" w="408px">
+                <InputGroup mt="0px" w="408px">
                     <Input
                         placeholder="Enter the DAO's name or contract address"
                         value={dao ?? ''}
@@ -74,7 +74,7 @@ export default function Home() {
                         }
                     </InputRightElement>
                 </InputGroup>
-                <Button mt="20px" disabled={!completed} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
+                <Button mt="25px" disabled={!completed} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
             </VStack>
         </VStack>
     )
