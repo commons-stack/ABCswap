@@ -1,7 +1,6 @@
 import { Box, HStack, Text, VStack, Image, Button } from '@chakra-ui/react'
 import { useAccount, useBalance } from 'wagmi';
 import { parseEther } from 'viem';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { WarningTwoIcon } from '@chakra-ui/icons'
 import React from 'react';
@@ -14,8 +13,9 @@ import Summary from '../components/dao-steps/Summary';
 import { useProcessTransactions } from 'transactions-modal';
 import useLaunchSteps from '../hooks/useLaunchSteps';
 import useIsValid from '../hooks/useIsValid';
+import { CustomConnectButton } from 'commons-ui/src/components/ConnectButton';
 
-function Error({ children }: {children: React.ReactNode}) {
+function Error({ children }: { children: React.ReactNode }) {
     return (
         <HStack mb="28px" mt="93px">
             <WarningTwoIcon w="32px" h="32px" mr="8px" color="brand.1200" />
@@ -26,7 +26,7 @@ function Error({ children }: {children: React.ReactNode}) {
     )
 }
 
-function StepInfo ({ image, children }: {image: string, children: React.ReactNode}) {
+function StepInfo({ image, children }: { image: string, children: React.ReactNode }) {
     return (
         <VStack spacing={0}>
             <Image src={image} pb="16px" />
@@ -42,23 +42,23 @@ export default function NewDao() {
     const navigate = useNavigate();
     const location = useLocation();
     const txSteps = useLaunchSteps();
-    const {processTransactions} = useProcessTransactions()
+    const { processTransactions } = useProcessTransactions()
 
     const enoughBalance = balance && balance.value > parseEther("100", "gwei");
 
     const isValid = useIsValid()
 
     const steps = [
-        {title: 'Name your DAO', component: <OrganizationName />},
-        {title: 'Configure voting', component: <ConfigureVoting />},
-        {title: 'Configure token', component: <ConfigureToken />},
-        {title: 'Configure ABC', component: <ConfigureAbc />},
-        {title: 'Launch your DAO', component: <Summary />},
+        { title: 'Name your DAO', component: <OrganizationName /> },
+        { title: 'Configure voting', component: <ConfigureVoting /> },
+        { title: 'Configure token', component: <ConfigureToken /> },
+        { title: 'Configure ABC', component: <ConfigureAbc /> },
+        { title: 'Launch your DAO', component: <Summary /> },
     ];
 
     if (location.pathname === '/new-dao/wizard') {
         return (
-            <DaoStepper steps={steps} isValid={isValid} onComplete={() => processTransactions("Launch your DAO", undefined, txSteps)}/>
+            <DaoStepper steps={steps} isValid={isValid} onComplete={() => processTransactions("Launch your DAO", undefined, txSteps)} />
         )
     }
     return (
@@ -81,7 +81,7 @@ export default function NewDao() {
                     {address && !enoughBalance &&
                         <Error>Insuficient funds, you need <br /> more ETH to launch an ABC.</Error>
                     }
-                    {address ? <Button onClick={() => navigate('/new-dao/wizard')} isDisabled={!enoughBalance}>Let's start</Button> : <ConnectButton />}
+                    {address ? <Button onClick={() => navigate('/new-dao/wizard')} isDisabled={!enoughBalance}>Let's start</Button> : <CustomConnectButton />}
                 </VStack>
             </Box>
         </>

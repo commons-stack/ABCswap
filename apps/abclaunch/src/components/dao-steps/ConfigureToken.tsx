@@ -1,4 +1,4 @@
-import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightAddon, Text, VStack, Tooltip } from "@chakra-ui/react";
+import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightElement, Text, VStack, Tooltip } from "@chakra-ui/react";
 import { InfoOutlineIcon, DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -10,11 +10,11 @@ export default function ConfigureToken() {
     const initialTotalSupply = useRecoilValue(newDaoTokenSupplyState);
 
     function handleChangeTokenName(tokenName: string) {
-        setTokenSettings(settings => ({...settings, tokenName}));
+        setTokenSettings(settings => ({ ...settings, tokenName }));
     }
 
     function handleChangeTokenSymbol(tokenSymbol: string) {
-        setTokenSettings(settings => ({...settings, tokenSymbol}));
+        setTokenSettings(settings => ({ ...settings, tokenSymbol }));
     }
 
     function handleHolderChange(index: number, e: React.ChangeEvent<HTMLInputElement>, isAddress: boolean) {
@@ -27,19 +27,19 @@ export default function ConfigureToken() {
                 holder[1] = e.target.value;
             }
             tokenHolders.splice(index, 1, holder);
-            return {...settings, tokenHolders};
+            return { ...settings, tokenHolders };
         });
     }
 
     function handleAddEmptyHolder() {
-        setTokenSettings(settings => ({...settings, tokenHolders: [...settings.tokenHolders, ['', '']]}));
+        setTokenSettings(settings => ({ ...settings, tokenHolders: [...settings.tokenHolders, ['', '']] }));
     }
 
     function handleRemoveHolder(index: number) {
         setTokenSettings(settings => {
             const tokenHolders = [...settings.tokenHolders];
             tokenHolders.splice(index, 1);
-            return {...settings, tokenHolders};
+            return { ...settings, tokenHolders };
         });
     }
 
@@ -60,34 +60,38 @@ export default function ConfigureToken() {
                             <HStack>
                                 <Text fontSize="16px" color="brand.900">TOKEN NAME</Text>
                                 <Tooltip label="Token Name is the name you can assign to the token that will be minted when creating this organization.">
-                                  <InfoOutlineIcon />
+                                    <InfoOutlineIcon />
                                 </Tooltip>
                             </HStack>
                         </FormLabel>
-                        <Input
-                            placeholder="My Organization Token"
-                            value={tokenSettings.tokenName}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                handleChangeTokenName(e.target.value);
-                            }}
-                        />
+                        <InputGroup>
+                            <Input
+                                placeholder="My Organization Token"
+                                value={tokenSettings.tokenName}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleChangeTokenName(e.target.value);
+                                }}
+                            />
+                        </InputGroup>
                     </FormControl>
                     <FormControl width="35%">
                         <FormLabel>
                             <HStack>
                                 <Text fontSize="16px" color="brand.900">TOKEN SYMBOL</Text>
                                 <Tooltip label="Token symbol or ticker is a shortened name (typically in capital letters) that refers to a token or coin on a trading platform. For example: ANT.">
-                                  <InfoOutlineIcon />
+                                    <InfoOutlineIcon />
                                 </Tooltip>
                             </HStack>
                         </FormLabel>
-                        <Input
-                            placeholder="MOT"
-                            value={tokenSettings.tokenSymbol}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                handleChangeTokenSymbol(e.target.value)
-                            }}
-                        />
+                        <InputGroup>
+                            <Input
+                                placeholder="MOT"
+                                value={tokenSettings.tokenSymbol}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleChangeTokenSymbol(e.target.value)
+                                }}
+                            />
+                        </InputGroup>
                     </FormControl>
                 </HStack>
                 <HStack width="100%">
@@ -96,7 +100,7 @@ export default function ConfigureToken() {
                             <HStack>
                                 <Text fontSize="16px" color="brand.900">TOKEN HOLDERS</Text>
                                 <Tooltip label="Token holders are the individuals who will receive the initial token distribution.">
-                                  <InfoOutlineIcon />
+                                    <InfoOutlineIcon />
                                 </Tooltip>
                             </HStack>
                         </FormLabel>
@@ -110,9 +114,9 @@ export default function ConfigureToken() {
                                         handleHolderChange(i, e, true)
                                     }
                                 />
-                                <InputRightAddon onClick={() => handleRemoveHolder(i)} >
+                                <InputRightElement onClick={() => handleRemoveHolder(i)} >
                                     <DeleteIcon />
-                                </InputRightAddon>
+                                </InputRightElement>
                             </InputGroup>
                         ))}
                     </FormControl>
@@ -168,7 +172,7 @@ export default function ConfigureToken() {
                 <Text fontSize="16px" color="black">Also, the above addresses will receive the initial token distribution, </Text>
                 <Text fontSize="16px" color="black">the sum of which determines  the initial supply for the token.</Text>
             </VStack>
-        </VStack>
+        </VStack >
     );
 }
 

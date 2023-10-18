@@ -1,4 +1,4 @@
-import { Box, InputGroup, Input, InputRightAddon, Text, VStack } from "@chakra-ui/react";
+import { Box, InputGroup, Input, InputRightElement, Text, VStack } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import { newDaoNameState } from "../../recoil";
 import { useRecoilState } from "recoil";
@@ -21,9 +21,9 @@ export default function OrganizationName() {
                         value={organizationName ?? ''}
                         onChange={(e) => handleNameChange(e.target.value)}
                     />
-                    <InputRightAddon>
+                    <InputRightElement>
                         {(organizationName.length > 0 ? <CheckCircleIcon color="brand.500" /> : <WarningTwoIcon color="red.500" />)}
-                    </InputRightAddon>
+                    </InputRightElement>
                 </InputGroup>
             </VStack>
         </Box>
