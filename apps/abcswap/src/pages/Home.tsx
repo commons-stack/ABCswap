@@ -31,7 +31,7 @@ export default function Home() {
                 />
             </VStack>
             <HStack spacing={20} paddingTop="40px" >
-                <HStack>squishy
+                <HStack>
                     <Image src="/swap-home/ContinuousFunding.svg" />
                     <Text color="brand.900" fontSize="20px" fontWeight="500">Continuous funding</Text>
                 </HStack>

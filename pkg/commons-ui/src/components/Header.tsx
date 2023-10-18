@@ -2,12 +2,12 @@ import { Box, HStack, Text, Link } from "@chakra-ui/react"
 import { CustomConnectButton as ConnectButton } from './ConnectButton';
 
 type HeaderProps = {
-    headerLocation: "swap" | "launch"
+    variant: "swap" | "launch"
 }
 
-export default function Header({ headerLocation }: HeaderProps) {
+export default function Header({ variant }: HeaderProps) {
 
-    const swapOrLaunchLink = headerLocation === "launch" ? "https://abcswap.xyz/" : "https://launch.abcswap.xyz/";
+    const swapOrLaunchLink = variant === "launch" ? "https://abcswap.xyz/" : "https://launch.abcswap.xyz/";
 
     return (
         <Box padding="64px">
@@ -18,7 +18,7 @@ export default function Header({ headerLocation }: HeaderProps) {
                         href={swapOrLaunchLink}
                         fontSize="16px"
                         isExternal
-                    >ABC {headerLocation === 'launch' ? 'Swap' : 'Launch'}
+                    >ABC {variant === 'launch' ? 'Swap' : 'Launch'}
                     </Link>
                     <Link href="https://www.commonsstack.org/augmented-bonding-curve" isExternal fontSize="16px">About ABC</Link>
                     <ConnectButton />

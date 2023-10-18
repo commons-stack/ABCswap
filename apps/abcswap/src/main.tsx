@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <TransactionProvider transactionModal={<TransactionModal />}>
-            <Layout headerLocation="swap">
+            <Layout variant="swap">
               <RouterProvider router={router} />
             </Layout>
           </TransactionProvider>
