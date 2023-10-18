@@ -51,7 +51,7 @@ export default function Home() {
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
                 <InputGroup mt="20px" w="408px">
                     <Input
-                        placeholder="Type an organization name"
+                        placeholder="Enter the DAO's name or contract address"
                         value={dao ?? ''}
                         autoFocus={true}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
