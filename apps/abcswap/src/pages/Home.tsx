@@ -31,7 +31,7 @@ export default function Home() {
                 />
             </VStack>
             <HStack spacing={20} paddingTop="40px" >
-                <HStack>
+                <HStack>squishy
                     <Image src="/swap-home/ContinuousFunding.svg" />
                     <Text color="brand.900" fontSize="20px" fontWeight="500">Continuous funding</Text>
                 </HStack>
@@ -49,7 +49,7 @@ export default function Home() {
             </HStack>
             <VStack spacing={4} mt="100px" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
-                <InputGroup mt="55px" w="408px">
+                <InputGroup mt="20px" w="408px">
                     <Input
                         placeholder="Type an organization name"
                         value={dao ?? ''}
@@ -61,7 +61,7 @@ export default function Home() {
                         errorBorderColor='red.500'
                         borderColor={'black'}
                         isInvalid={userInteracted && dao.length === 0}
-                        borderRadius="15px"
+                        borderRadius="8px"
                         _hover={{'color': 'black'}}
                     />
                     <InputRightElement>
@@ -74,7 +74,7 @@ export default function Home() {
                         }
                     </InputRightElement>
                 </InputGroup>
-                <Button mt="40px" disabled={!completed} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
+                <Button mt="20px" disabled={!completed} w="310px" onClick={() => navigate(`/${dao}`)}>Next</Button>
             </VStack>
         </VStack>
     )
