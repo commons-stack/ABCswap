@@ -31,7 +31,7 @@ export default function Summary() {
             <VStack spacing={4}>
                 <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Launch your DAO</Text>
                 <Text fontSize="24px" color="brand.900" >Make sure your settings are correct</Text>
-                <Accordion width="80%">
+                <Accordion width="80%" allowToggle allowMultiple>
                     <AccordionItem>
                         <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
                             <Box flex='1' textAlign='left'>
