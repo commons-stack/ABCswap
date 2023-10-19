@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { EditIcon, InfoIcon, RepeatIcon } from '@chakra-ui/icons';
 import { Box, Button, Checkbox, Flex, HStack, Icon, IconButton, Input, Link, NumberInput, NumberInputField, Text, Tooltip, VStack } from "@chakra-ui/react";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
-import { useProcessTransactions } from "transactions-modal";
-import { TokenSelector } from "commons-ui/src/components/TokenSelector";
 import TermsModal from "commons-ui/src/components/TermsModal";
+import { TokenSelector } from "commons-ui/src/components/TokenSelector";
+import { useProcessTransactions } from "transactions-modal";
 
+import { formatWithMaxDecimals, trimDecimals } from "commons-ui/src/utils";
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
-import {formatWithFixedDecimals} from "commons-ui/src/utils"
 
 export default function SimpleConvert() {
 
@@ -64,18 +64,18 @@ export default function SimpleConvert() {
     const invertedUnitaryPrice = unitaryPrice ? (10n ** BigInt(fromToken.decimals)) ** 2n / unitaryPrice : undefined;
 
     function invert() {
-        setAmount((convertedAmount && formatUnits(convertedAmount, toToken.decimals) || '0'));
+        setAmount(formatDisplayNumber(convertedAmount && formatUnits(convertedAmount, toToken.decimals) || '0'));
         setInverted(inverted => !inverted);
     }
 
     function handleSwap() {
-        const subtitle = `Swapping ${amount} ${fromToken.symbol} to ${formatWithFixedDecimals(convertedAmountFormatted, 3)} ${toToken.symbol}`;
+        const subtitle = `Swapping ${formatDisplayNumber(amount)} ${fromToken.symbol} to ${formatDisplayNumber(convertedAmountFormatted)} ${toToken.symbol}`;
         processTransactions("Swapping Tokens", subtitle, steps);
     }
 
     function handleAmountChange(amount: string) {
         amount = amount.replace(/^0+(?!\.|$)/, ''); // Avoiding leading 0s
-        /^\d*\.?\d*$/.test(amount) && setAmount(amount);
+        /^\d*\.?\d*$/.test(amount) && setAmount(trimDecimals(amount, 4));
     }
 
     function ActionButton(params: { title: string, isDisabled: boolean, onClick: () => void }): JSX.Element {
@@ -114,6 +114,10 @@ export default function SimpleConvert() {
                 }}
             </ConnectButton.Custom>
         )
+    }
+
+    function formatDisplayNumber(number: string | undefined) {
+        return number?formatWithMaxDecimals(number, 4):'';
     }
 
     return (
@@ -161,10 +165,10 @@ export default function SimpleConvert() {
                         </NumberInput>
                         <VStack ml="26px" mt="8px" alignItems="initial">
                             <HStack>
-                                <Text fontSize="14px">Balance: {fromTokenBalance?.formatted}</Text>
+                                <Text fontSize="14px">Balance: {formatDisplayNumber(fromTokenBalance?.formatted)}</Text>
                                 <Link as="b" fontSize="14px" onClick={() => setAmount(fromTokenBalance?.formatted || '0')}>Max</Link>
                             </HStack>
-                            <Text as="b" fontSize="md" color="brand.900">1 {fromToken.symbol} = {formatUnits(unitaryPrice || 0n, toToken.decimals)} {toToken.symbol}</Text>
+                            <Text as="b" fontSize="md" color="brand.900">1 {fromToken.symbol} = {formatDisplayNumber(formatUnits(unitaryPrice || 0n, toToken.decimals))} {toToken.symbol}</Text>
                         </VStack>
                     </Box>
                     <div style={{ width: '0px', position: 'relative' }}>
@@ -187,10 +191,10 @@ export default function SimpleConvert() {
                         <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px"/>
                         
                         <Flex direction="column" align="flex-end" mr="26px" mt="8px">
-                            <Input w="100%" mt="50px" pr='0' value={convertedAmountFormatted} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
+                            <Input w="100%" mt="50px" pr='0' value={formatDisplayNumber(convertedAmountFormatted)} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
                             <VStack ml="26px" mt="8px" alignItems="end">
-                                <Text fontSize="14px">Balance: {toTokenBalance?.formatted}</Text>
-                                <Text as="b" fontSize="md" color="brand.900">1 {toToken.symbol} = {formatUnits(invertedUnitaryPrice || 0n, fromToken.decimals)} {fromToken.symbol}</Text>
+                                <Text fontSize="14px">Balance: {formatDisplayNumber(toTokenBalance?.formatted)}</Text>
+                                <Text as="b" fontSize="md" color="brand.900">1 {toToken.symbol} = {formatDisplayNumber(formatUnits(invertedUnitaryPrice || 0n, fromToken.decimals))} {fromToken.symbol}</Text>
                             </VStack>
                         </Flex>
                     </Box>
