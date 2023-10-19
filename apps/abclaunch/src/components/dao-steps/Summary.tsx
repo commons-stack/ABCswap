@@ -12,7 +12,7 @@ export default function Summary() {
     const abcConfig = useRecoilValue(newDaoAbcState);
     const setChecked = useSetRecoilState(newDaoCheckedState);
     return (
-        <Box pt="100px">
+        <Box pt="75px">
             <VStack spacing={4}>
                 <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Launch your DAO</Text>
                 <Text fontSize="24px" color="brand.900" >Make sure your settings are correct</Text>
