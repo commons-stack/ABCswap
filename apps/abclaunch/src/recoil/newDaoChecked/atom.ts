@@ -1,6 +1,14 @@
 import { atom } from "recoil";
 
-export default atom<boolean>({
+type NewDaoCheckedState = {
+    daoInfoChecked: boolean;
+    legalsChecked: boolean;
+};
+
+export default atom<NewDaoCheckedState>({
     key: 'newDaoChecked',
-    default: false,
+    default: {
+        daoInfoChecked: false,
+        legalsChecked: false,
+    }
 });

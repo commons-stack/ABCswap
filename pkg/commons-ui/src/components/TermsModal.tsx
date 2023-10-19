@@ -7,7 +7,6 @@ import {
     Text,
     Link,
     VStack,
-    HStack,
     Button,
     Heading,
     useDisclosure,
@@ -16,23 +15,14 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 
-interface TransactionModalProps {
-    location: "swap" | "launch";
-}
-
-export default function TransactionModal({ location }: TransactionModalProps) {
+export default function TermsModal() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const disclaimerText = location === "swap" ? 'I have read and agree to the' : 'I confirm that the above information is correct and that I have read and agree to the';
-
-
     return (
         <>
-            <HStack fontWeight="bold">
-                <Text>{disclaimerText}</Text>
-                <Link onClick={onOpen} color="blue">Terms of Service</Link>
-            </HStack>
+            <Link onClick={onOpen} color="blue">Terms of Service</Link>
+
             <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent border="1px solid black" borderRadius="16px">

@@ -4,7 +4,7 @@ import newDaoCheckedAtom from "./atom";
 export default selector({
     key: 'newDaoCheckedIsValid',
     get: ({get}) => {
-        const checked = get(newDaoCheckedAtom);
-        return checked;
+        const checks = get(newDaoCheckedAtom);
+        return checks.daoInfoChecked && checks.legalsChecked;
     },
 });

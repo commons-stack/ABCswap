@@ -1,8 +1,9 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { newDaoNameState, newDaoVotingState, newDaoTokenState, newDaoTokenSupplyState, newDaoAbcState, newDaoCheckedState } from "../../recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
 import TermsModal from "commons-ui/src/components/TermsModal"
+import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal"
 
 export default function Summary() {
     const daoName = useRecoilValue(newDaoNameState);
@@ -10,7 +11,8 @@ export default function Summary() {
     const tokenSettings = useRecoilValue(newDaoTokenState);
     const initialTotalSupply = useRecoilValue(newDaoTokenSupplyState);
     const abcConfig = useRecoilValue(newDaoAbcState);
-    const setChecked = useSetRecoilState(newDaoCheckedState);
+    const [newDaoChecks, setNewDaoChecks] = useRecoilState(newDaoCheckedState);
+
     return (
         <Box pt="75px">
             <VStack spacing={4}>
@@ -114,7 +116,15 @@ export default function Summary() {
                     <Text fontSize="16px">Review all the settings.</Text>
                     <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
                 </VStack>
-                <Checkbox colorScheme="brand" onChange={(e) => setChecked(e.target.checked)}><TermsModal location="launch"/></Checkbox>
+                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, daoInfoChecked: e.target.checked})}>I confirm that the above information is correct</Checkbox>
+                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, legalsChecked: e.target.checked})}>
+                    <HStack spacing={1}>
+                        <Text>I agree to the</Text>
+                        <TermsModal />
+                        <Text>and</Text>
+                        <PrivacyPolicyModal />
+                    </HStack>
+                </Checkbox>
             </VStack>
         </Box>
     )
