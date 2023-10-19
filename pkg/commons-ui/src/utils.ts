@@ -1,14 +1,22 @@
-export function formatWithFixedDecimals(value: string, fixedDecimals: number) {
-    let display = value.toString()
-
-    const negative = display.startsWith('-')
-    if (negative) display = display.slice(1)
-
+function parseNumber(value: string) : {isNegative: Boolean, integer: string, fraction: string}{
+    const positive = value.startsWith('-');
     let [integer, fraction] = [
-        display.split('.')[0],
-        display.split('.')[1] || ''
-    ]
+        value.split('.')[0],
+        value.split('.')[1] || ''
+    ] 
+    return {isNegative: positive, integer: integer, fraction: fraction}
+}
+
+export function formatWithFixedDecimals(value: string, fixedDecimals: number) {
+    let {isNegative, integer, fraction} = parseNumber(value);
     fraction = fraction.padEnd(fixedDecimals, '0')
     fraction = fraction.slice(0, fixedDecimals)
-    return `${negative ? '-' : ''}${integer || '0'}${`.${fraction}`}`
+    return `${isNegative ? '-' : ''}${integer || '0'}${`.${fraction}`}`
+}
+
+export function trimDecimals(value: string, maxDecimals: number) {
+    let {isNegative, integer, fraction} = parseNumber(value);
+    fraction = fraction.slice(0, maxDecimals)
+    let hasDecimalSeparator = value.includes('.');
+    return `${isNegative ? '-' : ''}${integer || '0'}${hasDecimalSeparator?'.':''}${`${fraction}`}`
 }

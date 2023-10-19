@@ -13,7 +13,7 @@ import TermsModal from "commons-ui/src/components/TermsModal";
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
-import {formatWithFixedDecimals} from "commons-ui/src/utils"
+import {formatWithFixedDecimals, trimDecimals} from "commons-ui/src/utils"
 
 export default function SimpleConvert() {
 
@@ -69,13 +69,13 @@ export default function SimpleConvert() {
     }
 
     function handleSwap() {
-        const subtitle = `Swapping ${amount} ${fromToken.symbol} to ${formatWithFixedDecimals(convertedAmountFormatted, 3)} ${toToken.symbol}`;
+        const subtitle = `Swapping ${amount} ${fromToken.symbol} to ${formatWithFixedDecimals(convertedAmountFormatted, 4)} ${toToken.symbol}`;
         processTransactions("Swapping Tokens", subtitle, steps);
     }
 
     function handleAmountChange(amount: string) {
         amount = amount.replace(/^0+(?!\.|$)/, ''); // Avoiding leading 0s
-        /^\d*\.?\d*$/.test(amount) && setAmount(amount);
+        /^\d*\.?\d*$/.test(amount) && setAmount(trimDecimals(amount, 4));
     }
 
     function ActionButton(params: { title: string, isDisabled: boolean, onClick: () => void }): JSX.Element {
@@ -187,7 +187,7 @@ export default function SimpleConvert() {
                         <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px"/>
                         
                         <Flex direction="column" align="flex-end" mr="26px" mt="8px">
-                            <Input w="100%" mt="50px" pr='0' value={convertedAmountFormatted} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
+                            <Input w="100%" mt="50px" pr='0' value={formatWithFixedDecimals(convertedAmountFormatted, 4)} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
                             <VStack ml="26px" mt="8px" alignItems="end">
                                 <Text fontSize="14px">Balance: {toTokenBalance?.formatted}</Text>
                                 <Text as="b" fontSize="md" color="brand.900">1 {toToken.symbol} = {formatUnits(invertedUnitaryPrice || 0n, fromToken.decimals)} {fromToken.symbol}</Text>
