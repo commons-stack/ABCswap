@@ -193,7 +193,7 @@ export default function SimpleConvert() {
 
                 <HStack>
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
-                        <Text mt="26px" as="b">I have read and agree to the <Link href="" isExternal>Terms of Service.</Link></Text>
+                        <Text mt="26px" as="b">I have read and agree to the <Link href="" isExternal color="blue">Terms of Service.</Link></Text>
                     </Checkbox>
                 </HStack>
             </VStack>
