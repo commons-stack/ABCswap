@@ -44,9 +44,9 @@ export default function ConfigureToken() {
     }
 
     return (
-        <VStack spacing={4} pt="130px" className="abcs-newdao-step-content">
+        <VStack spacing={4} pt="75px" className="abcs-newdao-step-content" mx="100px">
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Tokens</Text>
-            <Text fontSize="24px" color="brand.900" pt="32px">Choose your Tokens settings below</Text>
+            <Text fontSize="24px" color="brand.900" pt="16px">Choose your Tokens settings below</Text>
             <Divider paddingTop="24px"
                 borderColor="brand.900"
                 borderBottomWidth="1px"
@@ -168,9 +168,8 @@ export default function ConfigureToken() {
                 margin="0 auto"
             />
             <VStack pt="32px" spacing={-1}>
-                <Text fontSize="16px" color="black">Attention! The token name and symbol cannot easily be changed later.</Text>
-                <Text fontSize="16px" color="black">Also, the above addresses will receive the initial token distribution, </Text>
-                <Text fontSize="16px" color="black">the sum of which determines  the initial supply for the token.</Text>
+                <Text fontSize="16px" color="black">These settings will determine the name and symbol of the token that will be created for your organization.</Text>
+                <Text fontSize="16px" color="black">Add members to define the initial distribution of this token.</Text>
             </VStack>
         </VStack >
     );
