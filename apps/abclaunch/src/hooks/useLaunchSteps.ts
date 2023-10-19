@@ -22,7 +22,7 @@ export default function useLaunchSteps() {
     return (
         [
             {
-                title: 'Raise approval',
+                title: 'Approve Spending',
                 data: {
                     address: abcSettings.collateralToken as `0x${string}`,
                     abi: parseAbi(["function approve(address,uint256)"]),
@@ -34,7 +34,7 @@ export default function useLaunchSteps() {
                 }
             },
             {
-                title: 'Launch DAO',
+                title: 'Launch ABC and DAO',
                 data: {
                     address: ABC_TEMPLATE as `0x${string}`,
                     abi: parseAbi(["function newTokenAndInstance(string,string,string,address[],uint256[],uint64[3],uint256[5])"]),

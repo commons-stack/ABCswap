@@ -10,7 +10,7 @@ export default function useSwapSteps(bondingCurve: `0x${string}`, reserveToken: 
     return forwards ?
         [
             {
-                title: 'Raise approval',
+                title: 'Approve Spending',
                 data: {
                     address: reserveToken,
                     abi: parseAbi([
@@ -24,7 +24,7 @@ export default function useSwapSteps(bondingCurve: `0x${string}`, reserveToken: 
                 }
             },
             {
-                title: 'Make buy order',
+                title: 'Swap Tokens',
                 data: {
                     address: bondingCurve,
                     abi: parseAbi([
@@ -41,7 +41,7 @@ export default function useSwapSteps(bondingCurve: `0x${string}`, reserveToken: 
             }
         ] : [
             {
-                title: 'Make sell order',
+                title: 'Swap Tokens',
                 data: {
                     address: bondingCurve,
                     abi: parseAbi([
