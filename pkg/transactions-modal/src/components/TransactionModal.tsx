@@ -28,7 +28,7 @@ export default function TransactionModal() {
     const { title, subtitle, isOpen, onClose, steps, activeStep, stepStatus } = useContext(TransactionContext);
 
     const description = useCallback((index: number) => {
-        return stepStatus[index] === 'success' ? 'Success' : stepStatus[index] === 'error' ? 'Error' : stepStatus[index] === 'pending' ? 'Pending...' : 'Not signed'
+        return stepStatus[index] === 'success' ? 'Success' : stepStatus[index] === 'error' ? 'Error' : stepStatus[index] === 'pending' ? 'Signed' : 'Waiting for signature'
     }, [stepStatus]);
 
     const isTransactionsEnded = (): boolean => {
