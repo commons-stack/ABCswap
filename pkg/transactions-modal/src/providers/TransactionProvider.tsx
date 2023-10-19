@@ -10,7 +10,8 @@ interface TransactionContextData {
     steps: Step[];
     stepStatus: ("notsigned" | "pending" | "success" | "error")[];
     activeStep: number;
-    processTransactions: (title:string, subtitle:string|undefined, newSteps: Step[]) => void;
+    successTitle?: string;
+    processTransactions: (title:string, subtitle:string|undefined, newSteps: Step[], successTitle?: string) => void;
     onTransactionSuccess: () => void;
     onTransactionSent: () => void;
     onTransactionError: () => void;
@@ -42,13 +43,15 @@ const TransactionProvider: FC<Props> = ({ children, transactionModal }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [steps, setSteps] = useState<Step[]>([]);
     const [stepStatus, setStepStatus] = useState<("notsigned" | "pending" | "success" | "error")[]>([]);
+    const [successTitle, setSuccessTitle] = useState<string | undefined>(undefined);
     const [activeStep, setActiveStep] = useState(0);
 
-    const processTransactions = useCallback((title:string, subtitle: string|undefined, newSteps: Step[]) => {
+    const processTransactions = useCallback((title:string, subtitle: string|undefined, newSteps: Step[], successTitle?: string) => {
         setTitle(title);
         setSubtitle(subtitle??"");
         setSteps(newSteps);
         setStepStatus([]);
+        setSuccessTitle(successTitle);
         setActiveStep(0);
         setIsOpen(true);
     }, [setSteps, setStepStatus, setActiveStep, setIsOpen]);
@@ -82,6 +85,7 @@ const TransactionProvider: FC<Props> = ({ children, transactionModal }) => {
             steps,
             activeStep,
             stepStatus,
+            successTitle,
             processTransactions,
             onTransactionSent,
             onTransactionSuccess,
