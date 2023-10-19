@@ -80,7 +80,7 @@ export default function ConfigureToken() {
                     <FormControl>
                         <FormLabel>
                             <HStack>
-                                <Text fontSize="16px" color="brand.900">RESERVE INITIAL BALANCE</Text>
+                                <Text fontSize="16px" color="brand.900">INITIAL RESERVE BALANCE</Text>
                                 <Tooltip label="The Initial Reserve Balance refers to the amount of tokens deposited into the Reserve Pool when the ABC is initialized.">
                                     <InfoOutlineIcon />
                                 </Tooltip>

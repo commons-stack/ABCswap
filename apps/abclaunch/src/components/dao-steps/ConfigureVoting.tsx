@@ -47,7 +47,7 @@ export default function ConfigureVoting() {
     return (
         <VStack spacing={4} mt="75" className="abcs-newdao-step-content">
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Voting</Text>
-            <Text fontSize="24px" color="brand.900" mt="16px">Choose your voting settings below</Text>
+            <Text fontSize="24px" color="brand.900" mt="16px">Configure the DAO's voting parameters</Text>
             <Divider paddingTop="24px"
                 borderColor="brand.900"
                 borderBottomWidth="1px"
@@ -84,8 +84,8 @@ export default function ConfigureVoting() {
                 margin="0 auto"
             />
             <VStack mt="16px" spacing={-1}>
-                <Text fontSize="16px" color="black">All votes must reach the support and minimum approval threshold in order to pass. </Text>
-                <Text fontSize="16px" color="black">If one of both are not met, the vote will not be considered valid and will not be executed.</Text>
+                <Text fontSize="16px" color="black">These settings will determine required levels of support and approval for a proposal to pass in your DAO,</Text>
+                <Text fontSize="16px" color="black">and the duration a proposal will be open for voting.</Text>
             </VStack>
         </VStack>
     );

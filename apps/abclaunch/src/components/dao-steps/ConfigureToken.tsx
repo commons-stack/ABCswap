@@ -45,8 +45,8 @@ export default function ConfigureToken() {
 
     return (
         <VStack spacing={4} pt="75px" className="abcs-newdao-step-content" mx="100px">
-            <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Tokens</Text>
-            <Text fontSize="24px" color="brand.900" pt="16px">Choose your Tokens settings below</Text>
+            <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Token</Text>
+            <Text fontSize="24px" color="brand.900" pt="16px">Configure the DAO's token parameters.</Text>
             <Divider paddingTop="24px"
                 borderColor="brand.900"
                 borderBottomWidth="1px"
@@ -66,7 +66,7 @@ export default function ConfigureToken() {
                         </FormLabel>
                         <InputGroup>
                             <Input
-                                placeholder="My Organization Token"
+                                placeholder="Enter token name"
                                 value={tokenSettings.tokenName}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handleChangeTokenName(e.target.value);
@@ -85,7 +85,7 @@ export default function ConfigureToken() {
                         </FormLabel>
                         <InputGroup>
                             <Input
-                                placeholder="MOT"
+                                placeholder="Enter symbol"
                                 value={tokenSettings.tokenSymbol}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handleChangeTokenSymbol(e.target.value)
@@ -108,7 +108,7 @@ export default function ConfigureToken() {
                             <InputGroup key={i} mb="17px">
                                 <Input
                                     name="address"
-                                    placeholder="Account address"
+                                    placeholder="Enter address"
                                     value={holder[0]}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         handleHolderChange(i, e, true)
@@ -128,6 +128,7 @@ export default function ConfigureToken() {
                             <InputGroup mb="17px" key={i}>
                                 <Input
                                     name="balance"
+                                    placeholder="Enter balance"
                                     value={holder[1]}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         handleHolderChange(i, e, false)

@@ -20,7 +20,7 @@ export default function Summary() {
                     <AccordionItem>
                         <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
                             <Box flex='1' textAlign='left'>
-                                <Text color="brand.900">Organization settings</Text>
+                                <Text color="brand.900">DAO name</Text>
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>
@@ -33,7 +33,7 @@ export default function Summary() {
                     <AccordionItem>
                         <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
                             <Box flex='1' textAlign='left'>
-                                <Text color="brand.900">Governance settings</Text>
+                                <Text color="brand.900">Voting settings</Text>
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>
@@ -87,7 +87,7 @@ export default function Summary() {
                     <AccordionItem>
                         <AccordionButton borderBottom="1px solid" borderBottomColor="brand.900">
                             <Box flex='1' textAlign='left'>
-                                <Text color="brand.900">Augmented bonding curve settings</Text>
+                                <Text color="brand.900">ABC settings</Text>
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>
