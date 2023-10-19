@@ -8,15 +8,26 @@ const aragonEnsContract = '0x6f2CA655f58d5fb94A08460aC19A552EB19909FD';
 const zeroAddress = `0x${'0'.repeat(40)}`;
 
 function useIsRegisteredDaoWithoutDebounce(name: string) {
-  const { data, error, isLoading } = useContractRead({
+
+  let normalizedName: string = '';
+  let error: Error | null = null;
+
+  try {
+    normalizedName = name.length > 0 ? normalize(`${name}.aragonid.eth`) : '';
+  } catch (e: unknown) {
+    error = e as Error;
+  }
+
+  const { data, error: contractError, isLoading } = useContractRead({
     address: aragonEnsContract,
     abi: parseAbi([
       'function resolver(bytes32 _node) view returns (address)'
     ]),
     functionName: 'resolver',
-    args: [namehash(name.length > 0 ? normalize(`${name}.aragonid.eth`) : '')]
+    args: [namehash(normalizedName)]
   });
 
+  error = error || contractError;
   const isRegistered = data && data !== zeroAddress;
 
   return { isRegistered, error, isLoading };

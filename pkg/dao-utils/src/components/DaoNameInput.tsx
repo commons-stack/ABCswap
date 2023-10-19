@@ -24,11 +24,18 @@ export default function DaoNameInput({
   inverted?: boolean;
 }) {
 
+  // Remove all non-alphanumeric characters from the DAO name
+  daoName = daoName.replaceAll(/[^a-z0-9]+/g, '');
+
   const { isRegistered: isDaoRegistered, error, isLoading } = useIsRegisteredDao(daoName, debounceDelay);
+
+  function handleNameChange(name: string) {
+    setDaoName({name, isRegistered: undefined});
+  }
 
   useEffect(() => {
     setDaoName({ name: daoName, isRegistered: isDaoRegistered });
-  }, [isDaoRegistered, setDaoName]);
+  }, [isDaoRegistered, daoName, setDaoName]);
 
   return (
     <InputGroup mt="0" w="408px">
@@ -36,9 +43,7 @@ export default function DaoNameInput({
         placeholder="Enter the DAO's name or contract address"
         value={daoName ?? ''}
         autoFocus={true}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          /[a-z0-9]*/.test(e.target.value) && setDaoName({name: e.target.value, isRegistered: undefined});
-        }}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNameChange(e.target.value)}
         backgroundColor={'white'}
         errorBorderColor='red.500'
         borderColor={'black'}
