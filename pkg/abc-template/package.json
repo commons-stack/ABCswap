@@ -1,5 +1,8 @@
 {
-  "name": "hardhat-project",
+  "name": "abc-template",
+  "scripts": {
+    "test": "hardhat test test/AbcTemplate.test.ts"
+  },
   "dependencies": {
     "@aragon/os": "^4.4.0",
     "@aragon/templates-shared": "^1.0.1",

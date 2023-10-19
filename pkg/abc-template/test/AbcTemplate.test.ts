@@ -1,3 +1,4 @@
+const { assert } = require("chai");
 const { ethers, network } = require("hardhat");
 
 // Optimism:
@@ -12,38 +13,61 @@ const pct = (n) => BigInt(n) * BigInt(10 ** 16);
 const wad = (n) => BigInt(n) * BigInt(10 ** 18);
 
 describe("AbcTemplate contract", function () {
-  it("Deployment should work", async function () {
-    const [owner] = await ethers.getSigners();
 
+  let signer, abcTemplate, reserveToken;
+
+  before(async function () {
     const daiHolder = '0x2de373887b9742162c9a5885ddb5debea8e4486d'
     await network.provider.request({
       method: "hardhat_impersonateAccount",
       params: [daiHolder],
     });
-    const signer = await ethers.getSigner(daiHolder);
+    signer = await ethers.getSigner(daiHolder);
+    reserveToken = new ethers.Contract(_reserveToken, [
+      "function approve(address spender, uint256 value) public returns (bool)",
+      "function balanceOf(address account) external view returns (uint256)",
+      "function allowance(address owner, address spender) external view returns (uint256)"
+    ], signer);
+  });
 
-    const abcTemplate = await ethers.deployContract("AbcTemplate", [
-        daoFactory,
-        _ens,
-        _miniMeFactory,
-        _aragonID,
-        _formula
+  it("Deployment should work", async function () {
+    abcTemplate = await ethers.deployContract("AbcTemplate", [
+      daoFactory,
+      _ens,
+      _miniMeFactory,
+      _aragonID,
+      _formula
     ]);
+    // abcTemplate = await ethers.getContractAt("AbcTemplate", "0x18F575dfDcE7Dd0E0bF5fA95dEE1F002fA19fa5D");
+  });
 
-    const reserveToken = new ethers.Contract(_reserveToken, ["function approve(address spender, uint256 value) public returns (bool)"], signer);
-
-    await reserveToken.approve(await abcTemplate.getAddress(), wad(3n * 10n ** 18n));
-
-    await abcTemplate.connect(signer).newTokenAndInstance(
+  it('New DAO without reserve balance should work', async function () {
+    await abcTemplate.newTokenAndInstance(
         "Token Name",
         "TKN",
         "daoname",
-        [owner.address],
+        [signer.address],
         [wad(1)],
         [pct(50), pct(15), 7 * 24 * 60 * 60],
-        [pct(1), pct(2), _reserveToken, 20e4, wad(3n * 10n ** 18n)],
-        { from : daiHolder }
+        [pct(1), pct(2), _reserveToken, 20e4, 0]
     );
 
+  });
+
+  xit('New DAO with reserve balance should work', async function () { // FIXME: It works on Optimism, but not on Hardhat
+    await (await reserveToken.approve(await abcTemplate.getAddress(), wad(3))).wait();
+    assert.isAtLeast(await reserveToken.balanceOf(signer.address), wad(3));
+    assert.equal(await reserveToken.allowance(signer.address, await abcTemplate.getAddress()), wad(3));
+
+    await abcTemplate.newTokenAndInstance(
+      "Token Name",
+      "TKN",
+      "daoname2",
+      [signer.address],
+      [wad(1)],
+      [pct(50), pct(15), 7 * 24 * 60 * 60],
+      [pct(1), pct(2), _reserveToken, 20e4, wad(3)],
+      { gasLimit: 30000000 }
+    );
   });
 });

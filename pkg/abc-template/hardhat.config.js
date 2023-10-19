@@ -2,6 +2,8 @@ require("@nomicfoundation/hardhat-ethers");
 require("@nomicfoundation/hardhat-verify");
 require("@nomicfoundation/hardhat-toolbox");
 
+const ALCHEMY_ID = 'ln15qqnK7vEODFKXum9YOeFOFZxUfkIh' //process.env.ALCHEMY_ID;
+
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
@@ -16,17 +18,17 @@ module.exports = {
   networks: {
     hardhat: {
       forking: {
-        url: "https://opt-mainnet.g.alchemy.com/v2/<API-KEY>"
+        url: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`
       }
     },
     gnosis: {
       url: "https://rpc.gnosischain.com/",
     },
     optimism: {
-      url: "https://opt-mainnet.g.alchemy.com/v2/<API-KEY>"
+      url: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`
     }
   },
-  etherscan: {
-    apiKey: "<API-KEY>"
-  }
+  // etherscan: {
+  //   apiKey: "<API-KEY>"
+  // }
 };
