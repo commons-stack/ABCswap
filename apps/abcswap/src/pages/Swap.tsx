@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
+import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
 import TermsModal from "commons-ui/src/components/TermsModal";
 import { TokenSelector } from "commons-ui/src/components/TokenSelector";
 import { useProcessTransactions } from "transactions-modal";
@@ -159,9 +160,9 @@ export default function SimpleConvert() {
                 <HStack>
                     <Box w="452px" h="268px" mt="31px" ml="19px" bgColor="white" borderRadius="16px">
                         <Text mt="24px" ml="31px">You Send</Text>
-                        <TokenSelector token={fromToken} mr="auto" ml="26px" mt="16px"/>
+                        <TokenSelector token={fromToken} mr="auto" ml="26px" mt="16px" />
                         <NumberInput mt='2' value={amount}>
-                            <NumberInputField autoFocus onChange={(e) => handleAmountChange(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' _focusVisible={{boxShadow: 'none'}} />
+                            <NumberInputField autoFocus onChange={(e) => handleAmountChange(e.target.value)} w="100%" ml="10px" mt="50px" fontSize="50px" border="none" placeholder='0' _focusVisible={{ boxShadow: 'none' }} />
                         </NumberInput>
                         <VStack ml="26px" mt="8px" alignItems="initial">
                             <HStack>
@@ -188,8 +189,8 @@ export default function SimpleConvert() {
                     </div>
                     <Box w="452px" h="268px" mt="31px" mr="19px" bgColor="white" borderRadius="16px">
                         <Text mt="24px" mr="31px" textAlign="right">You Receive</Text>
-                        <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px"/>
-                        
+                        <TokenSelector token={toToken} ml="auto" mr="26px" mt="16px" />
+
                         <Flex direction="column" align="flex-end" mr="26px" mt="8px">
                             <Input w="100%" mt="50px" pr='0' value={formatDisplayNumber(convertedAmountFormatted)} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
                             <VStack ml="26px" mt="8px" alignItems="end">
@@ -204,7 +205,12 @@ export default function SimpleConvert() {
 
                 <HStack>
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
-                        <TermsModal location="swap"/>
+                        <HStack spacing={1}>
+                            <Text>I agree to the</Text>
+                            <TermsModal />
+                            <Text>and</Text>
+                            <PrivacyPolicyModal />
+                        </HStack>
                     </Checkbox>
                 </HStack>
             </VStack>

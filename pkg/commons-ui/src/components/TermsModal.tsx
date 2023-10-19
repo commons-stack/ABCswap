@@ -7,7 +7,6 @@ import {
     Text,
     Link,
     VStack,
-    HStack,
     Button,
     Heading,
     useDisclosure,
@@ -16,23 +15,14 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 
-interface TransactionModalProps {
-    location: "swap" | "launch";
-}
-
-export default function TransactionModal({ location }: TransactionModalProps) {
+export default function TermsModal() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const disclaimerText = location === "swap" ? 'I have read and agree to the' : 'I confirm that the above information is correct and that I have read and agree to the';
-
-
     return (
         <>
-            <HStack fontWeight="bold">
-                <Text>{disclaimerText}</Text>
-                <Link onClick={onOpen} color="blue">Terms of Service</Link>
-            </HStack>
+            <Link onClick={onOpen} color="blue" fontWeight="bold">Terms of Service</Link>
+
             <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent border="1px solid black" borderRadius="16px">
@@ -67,10 +57,13 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                                 <ListItem>b) Create a new DAO with an Augmented Bonding Curve</ListItem>
                                 <ListItem>c) Create a DAO vote to attach an Augmented Bonding Curve to an existing DAO</ListItem>
                             </List>
+                            <Text>While the ABC Launch offers the tools to facilitate these activities, it is your responsibility to understand the associated risks and implications of creating or participating in an Augmented Bonding Curve.</Text>
                             <Heading fontSize="32px" fontWeight={500} color="brand.900">
                                 ABC Swap
                             </Heading>
-                            <Text>While the ABC Launch offers the tools to facilitate these activities, it is your responsibility to understand the associated risks and implications of creating or participating in an Augmented Bonding Curve.</Text>
+                            <Text>
+                                The ABC Swap is designed to facilitate the swapping of tokens launched and governed by Augmented Bonding Curves ("ABC Tokens"). The primary functions and offerings of ABC Swap include but are not limited to:
+                            </Text>
                             <List>
                                 <ListItem>a) Swapping ABC Tokens: Users can swap an ABC Token against the reserve currency of that ABC or other tokens.</ListItem>
                                 <ListItem>b) Wallet integration: ABC Swap supports direct integration with blockchain wallets, allowing users to manage and execute transactions seamlessly.</ListItem>
@@ -270,7 +263,7 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                                 </ListItem>
                             </UnorderedList>
                             <Heading fontSize="40px" fontWeight={500} color="brand.900">
-                                8. Prohibited activities
+                                8. Prohibited Activities
                             </Heading>
                             <Text>
                                 You agree not to engage in, or attempt to engage in, any of the following categories of prohibited activities in connection to your access and use of the Services:
@@ -318,7 +311,7 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                                     The services are non-custodial. When you deposit digital assets into any smart contract, you retain control over those digital assets at all times. The private key associated with the Ethereum address from which you transfer digital assets is the only private key that can control the digital assets you transfer into the smart contracts. You may withdraw digital assets from any smart contract only to the Ethereum address from which you deposited the digital assets.
                                 </ListItem>
                                 <ListItem>
-                                    All intellectual property rights, including but not limited to trademarks, logos, and content, related to Projects included in the AB Launch, and associated materials, are owned by their respective owners. You agree not to reproduce, distribute, or use any intellectual property without prior written consent from the respective owner.
+                                    All intellectual property rights, including but not limited to trademarks, logos, and content, related to Projects included in the ABC Launch, and associated materials, are owned by their respective owners. You agree not to reproduce, distribute, or use any intellectual property without prior written consent from the respective owner.
                                 </ListItem>
                             </UnorderedList>
                             <Heading fontSize="40px" fontWeight={500} color="brand.900">
@@ -346,10 +339,10 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                                     While using the Services we may collect some personal data in order to provide our services, including your blockchain wallet address, completed transaction hashes and token IDs.
                                 </ListItem>
                                 <ListItem>
-                                    To comply with AML and KYC regulations, you may be required to provide personal information and documentation. We reserve the right to conduct AML and KYC checks on participants and may refuse participation to anyone who fails to meet the required standards. We use the information we collect to detect, prevent, and mitigate financial crime and other illicit or harmful activities on the Services . For these purposes, we may share the information we collect with blockchain analytics providers. We share information with these service providers only so that they can help us promote the safety, security, and integrity of the Services.
+                                    To comply with AML and KYC regulations, you may be required to provide personal information and documentation. We reserve the right to conduct AML and KYC checks on participants and may refuse participation to anyone who fails to meet the required standards. We use the information we collect to detect, prevent, and mitigate financial crime and other illicit or harmful activities on the Services. For these purposes, we may share the information we collect with blockchain analytics providers. We share information with these service providers only so that they can help us promote the safety, security, and integrity of the Services.
                                 </ListItem>
                                 <ListItem>
-                                    We may use third-party service providers which may receive or independently obtain your personal information from publicly-available sources. By accessing and using the Services , you understand and consent to our data practices and our service providers' treatment of your information.
+                                    We may use third-party service providers which may receive or independently obtain your personal information from publicly-available sources. By accessing and using the Services, you understand and consent to our data practices and our service providers' treatment of your information.
                                 </ListItem>
                                 <ListItem>
                                     For more information please visit our privacy policy at molecule.to/privacy-policy

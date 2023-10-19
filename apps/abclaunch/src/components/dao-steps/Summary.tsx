@@ -1,8 +1,11 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
+import TermsModal from "commons-ui/src/components/TermsModal";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { newDaoNameState, newDaoVotingState, newDaoTokenState, newDaoTokenSupplyState, newDaoAbcState, newDaoCheckedState } from "../../recoil";
+import { newDaoAbcState, newDaoCheckedState, newDaoNameState, newDaoTokenState, newDaoTokenSupplyState, newDaoVotingState } from "../../recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
-import TermsModal from "commons-ui/src/components/TermsModal"
+
 
 export default function Summary() {
     const daoName = useRecoilValue(newDaoNameState);
@@ -10,7 +13,19 @@ export default function Summary() {
     const tokenSettings = useRecoilValue(newDaoTokenState);
     const initialTotalSupply = useRecoilValue(newDaoTokenSupplyState);
     const abcConfig = useRecoilValue(newDaoAbcState);
-    const setChecked = useSetRecoilState(newDaoCheckedState);
+    const setNewDaoChecksGlobal = useSetRecoilState(newDaoCheckedState);
+    const [newDaoChecks, setNewDaoChecks] = useState({
+        daoInfoChecked: false,
+        legalsChecked: false
+    });
+
+    useEffect(()=> {
+        setNewDaoChecksGlobal({
+            daoInfoChecked: newDaoChecks.daoInfoChecked,
+            legalsChecked: newDaoChecks.legalsChecked
+        })
+    }, [newDaoChecks])
+
     return (
         <Box pt="75px">
             <VStack spacing={4}>
@@ -114,7 +129,15 @@ export default function Summary() {
                     <Text fontSize="16px">Review all the settings.</Text>
                     <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
                 </VStack>
-                <Checkbox colorScheme="brand" onChange={(e) => setChecked(e.target.checked)}><TermsModal location="launch"/></Checkbox>
+                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, daoInfoChecked: e.target.checked})}><Text as="b">I confirm that the above information is correct</Text></Checkbox>
+                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, legalsChecked: e.target.checked})}>
+                    <HStack spacing={1}>
+                        <Text as="b">I agree to the</Text>
+                        <TermsModal />
+                        <Text as="b">and</Text>
+                        <PrivacyPolicyModal />
+                    </HStack>
+                </Checkbox>
             </VStack>
         </Box>
     )
