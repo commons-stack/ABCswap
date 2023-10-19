@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { EditIcon, InfoIcon, RepeatIcon } from '@chakra-ui/icons';
-import { Box, Button, Checkbox, Flex, HStack, Heading, Icon, IconButton, Input, Link, NumberInput, NumberInputField, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, HStack, Icon, IconButton, Input, Link, NumberInput, NumberInputField, Text, Tooltip, VStack } from "@chakra-ui/react";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance } from "wagmi";
