@@ -1,10 +1,11 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import { newDaoNameState, newDaoVotingState, newDaoTokenState, newDaoTokenSupplyState, newDaoAbcState, newDaoCheckedState } from "../../recoil";
-import { getCollateralTokenInfo } from "../../utils/token-info";
-import TermsModal from "commons-ui/src/components/TermsModal"
-import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal"
+import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
+import TermsModal from "commons-ui/src/components/TermsModal";
 import { useEffect, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { newDaoAbcState, newDaoCheckedState, newDaoNameState, newDaoTokenState, newDaoTokenSupplyState, newDaoVotingState } from "../../recoil";
+import { getCollateralTokenInfo } from "../../utils/token-info";
+
 
 export default function Summary() {
     const daoName = useRecoilValue(newDaoNameState);
