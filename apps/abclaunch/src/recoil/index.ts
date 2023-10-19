@@ -3,3 +3,4 @@ export {default as newDaoCheckedState, newDaoCheckedIsValidState} from "./newDao
 export {default as newDaoNameState, newDaoNameIsValidState} from "./newDaoName";
 export {default as newDaoTokenState, newDaoTokenSupplyState, newDaoTokenIsValidState} from "./newDaoToken";
 export {default as newDaoVotingState, newDaoVotingDurationState, newDaoVotingIsValidState} from "./newDaoVoting";
+export {default as newDaoCreatedState, newDaoCreatedUrl, newDaoCreatedIsValid} from "./newDaoCreated";

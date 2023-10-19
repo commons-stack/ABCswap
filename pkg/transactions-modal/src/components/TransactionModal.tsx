@@ -20,23 +20,30 @@ import {
     Button,
     Heading
 } from '@chakra-ui/react';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { TransactionContext } from '../providers/TransactionProvider';
 
 export default function TransactionModal() {
 
-    const { title, subtitle, isOpen, onClose, steps, activeStep, stepStatus, successTitle } = useContext(TransactionContext);
+    const { title, subtitle, isOpen, onClose, steps, activeStep, stepStatus, closeOnSuccess, successTitle, successCallback } = useContext(TransactionContext);
 
     const description = useCallback((index: number) => {
         return stepStatus[index] === 'success' ? 'Success' : stepStatus[index] === 'error' ? 'Error' : stepStatus[index] === 'pending' ? 'Signed' : 'Waiting for signature'
     }, [stepStatus]);
 
-    const isTransactionSucceeded = (): boolean => {
+    useEffect(()=>{
+        if (isAllTransactionsSucceeded()) {
+            if(closeOnSuccess) onClose();
+            if(successCallback) successCallback();
+        }
+    }, [activeStep, successCallback, steps, closeOnSuccess]);
+
+    const isAllTransactionsSucceeded = (): boolean => {
         return (activeStep >= steps.length)
     }
 
     const isTransactionsEnded = (): boolean => {
-        if (isTransactionSucceeded()) {
+        if (isAllTransactionsSucceeded()) {
             return true
         }
         return stepStatus[activeStep] && stepStatus[activeStep] !== 'pending' && stepStatus[activeStep] !== 'notsigned'
@@ -50,7 +57,7 @@ export default function TransactionModal() {
                 <ModalBody>
                     <VStack pt="145px" pb="105px">
                         <Heading fontSize="40px" fontWeight={500} color="brand.900">
-                            {(isTransactionSucceeded() && successTitle) ? successTitle: title.length > 0 ? title : (steps.length > 1 ? 'Confirm Transactions' : 'Confirm Transaction')}
+                            {(isAllTransactionsSucceeded() && successTitle) ? successTitle: title.length > 0 ? title : (steps.length > 1 ? 'Confirm Transactions' : 'Confirm Transaction')}
                         </Heading>
                         {subtitle &&
                             <Text fontSize="24px" fontWeight={400} mt="24px" color="brand.900">{subtitle}</Text>
@@ -92,3 +99,4 @@ export default function TransactionModal() {
         </Modal>
     )
 }
+

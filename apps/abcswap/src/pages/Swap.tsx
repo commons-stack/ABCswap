@@ -95,7 +95,7 @@ export default function SimpleConvert() {
 
     function handleSwap() {
         const subtitle = `Swapping ${formatDisplayNumber(amount)} ${fromToken.symbol} to ${formatDisplayNumber(convertedAmountFormatted)} ${toToken.symbol}`;
-        processTransactions("Swapping Tokens", subtitle, steps, "Token Swap Complete.");
+        processTransactions("Swapping Tokens", subtitle, steps, false, "Token Swap Complete.");
     }
 
     function handleAmountChange(amount: string) {

@@ -23,10 +23,11 @@ function Steps({ steps, activeStep }: { steps: { title: string }[], activeStep: 
 }
 
 export default function DaoStepper(
-    { steps, onComplete, isValid }: {
+    { steps, onComplete, isValid, blockingComponent }: {
         steps: { title: string, component: React.ReactElement }[],
         onComplete: () => void,
-        isValid: (step: number) => boolean
+        isValid: (step: number) => boolean,
+        blockingComponent?: React.ReactElement
     }
 ) {
 
@@ -59,19 +60,25 @@ export default function DaoStepper(
                 >
                     <Steps steps={steps} activeStep={activeStep} />
                 </Box>
+                {
+                    blockingComponent ??
+                    <>
+                        {
+                            steps[activeStep].component
+                        }
 
-                {steps[activeStep].component}
-
-                <HStack spacing={4} pb="50px" pt="40px">
-                    <Button variant="outline" onClick={activeStep === 0 ? () => navigate(-1) : goToPrevious}>
-                        Previous
-                    </Button>
-                    <Button
-                        onClick={isLastStep ? onComplete : goToNext}
-                        isDisabled={!valid}>
-                        {isLastStep ? 'Launch' : 'Next'}
-                    </Button>
-                </HStack>
+                        <HStack spacing={4} pb="50px" pt="40px">
+                            <Button variant="outline" onClick={activeStep === 0 ? () => navigate(-1) : goToPrevious}>
+                                Previous
+                            </Button>
+                            <Button
+                                onClick={isLastStep ? onComplete : goToNext}
+                                isDisabled={!valid}>
+                                {isLastStep ? 'Launch' : 'Next'}
+                            </Button>
+                        </HStack>
+                    </>
+                }
             </VStack>
         </Flex>
     )
