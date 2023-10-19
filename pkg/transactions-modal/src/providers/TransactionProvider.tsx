@@ -11,7 +11,9 @@ interface TransactionContextData {
     stepStatus: ("notsigned" | "pending" | "success" | "error")[];
     activeStep: number;
     successTitle?: string;
-    processTransactions: (title:string, subtitle:string|undefined, newSteps: Step[], successTitle?: string) => void;
+    closeOnSuccess?: boolean;
+    successCallback?: () => void;
+    processTransactions: (title: string, subtitle: string | undefined, newSteps: Step[], closeOnSuccess?: boolean, successTitle?: string, successCallback?: () => void) => void;
     onTransactionSuccess: () => void;
     onTransactionSent: () => void;
     onTransactionError: () => void;
@@ -25,11 +27,11 @@ const TransactionContext = React.createContext<TransactionContextData>({
     steps: [],
     stepStatus: [],
     activeStep: 0,
-    processTransactions: () => {},
-    onTransactionSuccess: () => {},
-    onTransactionSent: () => {},
-    onTransactionError: () => {},
-    onClose: () => {}
+    processTransactions: () => { },
+    onTransactionSuccess: () => { },
+    onTransactionSent: () => { },
+    onTransactionError: () => { },
+    onClose: () => { }
 });
 
 interface Props {
@@ -44,14 +46,18 @@ const TransactionProvider: FC<Props> = ({ children, transactionModal }) => {
     const [steps, setSteps] = useState<Step[]>([]);
     const [stepStatus, setStepStatus] = useState<("notsigned" | "pending" | "success" | "error")[]>([]);
     const [successTitle, setSuccessTitle] = useState<string | undefined>(undefined);
+    const [successCallback, setSuccessCallback] = useState<(() => void) | undefined>(undefined);
+    const [closeOnSuccess, setCloseOnSuccess] = useState<boolean | undefined>(undefined);
     const [activeStep, setActiveStep] = useState(0);
 
-    const processTransactions = useCallback((title:string, subtitle: string|undefined, newSteps: Step[], successTitle?: string) => {
+    const processTransactions = useCallback((title: string, subtitle: string | undefined, newSteps: Step[], closeOnSuccess?: boolean, successTitle?: string, successCallback?: () => void) => {
         setTitle(title);
-        setSubtitle(subtitle??"");
+        setSubtitle(subtitle ?? "");
         setSteps(newSteps);
         setStepStatus([]);
         setSuccessTitle(successTitle);
+        setSuccessCallback(() => successCallback);
+        setCloseOnSuccess(closeOnSuccess)
         setActiveStep(0);
         setIsOpen(true);
     }, [setSteps, setStepStatus, setActiveStep, setIsOpen]);
@@ -85,7 +91,9 @@ const TransactionProvider: FC<Props> = ({ children, transactionModal }) => {
             steps,
             activeStep,
             stepStatus,
+            closeOnSuccess,
             successTitle,
+            successCallback,
             processTransactions,
             onTransactionSent,
             onTransactionSuccess,

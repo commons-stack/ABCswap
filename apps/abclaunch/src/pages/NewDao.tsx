@@ -1,19 +1,22 @@
-import { Box, HStack, Text, VStack, Image, Button } from '@chakra-ui/react'
-import { useAccount, useBalance } from 'wagmi';
-import { parseEther } from 'viem';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { WarningTwoIcon } from '@chakra-ui/icons'
-import React from 'react';
-import DaoStepper from '../components/DaoStepper';
-import OrganizationName from '../components/dao-steps/OrganizationName';
-import ConfigureVoting from '../components/dao-steps/ConfigureVoting';
-import ConfigureToken from '../components/dao-steps/ConfigureToken';
-import ConfigureAbc from '../components/dao-steps/ConfigureAbc';
-import Summary from '../components/dao-steps/Summary';
-import { useProcessTransactions } from 'transactions-modal';
-import useLaunchSteps from '../hooks/useLaunchSteps';
-import useIsValid from '../hooks/useIsValid';
+import { WarningTwoIcon } from '@chakra-ui/icons';
+import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import { CustomConnectButton } from 'commons-ui/src/components/ConnectButton';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useProcessTransactions } from 'transactions-modal';
+import { parseEther } from 'viem';
+import { useAccount, useBalance } from 'wagmi';
+import DaoStepper from '../components/DaoStepper';
+import ConfigureAbc from '../components/dao-steps/ConfigureAbc';
+import ConfigureToken from '../components/dao-steps/ConfigureToken';
+import ConfigureVoting from '../components/dao-steps/ConfigureVoting';
+import DaoLaunched from '../components/dao-steps/DaoLaunched';
+import OrganizationName from '../components/dao-steps/OrganizationName';
+import Summary from '../components/dao-steps/Summary';
+import useIsValid from '../hooks/useIsValid';
+import useLaunchSteps from '../hooks/useLaunchSteps';
+import { newDaoCreatedIsValid, newDaoCreatedState, newDaoNameState } from '../recoil';
 
 function Error({ children }: { children: React.ReactNode }) {
     return (
@@ -48,6 +51,10 @@ export default function NewDao() {
 
     const isValid = useIsValid()
 
+    const setNewDaoCreated = useSetRecoilState(newDaoCreatedState)
+    const daoName = useRecoilValue(newDaoNameState)
+    const newDaoHasBeenCreated = useRecoilValue(newDaoCreatedIsValid);
+
     const steps = [
         { title: 'Name your DAO', component: <OrganizationName /> },
         { title: 'Configure voting', component: <ConfigureVoting /> },
@@ -58,7 +65,14 @@ export default function NewDao() {
 
     if (location.pathname === '/new-dao/wizard') {
         return (
-            <DaoStepper steps={steps} isValid={isValid} onComplete={() => processTransactions("Launch your DAO", undefined, txSteps)} />
+            <DaoStepper
+                steps={steps}
+                isValid={isValid}
+                onComplete={() => processTransactions("Launch your DAO", undefined, txSteps, true, undefined, () => {
+                    setNewDaoCreated({name:daoName.name})
+                })}
+                blockingComponent={newDaoHasBeenCreated ? <DaoLaunched /> : undefined}
+            />
         )
     }
     return (
