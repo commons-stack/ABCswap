@@ -12,7 +12,7 @@ export default function Home() {
     const { isRegistered, error } = useIsRegisteredDao(daoName, 500);
 
     return (
-        <VStack bg="brand.100" pb="100px">
+        <VStack bg="brand.100" pb="100px0" textAlign="center">
             <VStack spacing={0}>
                 <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to ABC Swap</Text>
                 <Text color="brand.900" fontSize="24px" pt="32px">Find and swap ABC tokens.</Text>
@@ -24,23 +24,23 @@ export default function Home() {
                 />
             </VStack>
             <HStack spacing={20} paddingTop="40px" >
-                <HStack>
+                <VStack>
                     <Image src="/swap-home/ContinuousFunding.svg" />
                     <Text color="brand.900" fontSize="20px" fontWeight="500">Continuous funding</Text>
-                </HStack>
-                <HStack>
+                </VStack>
+                <VStack>
                     <Image src="/swap-home/MarketAccessibility.svg" />
                     <VStack spacing={0}>
                         <Text color="brand.900" fontSize="20px">Market accessibility</Text>
                         <Text color="brand.900" fontSize="20px">& lower volatility</Text>
                     </VStack>
-                </HStack>
-                <HStack>
+                </VStack>
+                <VStack>
                     <Image src="/swap-home/SustainableGrowth.svg" />
                     <Text color="brand.900" fontSize="20px">Sustainable growth</Text>
-                </HStack>
+                </VStack>
             </HStack>
-            <VStack spacing={4} mt="100px" >
+            <VStack spacing={4} mt="100px" textAlign="center" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
                 <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} />
                 <Button mt="25px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
