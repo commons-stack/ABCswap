@@ -20,7 +20,7 @@ export default function PrivacyPolicyModal() {
 
     return (
         <>
-            <Link onClick={onOpen} color="blue">Privacy Policy</Link>
+            <Link onClick={onOpen} color="blue" fontWeight="bold">Privacy Policy</Link>
             <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent border="1px solid black" borderRadius="16px">
