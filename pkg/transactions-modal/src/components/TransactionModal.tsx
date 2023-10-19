@@ -38,15 +38,15 @@ export default function TransactionModal() {
     return (
         <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent border="1px solid black" borderRadius="16px">
                 <ModalCloseButton />
                 <ModalBody>
                     <VStack pt="145px" pb="105px">
-                        <Heading fontSize="40px" fontWeight={500}>
+                        <Heading fontSize="40px" fontWeight={500} color="brand.900">
                             {title.length > 0 ? title : (steps.length > 1 ? 'Confirm Transactions' : 'Confirm Transaction')}
                         </Heading>
                         {subtitle &&
-                            <Text fontSize="24px" fontWeight={400} mt="24px">{subtitle}</Text>
+                            <Text fontSize="24px" fontWeight={400} mt="24px" color="brand.900">{subtitle}</Text>
                         }
 
                         <Stepper size='lg' index={activeStep} mt="42px" minW="520px">
