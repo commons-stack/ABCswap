@@ -1,4 +1,4 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, Link, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { newDaoNameState, newDaoVotingState, newDaoTokenState, newDaoTokenSupplyState, newDaoAbcState, newDaoCheckedState } from "../../recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
