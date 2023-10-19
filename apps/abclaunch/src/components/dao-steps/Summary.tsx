@@ -1,7 +1,8 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, Link, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { newDaoNameState, newDaoVotingState, newDaoTokenState, newDaoTokenSupplyState, newDaoAbcState, newDaoCheckedState } from "../../recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
+import TermsModal from "commons-ui/src/components/TermsModal"
 
 export default function Summary() {
     const daoName = useRecoilValue(newDaoNameState);
@@ -113,7 +114,7 @@ export default function Summary() {
                     <Text fontSize="16px">Review all the settings.</Text>
                     <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
                 </VStack>
-                <Checkbox colorScheme="brand" onChange={(e) => setChecked(e.target.checked)}><Text as="b">I confirm that the above information is correct.</Text></Checkbox>
+                <Checkbox colorScheme="brand" onChange={(e) => setChecked(e.target.checked)}><TermsModal location="launch"/></Checkbox>
             </VStack>
         </Box>
     )

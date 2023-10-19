@@ -7,7 +7,7 @@ export default function Launchpad() {
     return (
         <VStack bg="brand.100" pb="100px">
             <VStack spacing={0}>
-                <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">The ABC Launch!</Text>
+                <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to ABC Launch</Text>
                 <Text color="brand.900" fontSize="24px" pt="32px">Build a regenerative economy with an</Text>
                 <Text color="brand.900" fontSize="24px">Augmented Bonding Curve.</Text>
                 <Divider paddingTop="48px"

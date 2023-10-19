@@ -8,6 +8,7 @@ import { useAccount, useBalance } from "wagmi";
 
 import { useProcessTransactions } from "transactions-modal";
 import { TokenSelector } from "commons-ui/src/components/TokenSelector";
+import TermsModal from "commons-ui/src/components/TermsModal";
 
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
@@ -199,7 +200,7 @@ export default function SimpleConvert() {
 
                 <HStack>
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
-                        <Text mt="26px" as="b">I have read and agree to the <Link href="" isExternal>Terms of Service.</Link></Text>
+                        <TermsModal location="swap"/>
                     </Checkbox>
                 </HStack>
             </VStack>
