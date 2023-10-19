@@ -14,7 +14,7 @@ export default function Home() {
     return (
         <VStack bg="brand.100" pb="100px">
             <VStack spacing={0}>
-                <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to the ABC Swap</Text>
+                <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to ABC Swap</Text>
                 <Text color="brand.900" fontSize="24px" pt="32px">Find and swap ABC tokens.</Text>
                 <Divider paddingTop="48px"
                     borderColor="brand.900"
@@ -43,13 +43,13 @@ export default function Home() {
             <VStack spacing={4} mt="100px" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
                 <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} />
+                <Button mt="25px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
                 <HStack spacing={4} mt="40px" visibility={(daoName.length == 0 || !error) ? "collapse" : undefined}>
                     <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
                         <CloseIcon color='red.500' w="16px" h="16px" />
                     </Stack>
                     <Text color="red.500" fontSize="18px">The entered DAO name or contract address was not found.</Text>
                 </HStack>
-                <Button mt="25px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
             </VStack>
         </VStack>
     )
