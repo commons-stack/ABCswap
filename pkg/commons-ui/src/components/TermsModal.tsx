@@ -31,7 +31,7 @@ export default function TransactionModal({ location }: TransactionModalProps) {
         <>
             <HStack fontWeight="bold">
                 <Text>{disclaimerText}</Text>
-                <Link onClick={onOpen} color="blue">Terms and Conditions</Link>
+                <Link onClick={onOpen} color="blue">Terms of Service</Link>
             </HStack>
             <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
@@ -39,9 +39,9 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack m="5%" color="brand.900" spacing={5} alignItems="flex-start">
-                            <Heading>Terms and Conditions</Heading>
+                            <Heading>Terms of Service</Heading>
                             <Text>
-                                These Terms and Conditions govern the access and use of the following Services (our “Services”):
+                                These Terms of Service govern the access and use of the following Services (our “Services”):
                             </Text>
                             <UnorderedList>
                                 <ListItem>ABC Launch 	https://launch.abcswap.xyz</ListItem>
@@ -51,7 +51,7 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                                 ABC Launch and ABC Swap, operated by ABC Labs - Association (“We” or “Us”), and other services we provide to you.
                             </Text>
                             <Text>
-                                By accessing or using our Services, you agree to be bound by the following terms and conditions (the "Terms"). Please read them carefully before participating. If you do not agree with any of the provisions stated herein, you should not use our Services or participate in any associated initiatives.
+                                By accessing or using our Services, you agree to be bound by the following Terms of Service (the "Terms"). Please read them carefully before participating. If you do not agree with any of the provisions stated herein, you should not use our Services or participate in any associated initiatives.
                             </Text>
                             <Heading fontSize="40px" fontWeight={500} color="brand.900">
                                 1. Services
@@ -79,8 +79,8 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                             <Heading fontSize="40px" fontWeight={500} color="brand.900">
                                 2. Use of Services
                             </Heading>
-                            <Text>To access our Services, you must use non-custodial wallet software (“wallet”), which allows you to interact with public blockchains. Your relationship with that non-custodial wallet provider is governed by the applicable terms of service (with respect to these Terms and Conditions and with respect to a third party wallet and the applicable terms of service of such third party).  We do not have custody or control over the contents of your wallet and have no ability to retrieve or transfer its contents. By connecting your wallet to our Services, you agree to be bound by these Terms and Conditions incorporated herein by reference.</Text>
-                            <Text>We may from time to time in the future offer additional services, regardless of whether such services are specifically defined in these Terms and Conditions.</Text>
+                            <Text>To access our Services, you must use non-custodial wallet software (“wallet”), which allows you to interact with public blockchains. Your relationship with that non-custodial wallet provider is governed by the applicable terms of service (with respect to these Terms of Service and with respect to a third party wallet and the applicable terms of service of such third party).  We do not have custody or control over the contents of your wallet and have no ability to retrieve or transfer its contents. By connecting your wallet to our Services, you agree to be bound by these Terms of Service incorporated herein by reference.</Text>
+                            <Text>We may from time to time in the future offer additional services, regardless of whether such services are specifically defined in these Terms of Service.</Text>
                             <Text>You acknowledge that using our services involves certain risks, including but not limited to the potential loss of your digital assets. You should conduct your own independent research and seek professional advice before using our services. We reserve the right to refuse or cancel your participation for any reason at its sole discretion.</Text>
                             <Heading fontSize="40px" fontWeight={500} color="brand.900">
                                 3. Eligibility
@@ -129,7 +129,7 @@ export default function TransactionModal({ location }: TransactionModalProps) {
                                     You are responsible for making all necessary arrangements to interact (or continue to interact) with our Services.
                                 </ListItem>
                                 <ListItem>
-                                    You agree to ensure that all interactions with our Services via your wallet are performed in compliance with these Terms and Conditions.
+                                    You agree to ensure that all interactions with our Services via your wallet are performed in compliance with these Terms of Service.
                                 </ListItem>
                                 <ListItem>
                                     You acknowledge and agree to abide by any features, mechanisms, rules and parameters in operation on our Services from time to time, and their consequences.
