@@ -20,7 +20,6 @@ export default function ConfigureToken() {
     }
 
     function handleInitialReserveChange(reserveInitialBalance: string) {
-        console.log(reserveInitialBalance);
         /^\d*\.?\d*$/.test(reserveInitialBalance) && setAbcSettings(settings => ({ ...settings, reserveInitialBalance }));
     }
 
