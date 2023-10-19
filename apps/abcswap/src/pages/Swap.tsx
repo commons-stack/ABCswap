@@ -11,7 +11,6 @@ import { TokenSelector } from "commons-ui/src/components/TokenSelector";
 import { useProcessTransactions } from "transactions-modal";
 
 import { formatWithMaxDecimals, trimDecimals } from "commons-ui/src/utils";
-import React from "react";
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
