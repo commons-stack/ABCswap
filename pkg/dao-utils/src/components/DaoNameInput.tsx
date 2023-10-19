@@ -1,16 +1,7 @@
-import { Input, InputGroup, InputRightElement, Spinner } from '@chakra-ui/react';
-import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { useIsRegisteredDao } from '../..';
 import { useEffect } from 'react';
-
-function DaoNameInputIcon ({ daoName, inverted, isLoading, isDaoRegistered, error }: { daoName: string, inverted: boolean, isLoading: boolean, isDaoRegistered: boolean, error: boolean}) {
-    return (
-        daoName.length == 0 ? <></> :
-        isLoading || isDaoRegistered === undefined ? <Spinner size='xs' /> :
-        !error && (!inverted && isDaoRegistered || inverted && !isDaoRegistered) ? <CheckCircleIcon color="brand.500" /> :
-        <WarningTwoIcon color="red.500" />
-    )
-}
+import FetchingInputIcon from './FetchingInputIcon';
 
 export default function DaoNameInput({
   daoName,
@@ -52,7 +43,7 @@ export default function DaoNameInput({
         _hover={{ 'color': 'black' }}
       />
       <InputRightElement>
-        <DaoNameInputIcon daoName={daoName} inverted={inverted} isLoading={isLoading} isDaoRegistered={!!isDaoRegistered} error={!!error} />
+        <FetchingInputIcon inputValue={daoName} inverted={inverted} isLoading={isLoading} fetched={!!isDaoRegistered} error={!!error} />
       </InputRightElement>
     </InputGroup>
   )

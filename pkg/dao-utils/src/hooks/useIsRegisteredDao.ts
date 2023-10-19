@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useDebounce } from 'usehooks-ts';
 import { parseAbi } from 'viem';
 import { namehash, normalize } from 'viem/ens';
 import { useContractRead } from 'wagmi';
+import useDebounce from './useDebounce';
 
 const aragonEnsContract = '0x6f2CA655f58d5fb94A08460aC19A552EB19909FD';
 const zeroAddress = `0x${'0'.repeat(40)}`;
 
-function useIsRegisteredDaoWithoutDebounce(name: string) {
+function useIsRegisteredDao(name: string, delay?: number) {
+
+  const [debouncedName, isDebouncing] = useDebounce(name, delay);
 
   let normalizedName: string = '';
   let error: Error | null = null;
 
   try {
-    normalizedName = name.length > 0 ? normalize(`${name}.aragonid.eth`) : '';
+    normalizedName = debouncedName.length > 0 ? normalize(`${debouncedName}.aragonid.eth`) : '';
   } catch (e: unknown) {
     error = e as Error;
   }
 
-  const { data, error: contractError, isLoading } = useContractRead({
+  const { data, error: contractError, isLoading: isFetching } = useContractRead({
     address: aragonEnsContract,
     abi: parseAbi([
       'function resolver(bytes32 _node) view returns (address)'
@@ -28,25 +29,8 @@ function useIsRegisteredDaoWithoutDebounce(name: string) {
   });
 
   error = error || contractError;
+  const isLoading = isFetching || isDebouncing;
   const isRegistered = data && data !== zeroAddress;
-
-  return { isRegistered, error, isLoading };
-}
-
-function useIsRegisteredDao(name: string, delay?: number) {
-  const [isDebouncing, setIsDebouncing] = useState(true);
-  const debounceDaoName = useDebounce(name, delay);
-
-  useEffect(() => {
-    setIsDebouncing(true);
-    const handler = setTimeout(() => setIsDebouncing(false), delay);
-    return () => clearTimeout(handler);
-  }, [name, delay]);
-
-  const { isRegistered, error, isLoading: isFetching } = useIsRegisteredDaoWithoutDebounce(debounceDaoName);
-
-  // isLoading will be true either if we're debouncing or if the request is being made
-  const isLoading = isDebouncing || isFetching;
 
   return { isRegistered, error, isLoading };
 }

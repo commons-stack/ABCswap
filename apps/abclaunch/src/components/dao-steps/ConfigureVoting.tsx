@@ -63,7 +63,7 @@ function TimeInput ({ timeUnit }: {timeUnit: 'Days' | 'Hours' | 'Minutes'}) {
 
 export default function ConfigureVoting() {
     return (
-        <VStack spacing={4} mt="75" className="abcs-newdao-step-content">
+        <VStack spacing={4} mt="75">
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Voting</Text>
             <Text fontSize="24px" color="brand.900" mt="16px">Configure the DAO's voting parameters</Text>
             <Divider paddingTop="24px"

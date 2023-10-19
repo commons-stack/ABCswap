@@ -9,7 +9,7 @@ export default function OrganizationName() {
 
     return (
         <Box pt="100px" pb="75px">
-            <VStack spacing={0} className="abcs-newdao-step-content">
+            <VStack spacing={0}>
                 <Text mb="48px" fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Name your DAO</Text>
                 <DaoNameInput
                     daoName={organizationSettings.name}
