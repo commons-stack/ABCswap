@@ -33,9 +33,9 @@ export default function ConfigureToken() {
     }
 
     return (
-        <VStack spacing={4} pt="130px">
+        <VStack spacing={4} pt="75px">
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Augmented Bonding Curve</Text>
-            <Text fontSize="24px" color="brand.900" pt="32px">Configure the DAO's ABC parameters</Text>
+            <Text fontSize="24px" color="brand.900" pt="16px">Configure the DAO's ABC parameters</Text>
             <HStack w="100%">
                 <VStack spacing={3} minW="340px" maxW="400px" w="100%" justifyContent="center">
                     <HStack alignSelf="start" w="100%">
