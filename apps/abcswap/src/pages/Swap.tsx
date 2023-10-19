@@ -55,10 +55,11 @@ export default function SimpleConvert() {
     const { data: fromTokenBalance } = useBalance({ token: fromToken.address, address });
     const { data: toTokenBalance } = useBalance({ token: toToken.address, address });
 
-    const convertedAmount = useBondingCurvePrice(parseUnits(amount, fromToken.decimals), inverted, reserveToken.address, bondingCurve.address);
+    const amountBigInt = parseUnits(amount, fromToken.decimals)
+    const convertedAmount = useBondingCurvePrice(amountBigInt, inverted, reserveToken.address, bondingCurve.address);
     const convertedAmountFormatted = convertedAmount ? formatUnits(convertedAmount, toToken.decimals) : '';
     const priceFirstUnit = useBondingCurvePrice(parseUnits("1", fromToken.decimals), inverted, reserveToken.address, bondingCurve.address);
-    const unitaryPrice = convertedAmount ? convertedAmount * 10n ** BigInt(fromToken.decimals) / parseUnits(amount, fromToken.decimals) : priceFirstUnit;
+    const unitaryPrice = convertedAmount && amountBigInt ? convertedAmount * 10n ** BigInt(fromToken.decimals) / amountBigInt : priceFirstUnit;
     const invertedUnitaryPrice = unitaryPrice ? (10n ** BigInt(fromToken.decimals)) ** 2n / unitaryPrice : undefined;
 
     function invert() {
