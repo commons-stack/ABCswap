@@ -21,7 +21,7 @@ export default function TermsModal() {
 
     return (
         <>
-            <Link onClick={onOpen} color="blue" fontWeight="bold">Terms of Service</Link>
+            <Link onClick={onOpen}><Text as="u">Terms of Service</Text></Link>
 
             <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />

@@ -129,12 +129,12 @@ export default function Summary() {
                     <Text fontSize="16px">Review all the settings.</Text>
                     <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
                 </VStack>
-                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, daoInfoChecked: e.target.checked})}><Text as="b">I confirm that the above information is correct</Text></Checkbox>
+                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, daoInfoChecked: e.target.checked})}>I confirm that the above information is correct</Checkbox>
                 <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({...newDaoChecks, legalsChecked: e.target.checked})}>
                     <HStack spacing={1}>
-                        <Text as="b">I agree to the</Text>
+                        <Text>I agree to the</Text>
                         <TermsModal />
-                        <Text as="b">and</Text>
+                        <Text>and</Text>
                         <PrivacyPolicyModal />
                     </HStack>
                 </Checkbox>
