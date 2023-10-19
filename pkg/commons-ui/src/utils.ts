@@ -14,6 +14,12 @@ export function formatWithFixedDecimals(value: string, fixedDecimals: number) {
     return `${isNegative ? '-' : ''}${integer || '0'}${`.${fraction}`}`
 }
 
+export function formatWithMaxDecimals(value: string, maxDecimals: number) {
+    let {isNegative, integer, fraction} = parseNumber(value);
+    fraction = fraction.slice(0, maxDecimals)
+    return `${isNegative ? '-' : ''}${integer || '0'}${fraction.length>0?`.${fraction}`:''}`
+}
+
 export function trimDecimals(value: string, maxDecimals: number) {
     let {isNegative, integer, fraction} = parseNumber(value);
     fraction = fraction.slice(0, maxDecimals)
