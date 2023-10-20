@@ -7,7 +7,7 @@ export default selector({
         const {entryTribute, exitTribute, reserveRatio, collateralToken, reserveInitialBalanceIsEnough} = get(newDaoAbcAtom);
         return Number(entryTribute) <= 100 && Number(exitTribute) <= 100 && Number(reserveRatio) <= 100
             && Number(entryTribute) >= 0 && Number(exitTribute) >= 0 && Number(reserveRatio) >= 0
-            && collateralToken
-            && reserveInitialBalanceIsEnough;
+            && !!collateralToken
+            && !!reserveInitialBalanceIsEnough;
     },
 });
