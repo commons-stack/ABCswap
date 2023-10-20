@@ -9,7 +9,7 @@ export default function Home() {
     const navigate = useNavigate();
 
     const [daoName, setDaoName] = useState('');
-    const { isRegistered, error } = useIsRegisteredDaoWithApp(daoName, 'augmented-bonding-curve.open.aragonpm.eth');
+    const { isRegistered } = useIsRegisteredDaoWithApp(daoName, 'augmented-bonding-curve.open.aragonpm.eth');
 
     return (
         <VStack bg="brand.100" pb="100px0" textAlign="center">

@@ -33,8 +33,6 @@ function useIsRegisteredDaoWithApp(name: string, requiredApp?: string, delay?: n
   const error = daoError || appError;
   const isRegistered = !isLoading && !!address && address !== ZERO_ADDRESS && !!appImpl && appImpl !== ZERO_ADDRESS;
 
-  console.log(isLoading, isRegistered, error)
-
   return { isRegistered, error, isLoading };
 }
 

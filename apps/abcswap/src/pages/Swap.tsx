@@ -43,7 +43,7 @@ export default function SimpleConvert() {
             decimals: reserveTokenDecimals,
         },
         bondingCurve: {
-            address: '0xc36d0b658dc46fd6e9b5bd6bed7536aa3fa43dfd' as `0x${string}`,
+            address: bondingCurveAddress,
         },
     };
 
