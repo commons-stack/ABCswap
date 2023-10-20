@@ -1,15 +1,16 @@
 import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightElement, Text, VStack, Image, Tooltip, Menu, MenuButton, MenuList, Flex, MenuItem } from "@chakra-ui/react";
-import { InfoOutlineIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { InfoOutlineIcon, ChevronDownIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useRecoilState } from "recoil";
 import { newDaoAbcState } from "../../recoil";
 import { collateralTokenList, getCollateralTokenInfo } from "../../utils/token-info";
+import { BalanceInput } from "dao-utils";
 
 export default function ConfigureToken() {
 
     const [abcSettings, setAbcSettings] = useRecoilState(newDaoAbcState);
 
-    const enoughBalance = true;
+    const enoughBalance = abcSettings.reserveInitialBalanceIsEnough !== false;
 
     function handleReserveRatioChange(reserveRatio: string) {
         /^\d*\.?\d*$/.test(reserveRatio) && setAbcSettings(settings => ({ ...settings, reserveRatio }));
@@ -19,8 +20,9 @@ export default function ConfigureToken() {
         setAbcSettings(settings => ({ ...settings, collateralToken }));
     }
 
-    function handleInitialReserveChange(reserveInitialBalance: string) {
-        /^\d*\.?\d*$/.test(reserveInitialBalance) && setAbcSettings(settings => ({ ...settings, reserveInitialBalance }));
+    function handleInitialReserveChange({value, isEnough} : {value: string, isEnough: boolean | undefined}) {
+        (value !== abcSettings.reserveInitialBalance || isEnough !== abcSettings.reserveInitialBalanceIsEnough) &&
+        setAbcSettings(settings => ({ ...settings, reserveInitialBalance: value, reserveInitialBalanceIsEnough: isEnough }));
     }
 
     function handleEntryTributeChange(entryTribute: string) {
@@ -122,9 +124,16 @@ export default function ConfigureToken() {
                                 </MenuList>
                             </Menu>
                             <Flex>
-                                <InputGroup>
-                                    <Input placeholder="Enter value" borderLeft="0" borderTopLeftRadius="0" borderBottomLeftRadius="0" value={abcSettings.reserveInitialBalance} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInitialReserveChange((e.target.value))} />
-                                </InputGroup>
+                                <BalanceInput
+                                    placeholder="Enter value"
+                                    borderLeft="0"
+                                    borderTopLeftRadius="0"
+                                    borderBottomLeftRadius="0"
+                                    value={abcSettings.reserveInitialBalance}
+                                    token={abcSettings.collateralToken as `0x${string}`}
+                                    decimals={getCollateralTokenInfo(abcSettings.collateralToken)?.decimals || 18}
+                                    setValue={handleInitialReserveChange}
+                                />
                             </Flex>
                         </HStack>
                     </FormControl>
@@ -176,7 +185,7 @@ export default function ConfigureToken() {
             </VStack>}
             {!enoughBalance &&
                 <HStack mt="32px">
-                    <Image src="../../..//public/Error.svg" w="32px" h="32px" mr="8px" />
+                    <WarningTwoIcon color="red.500" w="32px" h="32px" mr="8px" />
                     <VStack spacing={0} alignItems="start">
                         <Text fontSize="16px" color="brand.1200">You do not have the amount specified in Initial Reserve Balance in your wallet.</Text>
                         <Text fontSize="16px" color="brand.1200">You must have at least that much in your wallet in order to proceed.</Text>

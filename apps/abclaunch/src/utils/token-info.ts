@@ -10,6 +10,6 @@ export const collateralTokenList = [
     new TokenInfo("GIV", "GIV", "0x528cdc92eab044e1e39fe43b9514bfdab4412b98", "/token-icons/giv-icon.png", 18),
 ];
 
-export function getCollateralTokenInfo(tokenAddress: string): TokenInfo | undefined {
+export function getCollateralTokenInfo(tokenAddress?: string): TokenInfo | undefined {
     return collateralTokenList.find(token => token.tokenAddress === tokenAddress);
 }

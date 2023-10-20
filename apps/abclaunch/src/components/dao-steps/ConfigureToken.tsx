@@ -44,7 +44,7 @@ export default function ConfigureToken() {
     }
 
     return (
-        <VStack spacing={4} pt="75px" className="abcs-newdao-step-content" mx="100px">
+        <VStack spacing={4} pt="75px" mx="100px">
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Token</Text>
             <Text fontSize="24px" color="brand.900" pt="16px">Configure the DAO's token parameters.</Text>
             <Divider paddingTop="24px"

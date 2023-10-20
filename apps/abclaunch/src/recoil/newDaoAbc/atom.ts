@@ -3,9 +3,10 @@ import { atom } from "recoil";
 type NewDaoAbcData = {
     reserveRatio: string;
     reserveInitialBalance: string;
+    reserveInitialBalanceIsEnough: boolean | undefined;
     entryTribute: string;
     exitTribute: string;
-    collateralToken: string;
+    collateralToken: string | undefined;
 }
 
 export default atom<NewDaoAbcData>({
@@ -13,8 +14,9 @@ export default atom<NewDaoAbcData>({
     default: {
         reserveRatio: '20',
         reserveInitialBalance: '0',
+        reserveInitialBalanceIsEnough: true,
         entryTribute: '0',
         exitTribute: '0',
-        collateralToken: `0x${'0'.repeat(40)}`,
+        collateralToken: undefined,
     }
 });
