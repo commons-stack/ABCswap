@@ -345,7 +345,7 @@ export default function TermsModal() {
                                     We may use third-party service providers which may receive or independently obtain your personal information from publicly-available sources. By accessing and using the Services, you understand and consent to our data practices and our service providers' treatment of your information.
                                 </ListItem>
                                 <ListItem>
-                                    For more information please visit our privacy policy at molecule.to/privacy-policy
+                                    For more information please visit our privacy policy at <Link href="https://abcswap.xyz/#/privacy"><Text as="u">https://abcswap.xyz/#/privacy</Text></Link>
                                 </ListItem>
                             </UnorderedList>
                             <Heading fontSize="40px" fontWeight={500} color="brand.900">
