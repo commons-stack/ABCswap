@@ -40,16 +40,18 @@ export default function Home() {
                     <Text color="brand.900" fontSize="20px">Sustainable growth</Text>
                 </VStack>
             </HStack>
-            <VStack spacing={4} mt="100px" textAlign="center" >
+            <VStack spacing={4} mt="100px" mb="100px" textAlign="center" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
                 <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} requiredApp='augmented-bonding-curve.open.aragonpm.eth' />
-                <Button mt="25px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
-                <HStack spacing={4} mt="40px" visibility={(daoName.length == 0 || isRegistered) ? "collapse" : undefined}>
-                    <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
-                        <CloseIcon color='red.500' w="16px" h="16px" />
-                    </Stack>
-                    <Text color="red.500" fontSize="18px">The entered DAO name or contract address was not found.</Text>
+                <HStack spacing={4} h="32px">
+                    <HStack visibility={(daoName.length == 0 || isRegistered) ? "collapse" : undefined}>
+                        <Stack h="32px" w="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
+                            <CloseIcon color='red.500' w="16px" h="16px" />
+                        </Stack>
+                        <Text color="red.500" fontSize="18px">The entered DAO name or contract address is not a DAO or it does not have an ABC.</Text>
+                    </HStack>
                 </HStack>
+                <Button isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
             </VStack>
         </VStack>
     )
