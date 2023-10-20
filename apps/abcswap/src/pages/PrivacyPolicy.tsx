@@ -3,7 +3,7 @@ import { Heading, ListItem, Text, UnorderedList, VStack, Link } from "@chakra-ui
 export default function PrivacyPolicy() {
     return (
         <VStack px="5%" pb="5%" color="brand.900" spacing={5} alignItems="flex-start" backgroundColor="brand.100">
-            <Heading fontSize="72px">Terms of Service</Heading>
+            <Heading fontSize="72px">Privacy Policy</Heading>
             <Text>
                 This privacy policy (“Privacy Policy”) provides an extensive insight into how ABC Labs (“ABC Labs”, “We”, “us”, “our”)  and all platforms affiliated with ABC Labs, including but not limited to the ABC Swap and ABC Launch Websites, all their Subdomans and affiliated applications  [abcswap.xyz ; launch.abcswap.xyz] (collectively “Platforms”) collect, share or use data about you (“user(s)”, “You”, “your”) with connection to the Platforms.
             </Text>
@@ -37,6 +37,9 @@ export default function PrivacyPolicy() {
                 We process personal information that the user provides directly through various channels:
             </Text>
             <UnorderedList>
+                <ListItem>
+                    Signing up at any of the Platforms: when you register at any Platform, signs up for news, events or newsletters, obtain our Services from ABC Labs, contact us with any queries or respond to our communications.
+                </ListItem>
                 <ListItem>
                     We also automatically collect information from your computer or mobile device when you browse through our Platforms. This information may include but is not limited to:
                     <UnorderedList>

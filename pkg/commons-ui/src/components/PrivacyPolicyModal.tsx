@@ -62,6 +62,9 @@ export default function PrivacyPolicyModal() {
                             </Text>
                             <UnorderedList>
                                 <ListItem>
+                                    Signing up at any of the Platforms: when you register at any Platform, signs up for news, events or newsletters, obtain our Services from ABC Labs, contact us with any queries or respond to our communications.
+                                </ListItem>
+                                <ListItem>
                                     We also automatically collect information from your computer or mobile device when you browse through our Platforms. This information may include but is not limited to:
                                     <UnorderedList>
                                         <ListItem>
