@@ -31,8 +31,9 @@ function useIsRegisteredDaoWithApp(name: string, requiredApp?: string, delay?: n
 
   const isLoading = isFetching || isAppLoading || isDebouncing;
   const error = daoError || appError;
-  const isRegistered = !isLoading && !!address && address !== ZERO_ADDRESS && !!appImpl && appImpl !== ZERO_ADDRESS;
-
+  const daoExists = !isLoading && !!address && address !== ZERO_ADDRESS;
+  const appExists = !!appImpl && appImpl !== ZERO_ADDRESS;
+  const isRegistered = daoExists && (!requiredApp || appExists);
   return { isRegistered, error, isLoading };
 }
 
