@@ -2,14 +2,14 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { Button, Divider, HStack, Image, Stack, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DaoNameInput, useIsRegisteredDao } from 'dao-utils';
+import { DaoNameInput, useIsRegisteredDaoWithApp } from 'dao-utils';
 
 export default function Home() {
 
     const navigate = useNavigate();
 
     const [daoName, setDaoName] = useState('');
-    const { isRegistered, error } = useIsRegisteredDao(daoName, 500);
+    const { isRegistered, error } = useIsRegisteredDaoWithApp(daoName, 'augmented-bonding-curve.open.aragonpm.eth');
 
     return (
         <VStack bg="brand.100" pb="100px0" textAlign="center">
@@ -42,9 +42,9 @@ export default function Home() {
             </HStack>
             <VStack spacing={4} mt="100px" textAlign="center" >
                 <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
-                <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} />
+                <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} requiredApp='augmented-bonding-curve.open.aragonpm.eth' />
                 <Button mt="25px" isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>
-                <HStack spacing={4} mt="40px" visibility={(daoName.length == 0 || !error) ? "collapse" : undefined}>
+                <HStack spacing={4} mt="40px" visibility={(daoName.length == 0 || isRegistered) ? "collapse" : undefined}>
                     <Stack w="32px" h="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
                         <CloseIcon color='red.500' w="16px" h="16px" />
                     </Stack>

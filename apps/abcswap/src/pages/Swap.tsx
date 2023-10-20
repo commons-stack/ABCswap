@@ -22,7 +22,7 @@ export default function SimpleConvert() {
 
     const { dao } = useParams();
     const navigate = useNavigate();
-    const { address: daoAddress, tokenAddress: abcTokenAddress, appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
+    const { tokenAddress: abcTokenAddress, appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
     const { address: reserveTokenAddress} = useReserveToken(bondingCurveAddress);
     const { data: abcTokenData } = useToken({address: abcTokenAddress})
     const abcTokenSymbol = abcTokenData?.symbol;
@@ -31,7 +31,6 @@ export default function SimpleConvert() {
     const reserveTokenSymbol = reserveTokenData?.symbol;
     const reserveTokenDecimals = reserveTokenData?.decimals;
 
-    console.log(daoAddress,  bondingCurveAddress, {reserveTokenAddress, reserveTokenSymbol, reserveTokenDecimals}, {abcTokenAddress, abcTokenSymbol, abcTokenDecimals})
     const { abcToken, reserveToken, bondingCurve } = {
         abcToken: {
             address: abcTokenAddress,
@@ -122,7 +121,7 @@ export default function SimpleConvert() {
             return (
                 <ActionButton
                     title="Swap"
-                    isDisabled={(!Boolean(convertedAmount) || !terms)}
+                    isDisabled={!(convertedAmount && terms && amountBigInt && amountBigInt <= (fromTokenBalance?.value || 0n))}
                     onClick={handleSwap} />
             )
         return (

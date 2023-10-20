@@ -1,5 +1,5 @@
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
-import { useIsRegisteredDao } from '../..';
+import { useIsRegisteredDaoWithApp } from '../..';
 import { useEffect } from 'react';
 import FetchingInputIcon from './FetchingInputIcon';
 
@@ -7,18 +7,21 @@ export default function DaoNameInput({
   daoName,
   debounceDelay = 500,
   setDaoName,
-  inverted = false
+  inverted = false,
+  requiredApp,
 }: {
   daoName: string;
   debounceDelay?: number;
   setDaoName: (daoName: {name: string, isRegistered: boolean | undefined}) => void;
   inverted?: boolean;
+  requiredApp?: string;
 }) {
 
   // Remove all non-alphanumeric characters from the DAO name
   daoName = daoName.replaceAll(/[^a-z0-9]+/g, '');
 
-  const { isRegistered: isDaoRegistered, error, isLoading } = useIsRegisteredDao(daoName, debounceDelay);
+  // TODO: use useIsRegisteredDao instead of useIsRegisteredDaoWithApp when requiredApp is undefined
+  const { isRegistered: isDaoRegistered, error, isLoading } = useIsRegisteredDaoWithApp(daoName, requiredApp, debounceDelay);
 
   function handleNameChange(name: string) {
     setDaoName({name, isRegistered: undefined});
