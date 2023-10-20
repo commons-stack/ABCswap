@@ -12,8 +12,7 @@ function applyFee(amount: bigint | undefined, fee: bigint): bigint | undefined {
     return amount - (amount * fee) / 10n ** 18n;
 }
 
-
-export function useBondingCurvePrice(amount: bigint, forwards = true, reserveToken: `0x${string}`, bondingCurve: `0x${string}`) {
+export function useBondingCurvePrice(amount: bigint | undefined, forwards = true, reserveToken: `0x${string}` | undefined, bondingCurve: `0x${string}` | undefined) {
     const [price, setPrice] = useState<bigint | undefined>(undefined);
 
     const {data: info} = useAbcInfo(bondingCurve);
@@ -63,7 +62,7 @@ export function useBondingCurvePrice(amount: bigint, forwards = true, reserveTok
                         ...formulaContract,
                         address: formulaAddr,
                         functionName: 'calculateSaleReturn',
-                        args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, amount]
+                        args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, amount || 0n]
                     })
                     setPrice(applyFee(saleReturn, sellFeePct));
                 }

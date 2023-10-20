@@ -2,8 +2,7 @@ import { useRecoilValue } from 'recoil';
 import { parseAbi, parseUnits } from 'viem';
 import { newDaoAbcState, newDaoNameState, newDaoTokenState, newDaoVotingDurationState, newDaoVotingState } from '../recoil';
 import { getCollateralTokenInfo } from '../utils/token-info';
-
-const ABC_TEMPLATE = "0x18F575dfDcE7Dd0E0bF5fA95dEE1F002fA19fa5D" // FIXME: hardcoded
+import { ABC_TEMPLATE } from '../constants';
 
 export default function useLaunchSteps() {
 

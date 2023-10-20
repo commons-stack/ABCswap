@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 export default function OrganizationName() { 
 
     const [organizationSettings, setOrganizationSettings] = useRecoilState(newDaoNameState);
+    console.log(organizationSettings);
 
     return (
         <Box pt="100px" pb="75px">

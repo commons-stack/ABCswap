@@ -1,0 +1,1 @@
+export const FROM_BLOCK = 110861730n // Block in which the first DAO was created

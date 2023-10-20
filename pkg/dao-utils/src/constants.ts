@@ -1,0 +1,3 @@
+export const FROM_BLOCK = 110861730n;
+export const ARAGON_ENS_CONTRACT = '0x6f2CA655f58d5fb94A08460aC19A552EB19909FD';
+export const ZERO_ADDRESS = `0x${'0'.repeat(40)}`;

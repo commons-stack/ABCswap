@@ -1,7 +1,7 @@
 import { parseAbi } from 'viem';
 import { useContractRead } from 'wagmi';
 
-export function useCollateral(reserveToken: `0x${string}`, bondingCurve: `0x${string}`) {
+export function useCollateral(reserveToken: `0x${string}` | undefined, bondingCurve: `0x${string}` | undefined) {
 
     const {data, isError, isLoading} = useContractRead({
         address: bondingCurve,
@@ -9,7 +9,8 @@ export function useCollateral(reserveToken: `0x${string}`, bondingCurve: `0x${st
             'function getCollateralToken(address _reserveToken) external view returns (bool whitelisted, uint256 virtualSupply, uint256 virtualBalance, uint32 reserveRatio)'
         ]),
         functionName: 'getCollateralToken',
-        args: [reserveToken]
+        args: reserveToken ? [reserveToken] : undefined,
+        enabled: bondingCurve !== undefined && reserveToken !== undefined
     });
 
     return {data: {
@@ -18,5 +19,4 @@ export function useCollateral(reserveToken: `0x${string}`, bondingCurve: `0x${st
         virtualBalance: data && data[2],
         reserveRatio: data && data[3]
     }, isError, isLoading};
-    // return {data, isError, isLoading};
 }

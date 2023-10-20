@@ -1,10 +1,14 @@
 import { parseAbi } from 'viem';
 import { useAccount } from 'wagmi';
 
-export default function useSwapSteps(bondingCurve: `0x${string}`, reserveToken: `0x${string}`, forwards: boolean, amount: bigint) {
+export default function useSwapSteps(bondingCurve: `0x${string}` | undefined, reserveToken: `0x${string}`| undefined, forwards: boolean, amount: bigint | undefined) {
 
     const { address } = useAccount();
 
+    if (!bondingCurve || !reserveToken || !amount) return [];
+
+
+    // TODO: Use the amount to calculate the minAmount
     const minAmount = 0n// amount - (5n * amount / 100n); // 5% slippage
 
     return forwards ?

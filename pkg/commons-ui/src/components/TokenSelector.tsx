@@ -1,9 +1,9 @@
 import { HStack, StackProps, Text } from '@chakra-ui/react';
 export interface TokenSelectorProps extends StackProps {
     token: {
-        address: `0x${string}`,
-        symbol: string,
-        decimals: number
+        address: `0x${string}` | undefined,
+        symbol: string | undefined,
+        decimals: number | undefined,
     };
 }
 

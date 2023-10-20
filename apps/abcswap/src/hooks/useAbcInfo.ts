@@ -1,7 +1,7 @@
 import { parseAbi } from 'viem'
 import { useContractReads } from 'wagmi';
 
-export function useAbcInfo(bondingCurve: `0x${string}`) {
+export function useAbcInfo(bondingCurve: `0x${string}` | undefined) {
 
     const bondingCurveContract = {
         address: bondingCurve,
@@ -40,10 +40,10 @@ export function useAbcInfo(bondingCurve: `0x${string}`) {
       })
 
     return { data: {
-        buyFeePct: data && data[0].result,
-        sellFeePct: data && data[1].result,
-        token: data && data[2].result,
-        reserve: data && data[3].result,
-        formula: data && data[4].result
+        buyFeePct: data && data[0].result as bigint,
+        sellFeePct: data && data[1].result as bigint,
+        token: data && data[2].result as `0x${string}`,
+        reserve: data && data[3].result as `0x${string}`,
+        formula: data && data[4].result as `0x${string}`
     }, isError, isLoading };
 }

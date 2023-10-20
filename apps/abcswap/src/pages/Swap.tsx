@@ -4,32 +4,44 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatUnits, parseUnits } from "viem";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useToken } from "wagmi";
 
 import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
 import TermsModal from "commons-ui/src/components/TermsModal";
 import { TokenSelector } from "commons-ui/src/components/TokenSelector";
 import { useProcessTransactions } from "transactions-modal";
+import { useDao } from "dao-utils";
 
 import { formatWithMaxDecimals, trimDecimals } from "commons-ui/src/utils";
 import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
+import { useReserveToken } from '../hooks/useReserveToken';
 
 export default function SimpleConvert() {
 
     const { dao } = useParams();
     const navigate = useNavigate();
+    const { address: daoAddress, tokenAddress: abcTokenAddress, appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
+    const { address: reserveTokenAddress} = useReserveToken(bondingCurveAddress);
+    const { data: abcTokenData } = useToken({address: abcTokenAddress})
+    const abcTokenSymbol = abcTokenData?.symbol;
+    const abcTokenDecimals = abcTokenData?.decimals;
+    const { data: reserveTokenData } = useToken({address: reserveTokenAddress})
+    const reserveTokenSymbol = reserveTokenData?.symbol;
+    const reserveTokenDecimals = reserveTokenData?.decimals;
+
+    console.log(daoAddress,  bondingCurveAddress, {reserveTokenAddress, reserveTokenSymbol, reserveTokenDecimals}, {abcTokenAddress, abcTokenSymbol, abcTokenDecimals})
     const { abcToken, reserveToken, bondingCurve } = {
         abcToken: {
-            address: '0x571f2b23eb4666db617d9bae5725aedd72e2349f' as `0x${string}`,
-            symbol: 'ABC',
-            decimals: 18,
+            address: abcTokenAddress,
+            symbol: abcTokenSymbol,
+            decimals: abcTokenDecimals,
         },
         reserveToken: {
-            address: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1' as `0x${string}`,
-            symbol: 'DAI',
-            decimals: 18,
+            address: reserveTokenAddress,
+            symbol: reserveTokenSymbol,
+            decimals: reserveTokenDecimals,
         },
         bondingCurve: {
             address: '0xc36d0b658dc46fd6e9b5bd6bed7536aa3fa43dfd' as `0x${string}`,
@@ -52,20 +64,32 @@ export default function SimpleConvert() {
     const { address, isConnected: isWalletConnected } = useAccount();
     const { processTransactions } = useProcessTransactions();
 
-    const steps = useSwapSteps(bondingCurve.address, reserveToken.address, inverted, parseUnits(amount, fromToken.decimals));
+    function parseFromToken(amount: string): bigint | undefined {
+        return fromToken.decimals ? parseUnits(amount, fromToken.decimals) : undefined;
+    }
+
+    function formatFromToken(amount: bigint): string | undefined {
+        return fromToken.decimals ? formatUnits(amount, fromToken.decimals) : undefined;
+    }
+
+    function formatToToken(amount: bigint): string | undefined {
+        return toToken.decimals ? formatUnits(amount, toToken.decimals) : undefined;
+    }
+
+    const steps = useSwapSteps(bondingCurve.address, reserveToken.address, inverted, parseFromToken(amount));
 
     const { data: fromTokenBalance } = useBalance({ token: fromToken.address, address });
     const { data: toTokenBalance } = useBalance({ token: toToken.address, address });
 
-    const amountBigInt = parseUnits(amount, fromToken.decimals)
+    const amountBigInt = parseFromToken(amount)
     const convertedAmount = useBondingCurvePrice(amountBigInt, inverted, reserveToken.address, bondingCurve.address);
-    const convertedAmountFormatted = convertedAmount ? formatUnits(convertedAmount, toToken.decimals) : '';
-    const priceFirstUnit = useBondingCurvePrice(parseUnits("1", fromToken.decimals), inverted, reserveToken.address, bondingCurve.address);
-    const unitaryPrice = convertedAmount && amountBigInt ? convertedAmount * 10n ** BigInt(fromToken.decimals) / amountBigInt : priceFirstUnit;
-    const invertedUnitaryPrice = unitaryPrice ? (10n ** BigInt(fromToken.decimals)) ** 2n / unitaryPrice : undefined;
+    const convertedAmountFormatted = convertedAmount ? formatToToken(convertedAmount) : '';
+    const priceFirstUnit = useBondingCurvePrice(parseFromToken("1"), inverted, reserveToken.address, bondingCurve.address);
+    const unitaryPrice = convertedAmount && amountBigInt && fromToken.decimals ? convertedAmount * 10n ** BigInt(fromToken.decimals) / amountBigInt : priceFirstUnit;
+    const invertedUnitaryPrice = unitaryPrice && fromToken.decimals ? (10n ** BigInt(fromToken.decimals)) ** 2n / unitaryPrice : undefined;
 
     function invert() {
-        setAmount(formatDisplayNumber(convertedAmount && formatUnits(convertedAmount, toToken.decimals) || '0'));
+        setAmount(formatDisplayNumber(convertedAmount && formatToToken(convertedAmount) || ''));
         setInverted(inverted => !inverted);
     }
 
@@ -169,7 +193,7 @@ export default function SimpleConvert() {
                                 <Text fontSize="14px">Balance: {formatDisplayNumber(fromTokenBalance?.formatted)}</Text>
                                 <Link as="b" fontSize="14px" onClick={() => setAmount(fromTokenBalance?.formatted || '0')}>Max</Link>
                             </HStack>
-                            <Text as="b" fontSize="md" color="brand.900">1 {fromToken.symbol} = {formatDisplayNumber(formatUnits(unitaryPrice || 0n, toToken.decimals))} {toToken.symbol}</Text>
+                            <Text as="b" fontSize="md" color="brand.900">1 {fromToken.symbol} = {formatDisplayNumber(formatToToken(unitaryPrice || 0n))} {toToken.symbol}</Text>
                         </VStack>
                     </Box>
                     <div style={{ width: '0px', position: 'relative' }}>
@@ -195,7 +219,7 @@ export default function SimpleConvert() {
                             <Input w="100%" mt="50px" pr='0' value={formatDisplayNumber(convertedAmountFormatted)} readOnly fontSize="50px" border="none" placeholder='0' textAlign="right" />
                             <VStack ml="26px" mt="8px" alignItems="end">
                                 <Text fontSize="14px">Balance: {formatDisplayNumber(toTokenBalance?.formatted)}</Text>
-                                <Text as="b" fontSize="md" color="brand.900">1 {toToken.symbol} = {formatDisplayNumber(formatUnits(invertedUnitaryPrice || 0n, fromToken.decimals))} {fromToken.symbol}</Text>
+                                <Text as="b" fontSize="md" color="brand.900">1 {toToken.symbol} = {formatDisplayNumber(formatFromToken(invertedUnitaryPrice || 0n))} {fromToken.symbol}</Text>
                             </VStack>
                         </Flex>
                     </Box>
