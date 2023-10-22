@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { newDaoAbcState } from "../../recoil";
 import { collateralTokenList, getCollateralTokenInfo } from "../../utils/token-info";
 import { BalanceInput } from "dao-utils";
+import ABCGraph from "../charts/ABCGraph";
 
 export default function ConfigureToken() {
 
@@ -38,7 +39,7 @@ export default function ConfigureToken() {
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Augmented Bonding Curve</Text>
             <Text fontSize="24px" color="brand.900" pt="16px">Configure the DAO's ABC parameters</Text>
             <HStack w="100%">
-                <VStack spacing={3} minW="340px" maxW="400px" w="100%" justifyContent="center">
+                <VStack spacing={3} minW="340px" maxW="400px" w="40%" justifyContent="center">
                     <HStack alignSelf="start" w="100%">
                         <FormControl w="100%">
                             <FormLabel>
@@ -167,6 +168,9 @@ export default function ConfigureToken() {
                             </InputGroup>
                         </FormControl>
                     </HStack>
+                </VStack>
+                <VStack spacing={3} w="600px" justifyContent="center">
+                    <ABCGraph />
                 </VStack>
             </HStack>
             <Divider paddingTop="24px"
