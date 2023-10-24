@@ -3,6 +3,7 @@ import { Button, Divider, HStack, Image, Stack, Text, VStack } from '@chakra-ui/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DaoNameInput, useIsRegisteredDaoWithApp } from 'dao-utils';
+import { DAONotFoundError } from 'dao-utils/src/hooks/useDao';
 
 export default function Home() {
 
@@ -10,7 +11,7 @@ export default function Home() {
 
     const [daoName, setDaoName] = useState('');
     const { isRegistered, isLoading, error } = useIsRegisteredDaoWithApp(daoName, 'augmented-bonding-curve.open.aragonpm.eth');
-    const daoExists = error?.message !== 'DAO not found';
+    const daoExists = !error || !(error instanceof DAONotFoundError);
 
     return (
         <VStack bg="brand.100" pb="100px0" textAlign="center">
