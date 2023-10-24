@@ -4,6 +4,14 @@ import { useContractRead } from "wagmi";
 import useInstalledApp from "./useInstalledApp";
 import { ARAGON_ENS_CONTRACT, ZERO_ADDRESS } from "../constants";
 
+
+export class DAONotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DAONotFoundError";
+  }
+}
+
 export function useDaoAddress(name: string = "") {
   let normalizedName: string = "";
   let error: Error | null = null;
@@ -41,7 +49,7 @@ export function useDaoAddress(name: string = "") {
   const isLoading = ensIsLoading || resolverIsLoading;
 
   if (!isLoading && !error && (!address || address === ZERO_ADDRESS)) {
-    error = new Error("DAO not found");
+    error = new DAONotFoundError("DAO not found");
   }
 
   return { address, error, isLoading };
