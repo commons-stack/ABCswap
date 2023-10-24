@@ -6,6 +6,9 @@ export default function useDebounce<T>(value: T, delay?: number): [T, boolean] {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
   useEffect(() => {
+    // Set isDebouncing to true whenever value changes
+    setIsDebouncing(true);
+
     const timer = setTimeout(() => {
         setDebouncedValue(value);
         setIsDebouncing(false);

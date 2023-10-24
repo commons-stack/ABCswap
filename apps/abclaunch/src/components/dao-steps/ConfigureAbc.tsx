@@ -1,10 +1,11 @@
-import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightElement, Text, VStack, Image, Tooltip, Menu, MenuButton, MenuList, Flex, MenuItem } from "@chakra-ui/react";
+import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, InputRightElement, Text, VStack, Image, Tooltip, Menu, MenuButton, MenuList, Flex, MenuItem } from "@chakra-ui/react";
 import { InfoOutlineIcon, ChevronDownIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useRecoilState } from "recoil";
 import { newDaoAbcState } from "../../recoil";
 import { collateralTokenList, getCollateralTokenInfo } from "../../utils/token-info";
 import { BalanceInput } from "dao-utils";
+import { Input } from 'commons-ui/src/components/Input';
 
 export default function ConfigureToken() {
 

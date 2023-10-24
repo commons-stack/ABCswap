@@ -1,4 +1,5 @@
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { InputGroup, InputRightElement } from '@chakra-ui/react';
+import { Input } from 'commons-ui/src/components/Input';
 import { useIsRegisteredDaoWithApp } from '../..';
 import { useEffect } from 'react';
 import FetchingInputIcon from './FetchingInputIcon';
@@ -21,7 +22,7 @@ export default function DaoNameInput({
   daoName = daoName.replaceAll(/[^a-z0-9]+/g, '');
 
   // TODO: use useIsRegisteredDao instead of useIsRegisteredDaoWithApp when requiredApp is undefined
-  const { isRegistered: isDaoRegistered, error, isLoading } = useIsRegisteredDaoWithApp(daoName, requiredApp, debounceDelay);
+  const { isRegistered: isDaoRegistered, isLoading } = useIsRegisteredDaoWithApp(daoName, requiredApp, debounceDelay);
 
   function handleNameChange(name: string) {
     setDaoName({name, isRegistered: undefined});
@@ -31,22 +32,21 @@ export default function DaoNameInput({
     setDaoName({ name: daoName, isRegistered: isDaoRegistered });
   }, [isDaoRegistered, daoName, setDaoName]);
 
+  const isInvalid = !!daoName && !isLoading && (!inverted && !isDaoRegistered || inverted && isDaoRegistered);
+
   return (
     <InputGroup mt="0" w="408px">
       <Input
         placeholder="Enter the DAO's name or contract address"
-        value={daoName ?? ''}
+        value={daoName}
         autoFocus={true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNameChange(e.target.value)}
-        backgroundColor={'white'}
         errorBorderColor='red.500'
-        borderColor={'black'}
-        isInvalid={!inverted && !isDaoRegistered || inverted && isDaoRegistered}
+        isInvalid={isInvalid}
         borderRadius="8px"
-        _hover={{ 'color': 'black' }}
       />
       <InputRightElement>
-        <FetchingInputIcon inputValue={daoName} inverted={inverted} isLoading={isLoading} fetched={!!isDaoRegistered} error={!!error} />
+        <FetchingInputIcon isLoading={isLoading} isInvalid={daoName ? isInvalid : undefined} />
       </InputRightElement>
     </InputGroup>
   )

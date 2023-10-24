@@ -1,7 +1,8 @@
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { InputGroup, InputRightElement } from '@chakra-ui/react';
 import { useIsBalanceEnough } from '../..';
 import { useEffect } from 'react';
 import FetchingInputIcon from './FetchingInputIcon';
+import { Input } from 'commons-ui/src/components/Input';
 
 export default function BalanceInput({
   value,
@@ -15,7 +16,7 @@ export default function BalanceInput({
   decimals: number;
   setValue: (value: {value: string, isEnough: boolean | undefined}) => void;
 } & Omit<React.ComponentProps<typeof Input>, 'onChange'>) {
-  const { isEnough, error, isLoading } = useIsBalanceEnough({value, token, decimals});
+  const { isEnough, isLoading } = useIsBalanceEnough({value, token, decimals});
 
   function handleValueChange(value: string) {
     setValue({value: value, isEnough: undefined});
@@ -29,13 +30,13 @@ export default function BalanceInput({
     <InputGroup>
       <Input
         value={value}
-        onChange={e => handleValueChange(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleValueChange(e.target.value)}
         errorBorderColor='red.500'
         isInvalid={isEnough === false}
         {...props}
       />
       <InputRightElement>
-        <FetchingInputIcon isLoading={isLoading} inputValue={value} fetched={isEnough} error={!!error} positiveIcon={<></>} spinnerIcon={<></>} />
+        <FetchingInputIcon isLoading={isLoading} isInvalid={value.length !== 0 && isEnough === false} positiveIcon={<></>} spinnerIcon={<></>} />
       </InputRightElement>
     </InputGroup>
   )

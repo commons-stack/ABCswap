@@ -1,8 +1,10 @@
-import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, Input, InputRightElement, Text, VStack, Tooltip } from "@chakra-ui/react";
-import { InfoOutlineIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, InputRightElement, Text, VStack, Tooltip } from "@chakra-ui/react";
+import { InfoOutlineIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { newDaoTokenState, newDaoTokenSupplyState } from "../../recoil";
+import { isAddress } from "viem";
+import { Input, NumberInput, NumberInputField } from "commons-ui/src/components/Input";
 
 export default function ConfigureToken() {
 
@@ -17,16 +19,16 @@ export default function ConfigureToken() {
         setTokenSettings(settings => ({ ...settings, tokenSymbol }));
     }
 
-    function handleHolderChange(index: number, e: React.ChangeEvent<HTMLInputElement>, isAddress: boolean) {
+    function handleHolderChange(index: number, value: string, isAddress: boolean) {
         setTokenSettings(settings => {
             const tokenHolders = [...settings.tokenHolders];
-            const holder: [string, string] = [tokenHolders[index][0], tokenHolders[index][1]];
+            let [address, balance] = tokenHolders[index];
             if (isAddress) {
-                holder[0] = e.target.value;
+                address = value;
             } else {
-                holder[1] = e.target.value;
+                balance = value;
             }
-            tokenHolders.splice(index, 1, holder);
+            tokenHolders.splice(index, 1, [address, balance]);
             return { ...settings, tokenHolders };
         });
     }
@@ -104,14 +106,16 @@ export default function ConfigureToken() {
                                 </Tooltip>
                             </HStack>
                         </FormLabel>
-                        {tokenSettings.tokenHolders.map((holder, i) => (
+                        {tokenSettings.tokenHolders.map(([address], i) => (
                             <InputGroup key={i} mb="17px">
                                 <Input
                                     name="address"
                                     placeholder="Enter address"
-                                    value={holder[0]}
+                                    isInvalid={!!address && !isAddress(address)}
+                                    errorBorderColor='red.500'
+                                    value={address}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        handleHolderChange(i, e, true)
+                                        handleHolderChange(i, e.target.value, true)
                                     }
                                 />
                                 <InputRightElement onClick={() => handleRemoveHolder(i)} >
@@ -124,32 +128,23 @@ export default function ConfigureToken() {
                         <FormLabel>
                             <Text fontSize="16px" color="brand.900">BALANCES</Text>
                         </FormLabel>
-                        {tokenSettings.tokenHolders.map((holder, i) => (
+                        {tokenSettings.tokenHolders.map(([, balance], i) => (
                             <InputGroup mb="17px" key={i}>
-                                <Input
-                                    name="balance"
-                                    placeholder="Enter balance"
-                                    value={holder[1]}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        handleHolderChange(i, e, false)
-                                    }
-                                    type="number"
-                                />
+                                <NumberInput value={balance} width='100%'>
+                                    <NumberInputField
+                                        name="balance"
+                                        placeholder="Enter balance"
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleHolderChange(i, e.target.value, false)}
+                                    />
+                                </NumberInput>
                             </InputGroup>
                         ))}
                     </FormControl>
                 </HStack>
-                <HStack w="45%" alignSelf="start" spacing={3}>
-                    <Button
-                        onClick={() => {
-                            handleAddEmptyHolder();
-                        }}
-                    >
-                        + Add more
+                <HStack w="60%" alignSelf="start" spacing={3}>
+                    <Button leftIcon={<AddIcon />} onClick={() => handleAddEmptyHolder()}>
+                        Add more
                     </Button>
-                    {/*<Button>
-                        Import xls
-                    </Button>*/}
                 </HStack>
             </VStack>
             <Divider paddingTop="24px"
@@ -160,7 +155,7 @@ export default function ConfigureToken() {
             />
             <HStack justifyContent="space-between" w="90%">
                 <Text fontSize="16px" color="brand.900">INITIAL SUPPLY</Text>
-                <Text mr="10px" as="b" color="brand.900">{initialTotalSupply}</Text>
+                <Text mr="10px" as="b" color="brand.900">{initialTotalSupply} {tokenSettings.tokenSymbol}</Text>
             </HStack>
             <Divider paddingTop="0px"
                 borderColor="brand.900"
