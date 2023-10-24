@@ -9,7 +9,8 @@ export default function Home() {
     const navigate = useNavigate();
 
     const [daoName, setDaoName] = useState('');
-    const { isRegistered } = useIsRegisteredDaoWithApp(daoName, 'augmented-bonding-curve.open.aragonpm.eth');
+    const { isRegistered, error } = useIsRegisteredDaoWithApp(daoName, 'augmented-bonding-curve.open.aragonpm.eth');
+    const daoExists = error?.message !== 'DAO not found';
 
     return (
         <VStack bg="brand.100" pb="100px0" textAlign="center">
@@ -48,7 +49,7 @@ export default function Home() {
                         <Stack h="32px" w="32px" alignItems="center" justifyContent="center" borderColor="red.500" borderRadius="16px" borderWidth="2px">
                             <CloseIcon color='red.500' w="16px" h="16px" />
                         </Stack>
-                        <Text color="red.500" fontSize="18px">The entered DAO name or contract address is not a DAO or it does not have an ABC.</Text>
+                        <Text color="red.500" fontSize="18px">{!daoExists ? 'The entered DAO name or contract address was not found.' : 'The entered DAO name or address does not have an ABC.'}</Text>
                     </HStack>
                 </HStack>
                 <Button isDisabled={!isRegistered} w="310px" onClick={() => navigate(`/${daoName}`)}>Next</Button>

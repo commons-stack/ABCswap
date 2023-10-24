@@ -40,6 +40,10 @@ export function useDaoAddress(name: string = "") {
   error = error || ensError || resolverError;
   const isLoading = ensIsLoading || resolverIsLoading;
 
+  if (!isLoading && !error && (!address || address === ZERO_ADDRESS)) {
+    error = new Error("DAO not found");
+  }
+
   return { address, error, isLoading };
 }
 
