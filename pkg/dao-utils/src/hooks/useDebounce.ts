@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 // Modified from https://usehooks-ts.com/react-hook/use-debounce/
 export default function useDebounce<T>(value: T, delay?: number): [T, boolean] {
   const [isDebouncing, setIsDebouncing] = useState(true);
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Set isDebouncing to true whenever value changes
     setIsDebouncing(true);
 

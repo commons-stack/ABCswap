@@ -31,6 +31,7 @@ export function useDaoAddress(name: string = "") {
     abi: parseAbi(["function resolver(bytes32 _node) view returns (address)"]),
     functionName: "resolver",
     args: [namehash(normalizedName)],
+    enabled: !!normalizedName,
   });
 
   const {
