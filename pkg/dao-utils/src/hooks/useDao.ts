@@ -60,23 +60,10 @@ export default function useDao(name?: string, app?: string) {
 
     const { address: daoAddress, error: daoError, isLoading: isDaoLoading } = useDaoAddress(name);
     const { address: appAddress, error: appError, isLoading: isAppLoading } = useInstalledApp(daoAddress, app);
-    const { address: tokenManagerAddress, error: tokenManagerError, isLoading: isTokenManagerLoading } = useInstalledApp(daoAddress, 'token-manager.aragonpm.eth');
 
-    const {
-        data: tokenAddress,
-        error: tokenError,
-        isLoading: isTokenLoading,
-    } = useContractRead({
-        address: tokenManagerAddress,
-        abi: parseAbi([
-            "function token() public view returns (address)",
-        ]),
-        functionName: "token"
-    });
-
-    const error = daoError || appError || tokenManagerError || tokenError;
-    const isLoading = isDaoLoading || isAppLoading || isTokenManagerLoading || isTokenLoading;
+    const error = daoError || appError;
+    const isLoading = isDaoLoading || isAppLoading;
     
-    return { address: daoAddress, appAddress, tokenAddress, error, isLoading };
+    return { address: daoAddress, appAddress, error, isLoading };
   
 }

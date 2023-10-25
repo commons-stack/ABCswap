@@ -15,6 +15,7 @@ export function useAbcInfo(bondingCurve: `0x${string}` | undefined) {
     }
 
     const { data, isError, isLoading } = useContractReads({
+        enabled: !!bondingCurve,
         contracts: [
           {
             ...bondingCurveContract,

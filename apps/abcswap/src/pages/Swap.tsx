@@ -22,7 +22,9 @@ export default function SimpleConvert() {
 
     const { dao } = useParams();
     const navigate = useNavigate();
-    const { tokenAddress: abcTokenAddress, appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
+    const { appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
+    const { data: abc } = useAbcInfo(bondingCurveAddress);
+    const abcTokenAddress = abc.token;
     const { address: reserveTokenAddress} = useReserveToken(bondingCurveAddress);
     const { data: abcTokenData } = useToken({address: abcTokenAddress})
     const abcTokenSymbol = abcTokenData?.symbol;
@@ -47,10 +49,8 @@ export default function SimpleConvert() {
         },
     };
 
-    const { data: info } = useAbcInfo(bondingCurve.address)
-
-    const entryTribute = info.buyFeePct || 0n;
-    const exitTribute = info.sellFeePct || 0n;
+    const entryTribute = abc.buyFeePct || 0n;
+    const exitTribute = abc.sellFeePct || 0n;
 
 
     const [inverted, setInverted] = useState<boolean>(false);

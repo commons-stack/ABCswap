@@ -18,7 +18,7 @@ export default selector<boolean>({
                 return false;
             }
         }
-        if (initialSupply == 0) {
+        if (initialSupply == '0') {
             return false;
         }
         return true;
