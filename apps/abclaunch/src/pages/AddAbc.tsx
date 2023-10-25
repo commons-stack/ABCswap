@@ -11,6 +11,7 @@ import { newDaoCreatedIsValid, newDaoCreatedState, newDaoNameState } from '../re
 import { useProcessTransactions } from 'transactions-modal';
 import useLaunchSteps from '../hooks/useLaunchSteps';
 import DaoLaunched from '../components/dao-steps/DaoLaunched';
+import { StepType } from '../components/dao-steps/Summary';
 
 function ABCHelper() {
     return (
@@ -47,7 +48,7 @@ export default function AddABC({isInsideWizard}: AddAbcProps){
     const steps = [
         { title: 'Select DAO', component: <OrganizationName title="Select your DAO" /> },
         { title: 'Configure ABC', component: <ConfigureAbc abcHelper={ABCHelper} /> },
-        { title: 'Sumbit DAO Vote', component: <Summary /> },
+        { title: 'Sumbit DAO Vote', component: <Summary steps={[StepType.ORGANIZATION_SETTINGS, StepType.ABC_SETTINGS]} /> },
     ];
 
     const stepsInfo = [

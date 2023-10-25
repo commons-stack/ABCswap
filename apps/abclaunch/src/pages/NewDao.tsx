@@ -4,7 +4,7 @@ import ConfigureAbc from '../components/dao-steps/ConfigureAbc';
 import ConfigureToken from '../components/dao-steps/ConfigureToken';
 import ConfigureVoting from '../components/dao-steps/ConfigureVoting';
 import OrganizationName from '../components/dao-steps/OrganizationName';
-import Summary from '../components/dao-steps/Summary';
+import Summary, { StepType } from '../components/dao-steps/Summary';
 import WizardHome from '../components/WizardHome';
 import DaoStepper from '../components/DaoStepper';
 import useIsValid from '../hooks/useIsValid';
@@ -48,7 +48,7 @@ export default function NewDao({ isInsideWizard }: NewDaoProps) {
         { title: 'Configure voting', component: <ConfigureVoting /> },
         { title: 'Configure token', component: <ConfigureToken /> },
         { title: 'Configure ABC', component: <ConfigureAbc abcHelper={ABCHelper} /> },
-        { title: 'Launch your DAO', component: <Summary /> },
+        { title: 'Launch your DAO', component: <Summary steps={[StepType.ORGANIZATION_SETTINGS, StepType.VOTING_SETTINGS, StepType.TOKEN_SETTINGS, StepType.ABC_SETTINGS]} /> },
     ];
 
     const stepsInfo = [
@@ -58,7 +58,7 @@ export default function NewDao({ isInsideWizard }: NewDaoProps) {
         { image: '/launchpad/ConfigureABC.svg', description: ['Configure', 'ABC'] },
         { image: '/launchpad/LaunchDAO.svg', description: ['Launch', 'your DAO'] },
     ];
-    
+
     if (!isInsideWizard) {
         return <WizardHome
             title={['Create a new DAO and', 'launch your ABC']}
