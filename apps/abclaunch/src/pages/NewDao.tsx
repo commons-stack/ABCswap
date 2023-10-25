@@ -5,7 +5,7 @@ import ConfigureVoting from '../components/dao-steps/ConfigureVoting';
 import OrganizationName from '../components/dao-steps/OrganizationName';
 import Summary from '../components/dao-steps/Summary';
 import Wizard from '../components/Wizard';
-import NewDaoStepper from '../components/NewDaoStepper';
+import DaoStepper from '../components/DaoStepper';
 import useIsValid from '../hooks/useIsValid';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { newDaoCreatedIsValid, newDaoCreatedState, newDaoNameState } from '../recoil';
@@ -49,7 +49,7 @@ export default function NewDao() {
                 subtitle={['... in just a few steps']}
                 stepsInfo={stepsInfo}
                 onButtonClick={() => navigate('/new-dao/wizard')}
-                stepper={<NewDaoStepper
+                stepper={<DaoStepper
                     steps={steps}
                     isValid={isValid}
                     onComplete={() => processTransactions("Launch your DAO", undefined, txSteps, true, undefined, () => {
