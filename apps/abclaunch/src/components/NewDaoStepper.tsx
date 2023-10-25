@@ -22,7 +22,7 @@ function Steps({ steps, activeStep }: { steps: { title: string }[], activeStep: 
     )
 }
 
-export default function DaoStepper(
+export default function NewDaoStepper(
     { steps, onComplete, isValid, blockingComponent }: {
         steps: { title: string, component: React.ReactElement }[],
         onComplete: () => void,

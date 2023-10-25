@@ -1,4 +1,4 @@
-import { Divider, HStack, Text, VStack, Image, Button } from '@chakra-ui/react';
+import { Divider, HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ChooseOption from '../components/ChooseOption';
 
