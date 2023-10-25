@@ -10,6 +10,7 @@ import { TransactionProvider } from "transactions-modal";
 import { chains, wagmiConfig } from "./wagmi.ts";
 import Home from "./pages/Home.tsx";
 import NewDao from "./pages/NewDao.tsx";
+import AddABC from "./pages/AddAbc.tsx";
 import { RecoilRoot } from "recoil";
 
 
@@ -17,8 +18,10 @@ const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Home />} />
-      <Route path="/new-dao" element={<NewDao />} />
-      <Route path="/new-dao/wizard" element={<NewDao />} />
+      <Route path="/new-dao" element={<NewDao isInsideWizard={false}/>} />
+      <Route path="/new-dao/wizard" element={<NewDao isInsideWizard={true} />} />
+      <Route path="/add-abc/" element={<AddABC isInsideWizard={false}/>} />
+      <Route path="/add-abc/wizard" element={<AddABC isInsideWizard={true} />} />
     </>
   )
 );

@@ -2,7 +2,6 @@ import { WarningTwoIcon } from '@chakra-ui/icons';
 import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import { CustomConnectButton } from 'commons-ui/src/components/ConnectButton';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { parseEther } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -33,19 +32,16 @@ type StepInfo = {
 }[]
 
 interface WizardHomeProps {
-    type: "new-dao" | "add-dao";
     title: string[];
     subtitle: string[];
     stepsInfo: StepInfo;
     onButtonClick: () => void;
-    stepper: JSX.Element;
 }
 
-export default function Wizard({ type, title, subtitle, stepsInfo, onButtonClick, stepper }: WizardHomeProps) {
+export default function WizardHome({ title, subtitle, stepsInfo, onButtonClick }: WizardHomeProps) {
 
     const { address } = useAccount();
     const { data: balance } = useBalance({ address });
-    const location = useLocation();
 
     const enoughBalance = balance && balance.value > parseEther("100", "gwei");
 
@@ -69,10 +65,6 @@ export default function Wizard({ type, title, subtitle, stepsInfo, onButtonClick
         })
     }
 
-    if (location.pathname === "/" + type + "/wizard") {
-        return stepper;
-    }
-    
     return (
         <>
             <Box bg="brand.100">
