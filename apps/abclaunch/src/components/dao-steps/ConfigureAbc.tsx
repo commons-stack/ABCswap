@@ -8,7 +8,11 @@ import { BalanceInput } from "dao-utils";
 import { Input } from 'commons-ui/src/components/Input';
 import ABCGraph from "../charts/ABCGraph";
 
-export default function ConfigureToken() {
+interface ConfigureABCProps {
+    abcHelper: () => JSX.Element;
+}
+
+export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
 
     const [abcSettings, setAbcSettings] = useRecoilState(newDaoAbcState);
 
@@ -22,9 +26,9 @@ export default function ConfigureToken() {
         setAbcSettings(settings => ({ ...settings, collateralToken }));
     }
 
-    function handleInitialReserveChange({value, isEnough} : {value: string, isEnough: boolean | undefined}) {
+    function handleInitialReserveChange({ value, isEnough }: { value: string, isEnough: boolean | undefined }) {
         (value !== abcSettings.reserveInitialBalance || isEnough !== abcSettings.reserveInitialBalanceIsEnough) &&
-        setAbcSettings(settings => ({ ...settings, reserveInitialBalance: value, reserveInitialBalanceIsEnough: isEnough }));
+            setAbcSettings(settings => ({ ...settings, reserveInitialBalance: value, reserveInitialBalanceIsEnough: isEnough }));
     }
 
     function handleEntryTributeChange(entryTribute: string) {
@@ -182,12 +186,7 @@ export default function ConfigureToken() {
             />
             {enoughBalance ?
                 <VStack mt="32px">
-                    <VStack spacing={-1}>
-                        <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
-                        <Text fontSize="16px" color="black">from your wallet to the Reserve Pool. You can only proceed if your wallet contains funds equal to or</Text>
-                        <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
-                    </VStack>
-                    <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
+                    {abcHelper()}
                 </VStack> : null
             }
             {!enoughBalance ?

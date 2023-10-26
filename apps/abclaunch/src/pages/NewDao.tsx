@@ -1,103 +1,81 @@
-import { WarningTwoIcon } from '@chakra-ui/icons';
-import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
-import { CustomConnectButton } from 'commons-ui/src/components/ConnectButton';
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useProcessTransactions } from 'transactions-modal';
-import { parseEther } from 'viem';
-import { useAccount, useBalance } from 'wagmi';
-import DaoStepper from '../components/DaoStepper';
+import { Text, VStack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import ConfigureAbc from '../components/dao-steps/ConfigureAbc';
 import ConfigureToken from '../components/dao-steps/ConfigureToken';
 import ConfigureVoting from '../components/dao-steps/ConfigureVoting';
-import DaoLaunched from '../components/dao-steps/DaoLaunched';
 import OrganizationName from '../components/dao-steps/OrganizationName';
-import Summary from '../components/dao-steps/Summary';
+import Summary, { StepType } from '../components/dao-steps/Summary';
+import WizardHome from '../components/WizardHome';
+import DaoStepper from '../components/DaoStepper';
 import useIsValid from '../hooks/useIsValid';
-import useLaunchSteps from '../hooks/useLaunchSteps';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { newDaoCreatedIsValid, newDaoCreatedState, newDaoNameState } from '../recoil';
+import { useProcessTransactions } from 'transactions-modal';
+import useLaunchSteps from '../hooks/useLaunchSteps';
+import DaoLaunched from '../components/dao-steps/DaoLaunched';
 
-function Error({ children }: { children: React.ReactNode }) {
+function ABCHelper(): JSX.Element {
     return (
-        <HStack mb="28px" mt="93px">
-            <WarningTwoIcon w="32px" h="32px" mr="8px" color="brand.1200" />
-            <VStack spacing={0} alignItems="start">
-                <Text fontSize="16px" color="brand.1200">{children}</Text>
+        <>
+            <VStack spacing={-1}>
+                <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
+                <Text fontSize="16px" color="black">from your wallet to the Reserve Pool. You can only proceed if your wallet contains funds equal to or</Text>
+                <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
             </VStack>
-        </HStack>
+            <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
+        </>
     )
 }
 
-function StepInfo({ image, children }: { image: string, children: React.ReactNode }) {
-    return (
-        <VStack spacing={0}>
-            <Image src={image} pb="16px" />
-            <Text fontSize="24px" color="brand.900" textAlign="center">{children}</Text>
-        </VStack>
-    )
+interface NewDaoProps {
+    isInsideWizard: boolean;
 }
 
-export default function NewDao() {
+export default function NewDao({ isInsideWizard }: NewDaoProps) {
 
-    const { address } = useAccount();
-    const { data: balance } = useBalance({ address, watch: true });
     const navigate = useNavigate();
-    const location = useLocation();
+    const isValid = useIsValid();
     const txSteps = useLaunchSteps();
-    const { processTransactions } = useProcessTransactions()
-
-    const enoughBalance = balance && balance.value > parseEther("100", "gwei");
-
-    const isValid = useIsValid()
 
     const setNewDaoCreated = useSetRecoilState(newDaoCreatedState)
     const daoName = useRecoilValue(newDaoNameState)
     const newDaoHasBeenCreated = useRecoilValue(newDaoCreatedIsValid);
 
+    const { processTransactions } = useProcessTransactions()
+
     const steps = [
-        { title: 'Name your DAO', component: <OrganizationName /> },
+        { title: 'Name your DAO', component: <OrganizationName title="Name your DAO" /> },
         { title: 'Configure voting', component: <ConfigureVoting /> },
         { title: 'Configure token', component: <ConfigureToken /> },
-        { title: 'Configure ABC', component: <ConfigureAbc /> },
-        { title: 'Launch your DAO', component: <Summary /> },
+        { title: 'Configure ABC', component: <ConfigureAbc abcHelper={ABCHelper} /> },
+        { title: 'Launch your DAO', component: <Summary steps={[StepType.ORGANIZATION_SETTINGS, StepType.VOTING_SETTINGS, StepType.TOKEN_SETTINGS, StepType.ABC_SETTINGS]} /> },
     ];
 
-    if (location.pathname === '/new-dao/wizard') {
-        return (
-            <DaoStepper
-                steps={steps}
-                isValid={isValid}
-                onComplete={() => processTransactions("Launch your DAO", undefined, txSteps, true, undefined, () => {
-                    setNewDaoCreated({name:daoName.name})
-                })}
-                blockingComponent={newDaoHasBeenCreated ? <DaoLaunched /> : undefined}
-            />
-        )
+    const stepsInfo = [
+        { image: '/launchpad/DAOName.svg', description: ['Name your', 'DAO'] },
+        { image: '/launchpad/ConfigureVoting.svg', description: ['Configure', 'voting'] },
+        { image: '/launchpad/ConfigureToken.svg', description: ['Configure', 'token'] },
+        { image: '/launchpad/ConfigureABC.svg', description: ['Configure', 'ABC'] },
+        { image: '/launchpad/LaunchDAO.svg', description: ['Launch', 'your DAO'] },
+    ];
+
+    if (!isInsideWizard) {
+        return <WizardHome
+            title={['Create a new DAO and', 'launch your ABC']}
+            subtitle={['... in just a few steps']}
+            stepsInfo={stepsInfo}
+            onButtonClick={() => navigate('/new-dao/wizard')}
+        />
     }
+
     return (
-        <>
-            <Box bg="brand.100">
-                <VStack spacing={0} pb="117px">
-                    <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">Create a new DAO and</Text>
-                    <Text fontSize="72px" color="brand.900" fontFamily="VictorSerifTrial">launch your ABC</Text>
-                    <Text fontSize="24px" color="brand.900">... in just a few steps</Text>
-                    <HStack pb="32px" pt="56px" spacing={24}>
-                        <StepInfo image="/launchpad/DAOName.svg">Name your <br /> DAO</StepInfo>
-                        <StepInfo image="/launchpad/ConfigureVoting.svg">Configure <br /> voting</StepInfo>
-                        <StepInfo image="/launchpad/ConfigureToken.svg">Configure <br /> token</StepInfo>
-                        <StepInfo image="/launchpad/ConfigureABC.svg">Configure <br /> ABC</StepInfo>
-                        <StepInfo image="/launchpad/LaunchDAO.svg">Launch <br /> your DAO</StepInfo>
-                    </HStack>
-                    {!address &&
-                        <Error>Connect your account before proceeding.</Error>
-                    }
-                    {address && !enoughBalance &&
-                        <Error>Insuficient funds, you need <br /> more ETH to launch an ABC.</Error>
-                    }
-                    {address ? <Button onClick={() => navigate('/new-dao/wizard')} isDisabled={!enoughBalance}>Let's start</Button> : <CustomConnectButton />}
-                </VStack>
-            </Box>
-        </>
-    );
+        <DaoStepper
+            steps={steps}
+            isValid={isValid}
+            onComplete={() => processTransactions("Launch your DAO", undefined, txSteps, true, undefined, () => {
+                setNewDaoCreated({ name: daoName.name })
+            })}
+            blockingComponent={newDaoHasBeenCreated ? <DaoLaunched /> : undefined}
+        />
+    )
 }

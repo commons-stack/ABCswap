@@ -1,6 +1,6 @@
-import { Divider, HStack, Text, VStack, Image, Button } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { Divider, HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import ChooseOption from '../components/ChooseOption';
 
 export default function Launchpad() {
     const navigate = useNavigate();
@@ -35,16 +35,24 @@ export default function Launchpad() {
                 </HStack>
             </HStack>
             <HStack spacing={16} pt="46px">
-                <VStack sx={{
-                    padding: '46px 122px 44px 122px',
-                    borderRadius: '30px',
-                    boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.00)'
-                }} bgColor="brand.300" spacing={0}>
-                    <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">New DAO</Text>
-                    <Text color="brand.900" fontSize="20px" mt="34px">I want to create a new</Text>
-                    <Text color="brand.900" fontSize="20px">DAO and launch an ABC.</Text>
-                    <Button mt="29px" onClick={() => navigate('/new-dao')}>Launch on a new DAO <ArrowForwardIcon ml="5px" /></Button>
-                </VStack>
+                <ChooseOption 
+                    title="New DAO"
+                    description={[
+                      "I want to create a new",
+                      "DAO and launch an ABC." 
+                    ]}
+                    onButtonClick={() => navigate('/new-dao')}
+                    buttonText="Launch on a new DAO"
+                />
+                <ChooseOption 
+                    title="Existing DAO"
+                    description={[
+                      "I have a DAO and want to",
+                      "attach an ABC to it." 
+                    ]}
+                    onButtonClick={() => navigate('/add-abc')}
+                    buttonText="Launch on an existing DAO"
+                />
             </HStack>
         </VStack>
     )
