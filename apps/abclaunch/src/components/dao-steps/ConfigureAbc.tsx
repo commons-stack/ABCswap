@@ -179,22 +179,24 @@ export default function ConfigureToken() {
                 width="100%"
                 margin="0 auto"
             />
-            {enoughBalance && <VStack mt="32px">
-                <VStack spacing={-1}>
-                    <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
-                    <Text fontSize="16px" color="black">from your wallet to the Reserve Pool. You can only proceed if your wallet contains funds equal to or</Text>
-                    <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
-                </VStack>
-                <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
-            </VStack>}
-            {!enoughBalance &&
+            {enoughBalance ?
+                <VStack mt="32px">
+                    <VStack spacing={-1}>
+                        <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
+                        <Text fontSize="16px" color="black">from your wallet to the Reserve Pool. You can only proceed if your wallet contains funds equal to or</Text>
+                        <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
+                    </VStack>
+                    <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
+                </VStack> : null
+            }
+            {!enoughBalance ?
                 <HStack mt="32px">
                     <WarningTwoIcon color="red.500" w="32px" h="32px" mr="8px" />
                     <VStack spacing={0} alignItems="start">
                         <Text fontSize="16px" color="brand.1200">You do not have the amount specified in Initial Reserve Balance in your wallet.</Text>
                         <Text fontSize="16px" color="brand.1200">You must have at least that much in your wallet in order to proceed.</Text>
                     </VStack>
-                </HStack>
+                </HStack> : null
             }
         </VStack>
     )
