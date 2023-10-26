@@ -1,9 +1,11 @@
 import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, InputRightElement, Text, VStack, Tooltip } from "@chakra-ui/react";
-import { InfoOutlineIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { InfoOutlineIcon, DeleteIcon, AttachmentIcon, AddIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { newDaoTokenState, newDaoTokenSupplyState } from "../../recoil";
-import { isAddress } from "viem";
+import ImportCSVButton from "../ImportCSVButton";
+import { csvStringToArray } from "../../utils/csv-utils";
+import { formatUnits, isAddress, parseUnits } from "viem";
 import { Input, NumberInput, NumberInputField } from "commons-ui/src/components/Input";
 
 export default function ConfigureToken() {
@@ -43,6 +45,28 @@ export default function ConfigureToken() {
             tokenHolders.splice(index, 1);
             return { ...settings, tokenHolders };
         });
+    }
+
+    function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+        const tokenHolders = tokenSettings.tokenHolders;
+        const isEmpty = tokenHolders.length === 1 && tokenHolders[0][0] === '' && tokenHolders[0][1] === ''
+        if (isEmpty) { // Only paste a CSV on a blank state, otherwise paste normally
+            e.preventDefault();
+            handleImportCSV(e.clipboardData.getData('Text'));
+        }
+    }
+
+    function handleImportCSV(csv: string) {
+        if (!csv) return;
+        const array = csvStringToArray(csv);
+        const processAddress = (address: string) => address.trim() || '';
+        const processBalance = (balance: string) => !isNaN(Number(balance)) && formatUnits(parseUnits(balance, 18), 18) || '';
+        const tokenHolders: [string, string][] = array.map(([address, balance]) => [processAddress(address), processBalance(balance)]);
+        setTokenSettings(settings => ({ ...settings, tokenHolders }));
+    }
+
+    function deleteAll() {
+        setTokenSettings(settings => ({ ...settings, tokenHolders: [['', '']] }));
     }
 
     return (
@@ -117,6 +141,7 @@ export default function ConfigureToken() {
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                         handleHolderChange(i, e.target.value, true)
                                     }
+                                    onPaste={handlePaste}
                                 />
                                 <InputRightElement onClick={() => handleRemoveHolder(i)} >
                                     <DeleteIcon />
@@ -144,6 +169,12 @@ export default function ConfigureToken() {
                 <HStack w="60%" alignSelf="start" spacing={3}>
                     <Button leftIcon={<AddIcon />} onClick={() => handleAddEmptyHolder()}>
                         Add more
+                    </Button>
+                    <ImportCSVButton leftIcon={<AttachmentIcon />} onImport={handleImportCSV}>
+                        Import CSV
+                    </ImportCSVButton>
+                    <Button variant="outline" leftIcon={<DeleteIcon />} onClick={() => deleteAll()}>
+                        Delete all
                     </Button>
                 </HStack>
             </VStack>
