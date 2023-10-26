@@ -27,7 +27,7 @@ function getBondingCurveData(reserveRatio: number, initialReserve: number, initi
 }
 
 export default function useABCGraphData(): {x: number, y: number}[] {
-    const tokenSupply = useRecoilValue(newDaoTokenSupplyState)
+    const tokenSupply = Number.parseFloat(useRecoilValue(newDaoTokenSupplyState))
     const abcSettings = useRecoilValue(newDaoAbcState);
 
     const initialReserve = Number.parseFloat(abcSettings.reserveInitialBalance);

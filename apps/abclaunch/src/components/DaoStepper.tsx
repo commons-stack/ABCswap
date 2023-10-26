@@ -34,7 +34,7 @@ export default function DaoStepper(
     const navigate = useNavigate();
 
     const { activeStep, goToNext, goToPrevious } = useSteps({
-        index: 2,
+        index: 0,
         count: steps.length,
     })
 
