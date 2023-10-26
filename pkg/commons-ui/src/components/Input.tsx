@@ -1,12 +1,15 @@
+import React from 'react';
+
 import {
     Input as ChakraInput,
     NumberInput as ChakraNumberInput,
     NumberInputField as ChakraNumberInputField
 } from '@chakra-ui/react'
 
-export function Input({children, ...props}: any) {
+export const Input = React.forwardRef(function Input({children, ...props}: any, ref: any) {
     return (
         <ChakraInput
+            ref={ref}
             borderWidth="1px"
             _hover={{
                 boxShadow: 'none',
@@ -23,19 +26,20 @@ export function Input({children, ...props}: any) {
             {children}
         </ChakraInput>
     );
-}
+});
 
-export function NumberInput({ children, props }: any) {
+export const NumberInput = React.forwardRef(function NumberInput({ children, ...props }: any, ref: any) {
     return (
-        <ChakraNumberInput width="100%" {...props}>
+        <ChakraNumberInput ref={ref} width="100%" {...props}>
             {children}
         </ChakraNumberInput>
     );
-}
+})
 
-export function NumberInputField({children, ...props}: any) {
+export const NumberInputField = React.forwardRef(function NumberInputField({children, ...props}: any, ref: any) {
     return (
         <ChakraNumberInputField
+            ref={ref}
             borderWidth="1px"
             borderColor= 'brand.900'
             _hover={{
@@ -54,5 +58,5 @@ export function NumberInputField({children, ...props}: any) {
             {children}
         </ChakraNumberInputField>
     );
-}
+});
 
