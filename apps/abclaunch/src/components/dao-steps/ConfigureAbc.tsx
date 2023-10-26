@@ -6,6 +6,7 @@ import { newDaoAbcState } from "../../recoil";
 import { collateralTokenList, getCollateralTokenInfo } from "../../utils/token-info";
 import { BalanceInput } from "dao-utils";
 import { Input } from 'commons-ui/src/components/Input';
+import ABCGraph from "../charts/ABCGraph";
 
 export default function ConfigureToken() {
 
@@ -39,7 +40,7 @@ export default function ConfigureToken() {
             <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Augmented Bonding Curve</Text>
             <Text fontSize="24px" color="brand.900" pt="16px">Configure the DAO's ABC parameters</Text>
             <HStack w="100%">
-                <VStack spacing={3} minW="340px" maxW="400px" w="100%" justifyContent="center">
+                <VStack spacing={3} minW="340px" maxW="400px" w="40%" justifyContent="center">
                     <HStack alignSelf="start" w="100%">
                         <FormControl w="100%">
                             <FormLabel>
@@ -169,6 +170,9 @@ export default function ConfigureToken() {
                         </FormControl>
                     </HStack>
                 </VStack>
+                <VStack spacing={3} w="600px" justifyContent="center">
+                    <ABCGraph />
+                </VStack>
             </HStack>
             <Divider paddingTop="24px"
                 borderColor="brand.900"
@@ -176,22 +180,24 @@ export default function ConfigureToken() {
                 width="100%"
                 margin="0 auto"
             />
-            {enoughBalance && <VStack mt="32px">
-                <VStack spacing={-1}>
-                    <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
-                    <Text fontSize="16px" color="black">from your wallet to the Reserve Pool. You can only proceed if your wallet contains funds equal to or</Text>
-                    <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
-                </VStack>
-                <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
-            </VStack>}
-            {!enoughBalance &&
+            {enoughBalance ?
+                <VStack mt="32px">
+                    <VStack spacing={-1}>
+                        <Text fontSize="16px" color="black">When you launch this ABC, that amount specified in the Initial Reserve Balance will be transferred</Text>
+                        <Text fontSize="16px" color="black">from your wallet to the Reserve Pool. You can only proceed if your wallet contains funds equal to or</Text>
+                        <Text fontSize="16px" color="black">exceeding the specified Initial Reserve Balance.</Text>
+                    </VStack>
+                    <Text fontSize="16px" color="black" pt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
+                </VStack> : null
+            }
+            {!enoughBalance ?
                 <HStack mt="32px">
                     <WarningTwoIcon color="red.500" w="32px" h="32px" mr="8px" />
                     <VStack spacing={0} alignItems="start">
                         <Text fontSize="16px" color="brand.1200">You do not have the amount specified in Initial Reserve Balance in your wallet.</Text>
                         <Text fontSize="16px" color="brand.1200">You must have at least that much in your wallet in order to proceed.</Text>
                     </VStack>
-                </HStack>
+                </HStack> : null
             }
         </VStack>
     )

@@ -77,8 +77,8 @@ export default function SimpleConvert() {
 
     const steps = useSwapSteps(bondingCurve.address, reserveToken.address, inverted, parseFromToken(amount));
 
-    const { data: fromTokenBalance } = useBalance({ token: fromToken.address, address });
-    const { data: toTokenBalance } = useBalance({ token: toToken.address, address });
+    const { data: fromTokenBalance } = useBalance({ token: fromToken.address, address, watch: true });
+    const { data: toTokenBalance } = useBalance({ token: toToken.address, address, watch: true });
 
     const amountBigInt = parseFromToken(amount)
     const convertedAmount = useBondingCurvePrice(amountBigInt, inverted, reserveToken.address, bondingCurve.address);

@@ -16,7 +16,7 @@ function useIsBalanceEnough({value, token, decimals}: {value: string, token: `0x
 
   const [debouncedValue, isDebouncing] = useDebounce(value, delay);
   const { address } = useAccount()
-  const { data: balance, error, isLoading: isFetching } = useBalance({address, token});
+  const { data: balance, error, isLoading: isFetching } = useBalance({address, token, watch: true});
 
   const isLoading = !address || isFetching || isDebouncing;
   const isEnough = !isLoading && token && balance ? balance.value >= parseUnits(debouncedValue, decimals) : undefined;

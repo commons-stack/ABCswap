@@ -41,7 +41,7 @@ function StepInfo({ image, children }: { image: string, children: React.ReactNod
 export default function NewDao() {
 
     const { address } = useAccount();
-    const { data: balance } = useBalance({ address });
+    const { data: balance } = useBalance({ address, watch: true });
     const navigate = useNavigate();
     const location = useLocation();
     const txSteps = useLaunchSteps();
