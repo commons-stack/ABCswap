@@ -6,12 +6,11 @@ import Summary from '../components/dao-steps/Summary';
 import WizardHome from '../components/WizardHome';
 import DaoStepper from '../components/DaoStepper';
 import useIsValid from '../hooks/useIsValid';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { newDaoCreatedIsValid, newDaoCreatedState, newDaoNameState } from '../recoil';
 import { useProcessTransactions } from 'transactions-modal';
 import useLaunchSteps from '../hooks/useLaunchSteps';
 import DaoLaunched from '../components/dao-steps/DaoLaunched';
 import { StepType } from '../components/dao-steps/Summary';
+import { useDaoCreatedAtom } from '../store';
 
 function ABCHelper() {
     return (
@@ -39,9 +38,7 @@ export default function AddABC({isInsideWizard}: AddAbcProps){
     const isValid = useIsValid();
     const txSteps = useLaunchSteps();
 
-    const setNewDaoCreated = useSetRecoilState(newDaoCreatedState)
-    const daoName = useRecoilValue(newDaoNameState)
-    const newDaoHasBeenCreated = useRecoilValue(newDaoCreatedIsValid);
+    const [newDaoIsCreated, setNewDaoIsCreated] = useDaoCreatedAtom();
 
     const { processTransactions } = useProcessTransactions()
 
@@ -71,9 +68,9 @@ export default function AddABC({isInsideWizard}: AddAbcProps){
             steps={steps}
             isValid={isValid}
             onComplete={() => processTransactions("Submit for vote", undefined, txSteps, true, undefined, () => {
-                setNewDaoCreated({ name: daoName.name })
+                setNewDaoIsCreated(true)
             })}
-            blockingComponent={newDaoHasBeenCreated ? <DaoLaunched /> : undefined}
+            blockingComponent={newDaoIsCreated ? <DaoLaunched /> : undefined}
         />
     )
 }

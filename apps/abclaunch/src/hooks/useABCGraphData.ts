@@ -1,5 +1,4 @@
-import { useRecoilValue } from "recoil";
-import { newDaoAbcState, newDaoTokenSupplyState } from "../recoil";
+import { useReserveInitialBalanceAtom, useInitialTotalSupplyValue, useReserveRatioAtom } from "../store";
 
 const DOTS_LENGTH = 101; // we include the point (0,0) in the data
 
@@ -27,10 +26,8 @@ function getBondingCurveData(reserveRatio: number, initialReserve: number, initi
 }
 
 export default function useABCGraphData(): {x: number, y: number}[] {
-    const tokenSupply = Number.parseFloat(useRecoilValue(newDaoTokenSupplyState))
-    const abcSettings = useRecoilValue(newDaoAbcState);
-
-    const initialReserve = Number.parseFloat(abcSettings.reserveInitialBalance);
-    const reserveRatio = Number.parseFloat(abcSettings.reserveRatio) / 100;
+    const tokenSupply = Number.parseFloat(useInitialTotalSupplyValue());
+    const initialReserve = Number.parseFloat(useReserveInitialBalanceAtom()[0][0]);
+    const reserveRatio = Number.parseFloat(useReserveRatioAtom()[0]) / 100;
     return getBondingCurveData(reserveRatio, initialReserve, tokenSupply);
 }

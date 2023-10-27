@@ -8,10 +8,9 @@ import {
     YAxis
 } from 'recharts';
 import useABCGraphData from "../../hooks/useABCGraphData";
-import { newDaoAbcState, newDaoTokenState } from "../../recoil";
-import { useRecoilValue } from "recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
 import { useCallback } from "react";
+import { useCollateralTokenAtom, useTokenSymbolAtom, useReserveRatioAtom } from "../../store";
 
 const tickFormatter = new Intl.NumberFormat("en-US", {
     notation: "compact",
@@ -54,9 +53,10 @@ function CustomTooltip({ active, supply, reserve, price, tokenSymbol, reserveTok
 export default function ABCGraph() {
 
     const data = useABCGraphData();
-    const { tokenSymbol } = useRecoilValue(newDaoTokenState);
+    const [tokenSymbol] = useTokenSymbolAtom();
+    const [collateralToken] = useCollateralTokenAtom();
+    const [reserveRatio] = useReserveRatioAtom();
 
-    const { collateralToken, reserveRatio } = useRecoilValue(newDaoAbcState);
     const reserveTokenSymbol = getCollateralTokenInfo(collateralToken)?.tokenSymbol;
 
     const tooltip = useCallback(({ active, payload, label }: { active?: boolean, payload?: any, label?: any }) => {

@@ -1,15 +1,14 @@
 import { Box, Text, VStack } from "@chakra-ui/react";
-import { newDaoNameState } from "../../recoil";
 import { DaoNameInput } from "dao-utils";
-import { useRecoilState } from "recoil";
+import { useDaoSettingsAtom } from "../../store";
 
 interface OrganizationNameProps {
-    title: string
+    title: string,
 }
 
 export default function OrganizationName({ title }: OrganizationNameProps) { 
 
-    const [organizationSettings, setOrganizationSettings] = useRecoilState(newDaoNameState);
+    const [organizationSettings, setOrganizationSettings] = useDaoSettingsAtom();
 
     return (
         <Box pt="100px" pb="75px">

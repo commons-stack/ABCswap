@@ -1,16 +1,15 @@
-import { useRecoilValue } from 'recoil';
 import { parseAbi, parseUnits } from 'viem';
-import { newDaoAbcState, newDaoNameState, newDaoTokenState, newDaoVotingDurationState, newDaoVotingState } from '../recoil';
 import { getCollateralTokenInfo } from '../utils/token-info';
 import { ABC_TEMPLATE } from '../constants';
+import { useAbcSettingsValue, useVotingDurationValue, useNameAtom, useTokenSettingsValue, useVotingSettingsValue } from '../store';
 
 export default function useLaunchSteps() {
 
-    const daoName = useRecoilValue(newDaoNameState)
-    const tokenSettings = useRecoilValue(newDaoTokenState)
-    const votingSettings = useRecoilValue(newDaoVotingState)
-    const votingDurationInSeconds = useRecoilValue(newDaoVotingDurationState)
-    const abcSettings = useRecoilValue(newDaoAbcState)
+    const [daoName] = useNameAtom();
+    const tokenSettings = useTokenSettingsValue();
+    const votingSettings = useVotingSettingsValue();
+    const votingDurationInSeconds = useVotingDurationValue()
+    const abcSettings = useAbcSettingsValue();
 
     const decimals = getCollateralTokenInfo(abcSettings.collateralToken)?.decimals
 
@@ -28,7 +27,7 @@ export default function useLaunchSteps() {
                     functionName: 'approve',
                     args: [
                         ABC_TEMPLATE as `0x${string}`,
-                        parseUnits(abcSettings.reserveInitialBalance, decimals)
+                        parseUnits(abcSettings.reserveInitialBalance[0], decimals)
                     ]
                 }
             },
@@ -39,11 +38,11 @@ export default function useLaunchSteps() {
                     abi: parseAbi(["function newTokenAndInstance(string,string,string,address[],uint256[],uint64[3],uint256[5])"]),
                     functionName: 'newTokenAndInstance',
                     args: [
-                        tokenSettings.tokenName,
-                        tokenSettings.tokenSymbol,
-                        daoName.name,
-                        tokenSettings.tokenHolders.map((holder) => holder[0]),
-                        tokenSettings.tokenHolders.map((holder) => parseUnits(holder[1], 18)),
+                        tokenSettings.name,
+                        tokenSettings.symbol,
+                        daoName,
+                        tokenSettings.holders.map((holder) => holder[0]),
+                        tokenSettings.holders.map((holder) => parseUnits(holder[1], 18)),
                         [
                             parseUnits(votingSettings.supportRequired, 16),
                             parseUnits(votingSettings.minimumAcceptanceQuorum, 16),
@@ -54,7 +53,7 @@ export default function useLaunchSteps() {
                             parseUnits(abcSettings.exitTribute, 16),
                             abcSettings.collateralToken,
                             parseUnits(abcSettings.reserveRatio, 4),
-                            parseUnits(abcSettings.reserveInitialBalance, decimals)
+                            parseUnits(abcSettings.reserveInitialBalance[0], decimals)
                         ]
                     ]
                 }

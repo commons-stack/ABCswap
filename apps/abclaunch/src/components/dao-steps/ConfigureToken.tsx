@@ -1,54 +1,55 @@
 import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, InputRightElement, Text, VStack, Tooltip } from "@chakra-ui/react";
 import { InfoOutlineIcon, DeleteIcon, AttachmentIcon, AddIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { useRecoilState, useRecoilValue } from "recoil";
-import { newDaoTokenState, newDaoTokenSupplyState } from "../../recoil";
 import ImportCSVButton from "../ImportCSVButton";
 import { csvStringToArray } from "../../utils/csv-utils";
 import { formatUnits, isAddress, parseUnits } from "viem";
 import { Input, NumberInput, NumberInputField } from "commons-ui/src/components/Input";
+import { useTokenHoldersAtom, useTokenNameAtom, useTokenSymbolAtom, useInitialTotalSupplyValue } from "../../store";
 
 export default function ConfigureToken() {
 
-    const [tokenSettings, setTokenSettings] = useRecoilState(newDaoTokenState);
-    const initialTotalSupply = useRecoilValue(newDaoTokenSupplyState);
+    const [tokenName, setTokenName] = useTokenNameAtom();
+    const [tokenSymbol, setTokenSymbol] = useTokenSymbolAtom();
+    const [tokenHolders, setTokenHolders] = useTokenHoldersAtom();
+    const initialTotalSupply = useInitialTotalSupplyValue();
 
     function handleChangeTokenName(tokenName: string) {
-        setTokenSettings(settings => ({ ...settings, tokenName }));
+        setTokenName(tokenName);
     }
 
     function handleChangeTokenSymbol(tokenSymbol: string) {
-        setTokenSettings(settings => ({ ...settings, tokenSymbol }));
+        setTokenSymbol(tokenSymbol);
     }
 
     function handleHolderChange(index: number, value: string, isAddress: boolean) {
-        setTokenSettings(settings => {
-            const tokenHolders = [...settings.tokenHolders];
-            let [address, balance] = tokenHolders[index];
+
+        setTokenHolders((tokenHolders: [string, string][]) => {
+            const holders = [...tokenHolders];
+            let [address, balance] = holders[index];
             if (isAddress) {
                 address = value;
             } else {
                 balance = value;
             }
-            tokenHolders.splice(index, 1, [address, balance]);
-            return { ...settings, tokenHolders };
+            holders.splice(index, 1, [address, balance]);
+            return holders;
         });
     }
 
     function handleAddEmptyHolder() {
-        setTokenSettings(settings => ({ ...settings, tokenHolders: [...settings.tokenHolders, ['', '']] }));
+        setTokenHolders(tokenHolders => [...tokenHolders, ['', '']]);
     }
 
     function handleRemoveHolder(index: number) {
-        setTokenSettings(settings => {
-            const tokenHolders = [...settings.tokenHolders];
-            tokenHolders.splice(index, 1);
-            return { ...settings, tokenHolders };
+        setTokenHolders(tokenHolders => {
+            const holders = [...tokenHolders];
+            holders.splice(index, 1);
+            return holders;
         });
     }
 
     function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
-        const tokenHolders = tokenSettings.tokenHolders;
         const isEmpty = tokenHolders.length === 1 && tokenHolders[0][0] === '' && tokenHolders[0][1] === ''
         if (isEmpty) { // Only paste a CSV on a blank state, otherwise paste normally
             e.preventDefault();
@@ -62,11 +63,11 @@ export default function ConfigureToken() {
         const processAddress = (address: string) => address.trim() || '';
         const processBalance = (balance: string) => !isNaN(Number(balance)) && formatUnits(parseUnits(balance, 18), 18) || '';
         const tokenHolders: [string, string][] = array.map(([address, balance]) => [processAddress(address), processBalance(balance)]);
-        setTokenSettings(settings => ({ ...settings, tokenHolders }));
+        setTokenHolders(tokenHolders);
     }
 
     function deleteAll() {
-        setTokenSettings(settings => ({ ...settings, tokenHolders: [['', '']] }));
+        setTokenHolders([['', '']]);
     }
 
     return (
@@ -93,7 +94,7 @@ export default function ConfigureToken() {
                         <InputGroup>
                             <Input
                                 placeholder="Enter token name"
-                                value={tokenSettings.tokenName}
+                                value={tokenName}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handleChangeTokenName(e.target.value);
                                 }}
@@ -112,7 +113,7 @@ export default function ConfigureToken() {
                         <InputGroup>
                             <Input
                                 placeholder="Enter symbol"
-                                value={tokenSettings.tokenSymbol}
+                                value={tokenSymbol}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     handleChangeTokenSymbol(e.target.value)
                                 }}
@@ -130,7 +131,7 @@ export default function ConfigureToken() {
                                 </Tooltip>
                             </HStack>
                         </FormLabel>
-                        {tokenSettings.tokenHolders.map(([address], i) => (
+                        {tokenHolders.map(([address], i) => (
                             <InputGroup key={i} mb="17px">
                                 <Input
                                     name="address"
@@ -153,7 +154,7 @@ export default function ConfigureToken() {
                         <FormLabel>
                             <Text fontSize="16px" color="brand.900">BALANCES</Text>
                         </FormLabel>
-                        {tokenSettings.tokenHolders.map(([, balance], i) => (
+                        {tokenHolders.map(([, balance], i) => (
                             <InputGroup mb="17px" key={i}>
                                 <NumberInput value={balance} width='100%'>
                                     <NumberInputField
@@ -186,7 +187,7 @@ export default function ConfigureToken() {
             />
             <HStack justifyContent="space-between" w="90%">
                 <Text fontSize="16px" color="brand.900">INITIAL SUPPLY</Text>
-                <Text mr="10px" as="b" color="brand.900">{initialTotalSupply} {tokenSettings.tokenSymbol}</Text>
+                <Text mr="10px" as="b" color="brand.900">{initialTotalSupply} {tokenSymbol}</Text>
             </HStack>
             <Divider paddingTop="0px"
                 borderColor="brand.900"

@@ -11,7 +11,6 @@ import { chains, wagmiConfig } from "./wagmi.ts";
 import Home from "./pages/Home.tsx";
 import NewDao from "./pages/NewDao.tsx";
 import AddABC from "./pages/AddAbc.tsx";
-import { RecoilRoot } from "recoil";
 
 
 const router = createHashRouter(
@@ -33,11 +32,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <TransactionProvider>
-            <RecoilRoot>
-              <Layout variant="launch">
-                <RouterProvider router={router} />
-              </Layout>
-            </RecoilRoot>
+            <Layout variant="launch">
+              <RouterProvider router={router} />
+            </Layout>
           </TransactionProvider>
         </RainbowKitProvider>
       </WagmiConfig>

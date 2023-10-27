@@ -1,12 +1,11 @@
 import { Divider, Button, FormControl, FormLabel, HStack, InputGroup, InputRightElement, Text, VStack, Image, Tooltip, Menu, MenuButton, MenuList, Flex, MenuItem } from "@chakra-ui/react";
 import { InfoOutlineIcon, ChevronDownIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { useRecoilState } from "recoil";
-import { newDaoAbcState } from "../../recoil";
 import { collateralTokenList, getCollateralTokenInfo } from "../../utils/token-info";
 import { BalanceInput } from "dao-utils";
 import { Input } from 'commons-ui/src/components/Input';
 import ABCGraph from "../charts/ABCGraph";
+import { useCollateralTokenAtom, useEntryTributeAtom, useReserveInitialBalanceAtom, useReserveRatioAtom } from "../../store";
 
 interface ConfigureABCProps {
     abcHelper: () => JSX.Element;
@@ -14,29 +13,35 @@ interface ConfigureABCProps {
 
 export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
 
-    const [abcSettings, setAbcSettings] = useRecoilState(newDaoAbcState);
+    const [reserveRatio, setReserveRatio] = useReserveRatioAtom();
+    const [[reserveInitialBalance, reserveInitialBalanceIsEnough], setReserveInitialBalance] = useReserveInitialBalanceAtom();
+    const [collateralToken, setCollateralToken] = useCollateralTokenAtom();
 
-    const enoughBalance = abcSettings.reserveInitialBalanceIsEnough !== false;
+    const [entryTribute, setEntryTribute] = useEntryTributeAtom();
+    const [exitTribute, setExitTribute] = useEntryTributeAtom();
+
+
+    const enoughBalance = reserveInitialBalanceIsEnough !== false;
 
     function handleReserveRatioChange(reserveRatio: string) {
-        /^\d*\.?\d*$/.test(reserveRatio) && setAbcSettings(settings => ({ ...settings, reserveRatio }));
+        /^\d*\.?\d*$/.test(reserveRatio) && setReserveRatio(reserveRatio);
     }
 
     function handleCollateralTokenChange(collateralToken: string) {
-        setAbcSettings(settings => ({ ...settings, collateralToken }));
+        setCollateralToken(collateralToken);
     }
 
     function handleInitialReserveChange({ value, isEnough }: { value: string, isEnough: boolean | undefined }) {
-        (value !== abcSettings.reserveInitialBalance || isEnough !== abcSettings.reserveInitialBalanceIsEnough) &&
-            setAbcSettings(settings => ({ ...settings, reserveInitialBalance: value, reserveInitialBalanceIsEnough: isEnough }));
+        (value !== reserveInitialBalance || isEnough !== reserveInitialBalanceIsEnough) &&
+            setReserveInitialBalance([value, isEnough]);
     }
 
     function handleEntryTributeChange(entryTribute: string) {
-        /^\d*\.?\d*$/.test(entryTribute) && setAbcSettings(settings => ({ ...settings, entryTribute }));
+        /^\d*\.?\d*$/.test(entryTribute) && setEntryTribute(entryTribute);
     }
 
     function handleExitTributeChange(exitTribute: string) {
-        /^\d*\.?\d*$/.test(exitTribute) && setAbcSettings(settings => ({ ...settings, exitTribute }));
+        /^\d*\.?\d*$/.test(exitTribute) && setExitTribute(exitTribute);
     }
 
     return (
@@ -59,26 +64,26 @@ export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
                                 <Button
                                     w="70px"
                                     onClick={() => handleReserveRatioChange("20")}
-                                    variant={abcSettings.reserveRatio === '20' ? 'solid' : 'outline'}
+                                    variant={reserveRatio === '20' ? 'solid' : 'outline'}
                                 >
                                     20%
                                 </Button>
                                 <Button
                                     w="70px"
                                     onClick={() => handleReserveRatioChange("50")}
-                                    variant={abcSettings.reserveRatio === '50' ? 'solid' : 'outline'}
+                                    variant={reserveRatio === '50' ? 'solid' : 'outline'}
                                 >
                                     50%
                                 </Button>
                                 <Button
                                     w="70px"
                                     onClick={() => handleReserveRatioChange("80")}
-                                    variant={abcSettings.reserveRatio === '80' ? 'solid' : 'outline'}
+                                    variant={reserveRatio === '80' ? 'solid' : 'outline'}
                                 >
                                     80%
                                 </Button>
                                 <InputGroup w="91px" display="inline-flex">
-                                    <Input value={abcSettings.reserveRatio} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} />
+                                    <Input value={reserveRatio} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleReserveRatioChange(e.target.value)} />
                                     <InputRightElement children="%" />
                                 </InputGroup>
                             </HStack>
@@ -108,13 +113,13 @@ export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
                                     borderBottomLeftRadius="8px"
                                     rightIcon={<ChevronDownIcon />}
                                 >
-                                    {getCollateralTokenInfo(abcSettings.collateralToken)?.tokenSymbol && (
+                                    {getCollateralTokenInfo(collateralToken)?.tokenSymbol && (
                                         <HStack justifyContent="center">
-                                            <Image w="24px" h="24px" src={getCollateralTokenInfo(abcSettings.collateralToken)?.tokenIcon}></Image>
-                                            <Text>{getCollateralTokenInfo(abcSettings.collateralToken)?.tokenSymbol}</Text>
+                                            <Image w="24px" h="24px" src={getCollateralTokenInfo(collateralToken)?.tokenIcon}></Image>
+                                            <Text>{getCollateralTokenInfo(collateralToken)?.tokenSymbol}</Text>
                                         </HStack>
                                     )}
-                                    {!getCollateralTokenInfo(abcSettings.collateralToken)?.tokenSymbol && (
+                                    {!getCollateralTokenInfo(collateralToken)?.tokenSymbol && (
                                         <Text>Select token</Text>
                                     )}
                                 </MenuButton>
@@ -135,9 +140,9 @@ export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
                                     borderLeft="0"
                                     borderTopLeftRadius="0"
                                     borderBottomLeftRadius="0"
-                                    value={abcSettings.reserveInitialBalance}
-                                    token={abcSettings.collateralToken as `0x${string}`}
-                                    decimals={getCollateralTokenInfo(abcSettings.collateralToken)?.decimals || 18}
+                                    value={reserveInitialBalance}
+                                    token={collateralToken as `0x${string}`}
+                                    decimals={getCollateralTokenInfo(collateralToken)?.decimals || 18}
                                     setValue={handleInitialReserveChange}
                                 />
                             </Flex>
@@ -154,7 +159,7 @@ export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
                                 </HStack>
                             </FormLabel>
                             <InputGroup>
-                                <Input value={abcSettings.entryTribute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(e.target.value)} />
+                                <Input value={entryTribute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEntryTributeChange(e.target.value)} />
                                 <InputRightElement children="%" />
                             </InputGroup>
                         </FormControl>
@@ -168,7 +173,7 @@ export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
                                 </HStack>
                             </FormLabel>
                             <InputGroup>
-                                <Input value={abcSettings.exitTribute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(e.target.value)} />
+                                <Input value={exitTribute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleExitTributeChange(e.target.value)} />
                                 <InputRightElement children="%" />
                             </InputGroup>
                         </FormControl>

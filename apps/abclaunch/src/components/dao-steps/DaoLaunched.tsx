@@ -1,11 +1,10 @@
 import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
-import { newDaoCreatedUrl } from "../../recoil";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { useDaoUrlValue } from "../../store";
 
 export default function DaoLaunched() {
 
-    const createdDaoUrl = useRecoilValue(newDaoCreatedUrl);
+    const createdDaoUrl = useDaoUrlValue();
 
     return (
         <Box pt="75px" pb="75px">

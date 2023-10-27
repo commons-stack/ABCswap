@@ -1,22 +1,26 @@
-import { useRecoilValue } from "recoil";
-import { newDaoAbcIsValidState, newDaoCheckedIsValidState, newDaoNameIsValidState, newDaoTokenIsValidState, newDaoVotingIsValidState } from "../recoil";
-
+import {
+  useIsValidAbcValue,
+  useIsValidIsCheckedValue,
+  useIsValidNameValue,
+  useIsValidTokenValue,
+  useIsValidVotingValue,
+} from "../store";
 
 export default function useIsValid() {
-    return (step: number) => {
-        switch (step) {
-            case 0:
-                return useRecoilValue(newDaoNameIsValidState);
-            case 1:
-                return useRecoilValue(newDaoVotingIsValidState);
-            case 2:
-                return useRecoilValue(newDaoTokenIsValidState);
-            case 3:
-                return useRecoilValue(newDaoAbcIsValidState);
-            case 4:
-                return useRecoilValue(newDaoCheckedIsValidState);
-            default:
-                return false;
-        }
+  return (step: number) => {
+    switch (step) {
+      case 0:
+        return useIsValidNameValue();
+      case 1:
+        return useIsValidVotingValue();
+      case 2:
+        return useIsValidTokenValue();
+      case 3:
+        return useIsValidAbcValue();
+      case 4:
+        return useIsValidIsCheckedValue();
+      default:
+        return false;
     }
+  };
 }

@@ -1,10 +1,8 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
 import TermsModal from "commons-ui/src/components/TermsModal";
-import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { newDaoAbcState, newDaoCheckedState, newDaoNameState, newDaoTokenState, newDaoTokenSupplyState, newDaoVotingState } from "../../recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
+import { useNameAtom, useTokenSettingsValue, useInitialTotalSupplyValue, useVotingSettingsValue, useAbcSettingsValue, useDaoInfoCheckedAtom, useLegalsCheckedAtom} from "../../store";
 
 export enum StepType {
     ORGANIZATION_SETTINGS,
@@ -18,16 +16,14 @@ interface SummaryProps {
 }
 
 export default function Summary({ steps }: SummaryProps) {
-    const daoName = useRecoilValue(newDaoNameState);
-    const votingSettings = useRecoilValue(newDaoVotingState);
-    const tokenSettings = useRecoilValue(newDaoTokenState);
-    const initialTotalSupply = useRecoilValue(newDaoTokenSupplyState);
-    const abcConfig = useRecoilValue(newDaoAbcState);
-    const setNewDaoChecksGlobal = useSetRecoilState(newDaoCheckedState);
-    const [newDaoChecks, setNewDaoChecks] = useState({
-        daoInfoChecked: false,
-        legalsChecked: false
-    });
+    const [daoName] = useNameAtom();
+    const tokenSettings = useTokenSettingsValue();
+    const initialTotalSupply = useInitialTotalSupplyValue();
+    const votingSettings = useVotingSettingsValue();
+    const abcSettings = useAbcSettingsValue();
+    const [daoInfoChecked, setDaoInfoChecked] = useDaoInfoCheckedAtom();
+    const [legalsChecked, setLegalsChecked] = useLegalsCheckedAtom();
+
 
     function getAccordionPanel(stepType: StepType): JSX.Element | undefined {
         var panelContent = undefined
@@ -35,7 +31,7 @@ export default function Summary({ steps }: SummaryProps) {
         if (stepType === StepType.ORGANIZATION_SETTINGS) {
             panelContent = (
                 <Text>
-                    Organization name: <Text as="b">{daoName.name}</Text>
+                    Organization name: <Text as="b">{daoName}</Text>
                 </Text>
             )
 
@@ -57,13 +53,13 @@ export default function Summary({ steps }: SummaryProps) {
             panelContent = (
                 <>
                     <Text>
-                        Token name: <Text as="b">{tokenSettings.tokenName}</Text>
+                        Token name: <Text as="b">{tokenSettings.name}</Text>
                     </Text>
                     <Text>
-                        Token symbol: <Text as="b">{tokenSettings.tokenSymbol}</Text>
+                        Token symbol: <Text as="b">{tokenSettings.symbol}</Text>
                     </Text>
                     <Text>
-                        Initial token supply: <Text as="b">{initialTotalSupply} {tokenSettings.tokenSymbol}</Text>
+                        Initial token supply: <Text as="b">{initialTotalSupply} {tokenSettings.symbol}</Text>
                     </Text>
                     <Table variant="simple" mt="20px" backgroundColor="brand.200" borderRadius="15px">
                         <Thead>
@@ -73,7 +69,7 @@ export default function Summary({ steps }: SummaryProps) {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {tokenSettings.tokenHolders?.map((holder, index) => (
+                            {tokenSettings.holders?.map((holder, index) => (
                                 <Tr key={index}>
                                     <Td>{holder[0] || "-"}</Td>
                                     <Td>{holder[1] !== null ? holder[1] : "-"}</Td>
@@ -87,19 +83,19 @@ export default function Summary({ steps }: SummaryProps) {
             panelContent = (
                 <>
                     <Text>
-                        Reserve ratio: <Text as="b">{abcConfig.reserveRatio}%</Text>
+                        Reserve ratio: <Text as="b">{abcSettings.reserveRatio}%</Text>
                     </Text>
                     <Text>
-                        Colateral token: <Text as="b">{getCollateralTokenInfo(abcConfig.collateralToken)?.tokenSymbol}</Text>
+                        Colateral token: <Text as="b">{getCollateralTokenInfo(abcSettings.collateralToken)?.tokenSymbol}</Text>
                     </Text>
                     <Text>
-                        Initial reserve token: <Text as="b">{abcConfig.reserveInitialBalance} {getCollateralTokenInfo(abcConfig.collateralToken)?.tokenSymbol}</Text>
+                        Initial reserve token: <Text as="b">{abcSettings.reserveInitialBalance} {getCollateralTokenInfo(abcSettings.collateralToken)?.tokenSymbol}</Text>
                     </Text>
                     <Text>
-                        Entry tribute: <Text as="b">{abcConfig.entryTribute}%</Text>
+                        Entry tribute: <Text as="b">{abcSettings.entryTribute}%</Text>
                     </Text>
                     <Text>
-                        Exit tribute: <Text as="b">{abcConfig.exitTribute}%</Text>
+                        Exit tribute: <Text as="b">{abcSettings.exitTribute}%</Text>
                     </Text>
                 </>
             )
@@ -148,13 +144,6 @@ export default function Summary({ steps }: SummaryProps) {
         )
     }
 
-    useEffect(() => {
-        setNewDaoChecksGlobal({
-            daoInfoChecked: newDaoChecks.daoInfoChecked,
-            legalsChecked: newDaoChecks.legalsChecked
-        })
-    }, [newDaoChecks])
-
     return (
         <Box pt="75px">
             <VStack spacing={4}>
@@ -169,8 +158,8 @@ export default function Summary({ steps }: SummaryProps) {
                     <Text fontSize="16px">Review all the settings.</Text>
                     <Text fontSize="16px">If there are any mistakes, fix them before proceeding.</Text>
                 </VStack>
-                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({ ...newDaoChecks, daoInfoChecked: e.target.checked })}>I confirm that the above information is correct</Checkbox>
-                <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({ ...newDaoChecks, legalsChecked: e.target.checked })}>
+                <Checkbox colorScheme="brand" isChecked={daoInfoChecked} onChange={(e) => setDaoInfoChecked(e.target.checked)}>I confirm that the above information is correct</Checkbox>
+                <Checkbox colorScheme="brand" isChecked={legalsChecked} onChange={(e) => setLegalsChecked(e.target.checked)}>
                     <HStack spacing={1}>
                         <Text>I agree to the</Text>
                         <TermsModal />
