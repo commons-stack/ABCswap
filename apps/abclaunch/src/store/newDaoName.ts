@@ -1,32 +1,54 @@
 import { atom, useAtom } from "jotai";
 
-
 const nameAtom = atom('');
-const isRegisteredAtom = atom<boolean | undefined>(false);
+const daoExistsAtom = atom<boolean | undefined>(undefined);
+const appIsInstalledAtom = atom<boolean | undefined>(undefined);
 
 type DaoSettings = {
   name: string;
-  isRegistered: boolean | undefined;
+  daoExists: boolean | undefined;
+  appIsInstalled: boolean | undefined;
 };
 
 const daoSettingsAtom = atom(
   get => {
-    const name = get(nameAtom);
-    const isRegistered = get(isRegisteredAtom);
-    return { name, isRegistered };
+    return {
+      name: get(nameAtom),
+      daoExists: get(daoExistsAtom),
+      appIsInstalled: get(appIsInstalledAtom),
+    };
   },
   ( _get, set, newValue) => {
-    const { name, isRegistered } = newValue as DaoSettings;
+    const { name, daoExists, appIsInstalled } = newValue as DaoSettings;
     set(nameAtom, name);
-    set(isRegisteredAtom, isRegistered);
+    set(daoExistsAtom, daoExists);
+    set(appIsInstalledAtom, appIsInstalled);
   }
 );
 
-const isValidNameAtom = atom(
+const isValidNonRegisteredNameAtom = atom(
   get => {
     const name = get(nameAtom);
-    const isRegistered = get(isRegisteredAtom);
-    return name.length > 0 && isRegistered === false;
+    const daoExists = get(daoExistsAtom);
+    return name.length > 0 && daoExists === false;
+  }
+);
+
+const isValidRegisteredWithoutAbcNameAtom = atom(
+  get => {
+    const name = get(nameAtom);
+    const daoExists = get(daoExistsAtom);
+    const appIsInstalled = get(appIsInstalledAtom);
+    return name.length > 0 && daoExists == true && appIsInstalled === false;
+  }
+);
+
+const isValidRegisteredWithAbcNameAtom = atom(
+  get => {
+    const name = get(nameAtom);
+    const daoExists = get(daoExistsAtom);
+    const appIsInstalled = get(appIsInstalledAtom);
+    return name.length > 0 && daoExists == true && appIsInstalled == true;
   }
 );
 
@@ -41,16 +63,21 @@ export function useNameAtom() {
   return useAtom(nameAtom);
 }
 
-export function useIsRegisteredAtom() {
-  return useAtom(isRegisteredAtom);
+export function useDaoExistsAtom() {
+  return useAtom(daoExistsAtom);
+}
+
+export function useAppIsInstalledAtom() {
+  return useAtom(appIsInstalledAtom);
 }
 
 export function useDaoSettingsAtom() {
   return useAtom(daoSettingsAtom);
 }
 
-export function useIsValidNameValue() {
-  return useAtom(isValidNameAtom)[0];
+export function useIsValidNameValue(type: 'non-registered' | 'registered-without-abc' | 'registered-with-abc') {
+  const atom = type === 'non-registered' ? isValidNonRegisteredNameAtom : type === 'registered-without-abc' ? isValidRegisteredWithoutAbcNameAtom : isValidRegisteredWithAbcNameAtom;
+  return useAtom(atom)[0];
 }
 
 export function useDaoUrlValue() {

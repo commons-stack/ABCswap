@@ -33,7 +33,7 @@ interface NewDaoProps {
 export default function NewDao({ isInsideWizard }: NewDaoProps) {
 
     const navigate = useNavigate();
-    const isValid = useIsValid();
+    const isValid = useIsValid('new-dao');
     const txSteps = useLaunchSteps();
 
     const [newDaoIsCreated, setNewDaoIsCreated] = useDaoCreatedAtom();
@@ -41,7 +41,7 @@ export default function NewDao({ isInsideWizard }: NewDaoProps) {
     const { processTransactions } = useProcessTransactions()
 
     const steps = [
-        { title: 'Name your DAO', component: <OrganizationName title="Name your DAO" /> },
+        { title: 'Name your DAO', component: <OrganizationName title="Name your DAO" isNew /> },
         { title: 'Configure voting', component: <ConfigureVoting /> },
         { title: 'Configure token', component: <ConfigureToken /> },
         { title: 'Configure ABC', component: <ConfigureAbc abcHelper={ABCHelper} /> },

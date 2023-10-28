@@ -8,31 +8,30 @@ export default function DaoNameInput({
   daoName,
   debounceDelay = 500,
   setDaoName,
-  inverted = false,
+  isInvalid = false,
   requiredApp,
 }: {
   daoName: string;
   debounceDelay?: number;
-  setDaoName: (daoName: {name: string, isRegistered: boolean | undefined}) => void;
-  inverted?: boolean;
+  setDaoName: (daoName: {name: string, daoExists: boolean | undefined, appIsInstalled: boolean | undefined}) => void;
+  isInvalid?: boolean;
   requiredApp?: string;
 }) {
 
   // Remove all non-alphanumeric characters from the DAO name
   daoName = daoName.replaceAll(/[^a-z0-9]+/g, '');
 
-  // TODO: use useIsRegisteredDao instead of useIsRegisteredDaoWithApp when requiredApp is undefined
-  const { isRegistered: isDaoRegistered, isLoading } = useIsRegisteredDaoWithApp(daoName, requiredApp, debounceDelay);
+  const { isLoading, daoExists, appIsInstalled } = useIsRegisteredDaoWithApp(daoName, requiredApp, debounceDelay);
 
   function handleNameChange(name: string) {
-    setDaoName({name, isRegistered: undefined});
+    setDaoName({name, daoExists: undefined, appIsInstalled: undefined});
   }
 
   useEffect(() => {
-    setDaoName({ name: daoName, isRegistered: isDaoRegistered });
-  }, [isDaoRegistered, daoName, setDaoName]);
+    setDaoName({ name: daoName, daoExists, appIsInstalled });
+  }, [daoName, daoExists, appIsInstalled, setDaoName]);
 
-  const isInvalid = !!daoName && !isLoading && (!inverted && !isDaoRegistered || inverted && isDaoRegistered);
+  const _isInvalid = !!daoName && !isLoading && isInvalid;
 
   return (
     <InputGroup mt="0" w="408px">
@@ -42,11 +41,11 @@ export default function DaoNameInput({
         autoFocus={true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNameChange(e.target.value)}
         errorBorderColor='red.500'
-        isInvalid={isInvalid}
+        isInvalid={_isInvalid}
         borderRadius="8px"
       />
       <InputRightElement>
-        <FetchingInputIcon isLoading={isLoading} isInvalid={daoName ? isInvalid : undefined} />
+        <FetchingInputIcon isLoading={isLoading} isInvalid={daoName ? _isInvalid : undefined} />
       </InputRightElement>
     </InputGroup>
   )
