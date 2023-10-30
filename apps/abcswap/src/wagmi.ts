@@ -7,9 +7,9 @@ import { publicProvider } from "wagmi/providers/public";
 
 export const { chains, publicClient } = configureChains(
   [optimism],
-  import.meta.env.ALCHEMY_ID
+  import.meta.env.VITE_ALCHEMY_ID
     ? [
-        alchemyProvider({ apiKey: import.meta.env.ALCHEMY_ID }),
+        alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
         publicProvider(),
       ]
     : [publicProvider()],
