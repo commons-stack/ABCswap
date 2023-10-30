@@ -11,8 +11,15 @@ export default function useInstalledApp(kernel?: `0x${string}`, appId?: string) 
     const [isLoading, setIsLoading] = useState(false);
     
     useEffect(() => {
+        let isCancelled = false;
         (async () => {
             try {
+                if (!kernel || !appId) {
+                    setAddress(undefined);
+                    setIsLoading(false);
+                    setError(null);
+                    return;
+                }
                 setIsLoading(true);
                 const publicClient = getPublicClient();
                 const logs = await publicClient.getLogs({
@@ -21,6 +28,7 @@ export default function useInstalledApp(kernel?: `0x${string}`, appId?: string) 
                     fromBlock: FROM_BLOCK,
                 });
                 const app = appId && logs.find(log => log.args.appId === namehash(appId));
+                if (isCancelled) return;
                 setAddress(app ? app.args.proxy : undefined);
             } catch (e) {
                 setError(e as Error);
@@ -28,6 +36,9 @@ export default function useInstalledApp(kernel?: `0x${string}`, appId?: string) 
                 setIsLoading(false);
             }
         })();
+        return () => {
+            isCancelled = true;
+        };
     }, [kernel, appId]);
 
     return { address, error, isLoading };
