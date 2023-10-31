@@ -6,8 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance, useToken } from "wagmi";
 
-import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
-import TermsModal from "commons-ui/src/components/TermsModal";
 import { TokenSelector } from "commons-ui/src/components/TokenSelector";
 import { useProcessTransactions } from "transactions-modal";
 import { useDao } from "dao-utils";
@@ -18,16 +16,20 @@ import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
 import { useReserveToken } from '../hooks/useReserveToken';
 
+import LegalModal from "commons-ui/src/components/LegalModal";
+import privacyMarkdown from "../../public/PrivacyPolicy.md"
+import termsMarkdown from "../../public/ToS.md";
+
 export default function SimpleConvert() {
 
     const { dao } = useParams();
     const navigate = useNavigate();
     const { tokenAddress: abcTokenAddress, appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
-    const { address: reserveTokenAddress} = useReserveToken(bondingCurveAddress);
-    const { data: abcTokenData } = useToken({address: abcTokenAddress})
+    const { address: reserveTokenAddress } = useReserveToken(bondingCurveAddress);
+    const { data: abcTokenData } = useToken({ address: abcTokenAddress })
     const abcTokenSymbol = abcTokenData?.symbol;
     const abcTokenDecimals = abcTokenData?.decimals;
-    const { data: reserveTokenData } = useToken({address: reserveTokenAddress})
+    const { data: reserveTokenData } = useToken({ address: reserveTokenAddress })
     const reserveTokenSymbol = reserveTokenData?.symbol;
     const reserveTokenDecimals = reserveTokenData?.decimals;
 
@@ -141,7 +143,7 @@ export default function SimpleConvert() {
     }
 
     function formatDisplayNumber(number: string | undefined) {
-        return number?formatWithMaxDecimals(number, 4):'';
+        return number ? formatWithMaxDecimals(number, 4) : '';
     }
 
     return (
@@ -230,9 +232,9 @@ export default function SimpleConvert() {
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
                         <HStack spacing={1}>
                             <Text>I agree to the</Text>
-                            <TermsModal />
+                            <LegalModal legalMarkdown={termsMarkdown} linkText='Terms of Service'/>
                             <Text>and</Text>
-                            <PrivacyPolicyModal />
+                            <LegalModal legalMarkdown={privacyMarkdown} linkText='Privacy Policy'/>
                         </HStack>
                     </Checkbox>
                 </HStack>

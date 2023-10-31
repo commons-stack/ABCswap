@@ -10,17 +10,18 @@ import { TransactionProvider } from "transactions-modal";
 import { chains, wagmiConfig } from "./wagmi.ts";
 import Home from "./pages/Home.tsx";
 import Swap from "./pages/Swap.tsx";
-import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
-import TermsOfService from "./pages/TermsOfService.tsx";
+import LegalPage from "./pages/LegalPage.tsx";
 
+import privacyPolicyMarkdown from "../public/PrivacyPolicy.md";
+import tosMarkdown from "../public/ToS.md";
 
 const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Home />} />
       <Route path="/:dao" element={<Swap />} errorElement={<div>Something went wrong</div>} />
-      <Route path="/privacy" element={<PrivacyPolicy />} />
-      <Route path="/terms" element={<TermsOfService />} />
+      <Route path="/privacy" element={<LegalPage legalMarkdown={privacyPolicyMarkdown} />} />
+      <Route path="/terms" element={<LegalPage  legalMarkdown={tosMarkdown} />} />
     </>
   )
 );

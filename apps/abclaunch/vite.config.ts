@@ -6,5 +6,15 @@ export default defineConfig({
   server: {
     port: 3001,
   },
-  plugins: [react()],
+  plugins: [react(), 
+    {
+      name: "markdown-loader",
+      transform(code, id) {
+        if (id.slice(-3) === ".md") {
+          // For .md files, get the raw content
+          return `export default ${JSON.stringify(code)};`;
+        }
+        return;
+      }
+    }],
 });
