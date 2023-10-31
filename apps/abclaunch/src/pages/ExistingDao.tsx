@@ -19,7 +19,7 @@ function ABCHelper() {
                 <Text>This is how the Initial Reserve Balance will be transferred:</Text>
                 <OrderedList>
                     <ListItem>In order to submit this vote, you must approve that the DAO can remove the amount specified in the Initial Reserve Balance from your wallet. These funds will not be moved unless the vote passes.</ListItem>
-                    <ListItem>When the DAO vote passes, the DAO will retrieve this amount from your wallet to sens to the Reserve Pool.</ListItem>
+                    <ListItem>When the DAO vote passes, the DAO will retrieve this amount from your wallet to send to the Reserve Pool.</ListItem>
                     <ListItem>If the amount specified is no longer in your wallet, then the execution of the vote will fail and the ABC will not launch.</ListItem>
                 </OrderedList>
                 <Text mt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>

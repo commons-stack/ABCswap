@@ -48,7 +48,7 @@ export default function Home() {
                 </VStack>
             </HStack>
             <VStack spacing={4} mt="100px" mb="100px" textAlign="center" >
-                <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Which token do you want to swap?</Text>
+                <Text color="brand.900" fontSize="40px" fontFamily="VictorSerifTrial">Enter DAO name to go to their swap page.</Text>
                 <DaoNameInput daoName={daoName} setDaoName={({name}) => setDaoName(name)} requiredApp='augmented-bonding-curve.open.aragonpm.eth' isInvalid={!!errorMessage} />
                 <HStack spacing={4} h="32px">
                     <HStack visibility={!errorMessage ? "collapse" : undefined}>
