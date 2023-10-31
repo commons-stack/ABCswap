@@ -33,9 +33,9 @@ interface AddAbcProps {
     isInsideWizard: boolean;
 }
 
-export default function AddABC({isInsideWizard}: AddAbcProps){
+export default function ExistingDao({isInsideWizard}: AddAbcProps){
     const navigate = useNavigate();
-    const isValid = useIsValid();
+    const isValid = useIsValid('existing-dao');
     const txSteps = useLaunchSteps();
 
     const [newDaoIsCreated, setNewDaoIsCreated] = useDaoCreatedAtom();
@@ -59,7 +59,7 @@ export default function AddABC({isInsideWizard}: AddAbcProps){
         title={['Launch an ABC', 'on an existing DAO']}
         subtitle={['Configure the ABC and submit a', 'DAO vote to launch it!']}
             stepsInfo={stepsInfo}
-            onButtonClick={() => navigate('/add-abc/wizard')}
+            onButtonClick={() => navigate('/existing-dao/wizard')}
         />
     }
 

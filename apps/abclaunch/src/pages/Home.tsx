@@ -50,7 +50,7 @@ export default function Launchpad() {
                       "I have a DAO and want to",
                       "attach an ABC to it." 
                     ]}
-                    onButtonClick={() => navigate('/add-abc')}
+                    onButtonClick={() => navigate('/existing-dao')}
                     buttonText="Launch on an existing DAO"
                 />
             </HStack>

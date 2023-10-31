@@ -3,7 +3,8 @@ import { readContract } from '@wagmi/core';
 import { useAbcInfo } from "./useAbcInfo";
 import { useCollateral } from "./useCollateral";
 import { parseAbi } from "viem";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useAsyncEffect from "use-async-effect";
 
 function applyFee(amount: bigint | undefined, fee: bigint): bigint | undefined {
     if (amount === undefined) {
@@ -34,7 +35,7 @@ export function useBondingCurvePrice(amount: bigint | undefined, forwards = true
         ])
     };
 
-    useEffect(() => {
+    useAsyncEffect(async (isMounted) => {
         if (
             buyFeePct !== undefined &&
             sellFeePct !== undefined &&
@@ -48,25 +49,25 @@ export function useBondingCurvePrice(amount: bigint | undefined, forwards = true
             balance !== undefined &&
             formulaAddr !== undefined
         ) {
-            (async () => {
-                if (forwards) {
-                    const purchaseReturn = await readContract({
-                        ...formulaContract,
-                        address: formulaAddr,
-                        functionName: 'calculatePurchaseReturn',
-                        args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, applyFee(amount, buyFeePct)!]
-                    })
-                    setPrice(purchaseReturn);
-                } else {
-                    const saleReturn = await readContract({
-                        ...formulaContract,
-                        address: formulaAddr,
-                        functionName: 'calculateSaleReturn',
-                        args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, amount || 0n]
-                    })
-                    setPrice(applyFee(saleReturn, sellFeePct));
-                }
-            })();
+            if (forwards) {
+                const purchaseReturn = await readContract({
+                    ...formulaContract,
+                    address: formulaAddr,
+                    functionName: 'calculatePurchaseReturn',
+                    args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, applyFee(amount, buyFeePct)!]
+                })
+                if (!isMounted()) return;
+                setPrice(purchaseReturn);
+            } else {
+                const saleReturn = await readContract({
+                    ...formulaContract,
+                    address: formulaAddr,
+                    functionName: 'calculateSaleReturn',
+                    args: [totalSupply + virtualSupply, balance + virtualBalance, reserveRatio, amount || 0n]
+                })
+                if (!isMounted()) return;
+                setPrice(applyFee(saleReturn, sellFeePct));
+            }
         }
     }, [buyFeePct, sellFeePct, tokenAddr, reserveAddr, formulaAddr, reserveRatio, virtualBalance, virtualSupply, totalSupply, balance, amount, forwards]);
 
