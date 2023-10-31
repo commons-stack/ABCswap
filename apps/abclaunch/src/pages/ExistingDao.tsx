@@ -67,7 +67,7 @@ export default function ExistingDao({isInsideWizard}: AddAbcProps){
         <DaoStepper
             steps={steps}
             isValid={isValid}
-            onComplete={() => processTransactions("Submit for vote", undefined, txSteps, true, undefined, () => {
+            onComplete={() => processTransactions("Create vote on your DAO.", undefined, txSteps, true, undefined, () => {
                 setNewDaoIsCreated(true)
             })}
             blockingComponent={newDaoIsCreated ? <DaoLaunched /> : undefined}
