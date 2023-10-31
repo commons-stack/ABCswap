@@ -5,7 +5,7 @@ import { collateralTokenList, getCollateralTokenInfo } from "../../utils/token-i
 import { BalanceInput } from "dao-utils";
 import { Input } from 'commons-ui/src/components/Input';
 import ABCGraph from "../charts/ABCGraph";
-import { useCollateralTokenAtom, useEntryTributeAtom, useReserveInitialBalanceAtom, useReserveRatioAtom } from "../../store";
+import { useCollateralTokenAtom, useEntryTributeAtom, useExitTributeAtom, useReserveInitialBalanceAtom, useReserveRatioAtom } from "../../store";
 
 interface ConfigureABCProps {
     abcHelper: () => JSX.Element;
@@ -18,7 +18,7 @@ export default function ConfigureAbc({abcHelper}: ConfigureABCProps) {
     const [collateralToken, setCollateralToken] = useCollateralTokenAtom();
 
     const [entryTribute, setEntryTribute] = useEntryTributeAtom();
-    const [exitTribute, setExitTribute] = useEntryTributeAtom();
+    const [exitTribute, setExitTribute] = useExitTributeAtom();
 
 
     const enoughBalance = reserveInitialBalanceIsEnough !== false;
