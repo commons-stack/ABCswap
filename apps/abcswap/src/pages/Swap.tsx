@@ -6,8 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { formatUnits, parseUnits } from "viem";
 import { useAccount, useBalance, useToken } from "wagmi";
 
-import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
-import TermsModal from "commons-ui/src/components/TermsModal";
 import { TokenSelector } from "commons-ui/src/components/TokenSelector";
 import { useProcessTransactions } from "transactions-modal";
 import { useDao } from "dao-utils";
@@ -17,6 +15,9 @@ import { useAbcInfo } from "../hooks/useAbcInfo";
 import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
 import { useReserveToken } from '../hooks/useReserveToken';
+
+import MarkdownModal from "commons-ui/src/components/MarkdownModal";
+import { TERMS_OF_SERVICE, PRIVACY_POLICY } from '../constants';
 
 export default function SimpleConvert() {
 
@@ -141,7 +142,7 @@ export default function SimpleConvert() {
     }
 
     function formatDisplayNumber(number: string | undefined) {
-        return number?formatWithMaxDecimals(number, 4):'';
+        return number ? formatWithMaxDecimals(number, 4) : '';
     }
 
     return (
@@ -230,9 +231,9 @@ export default function SimpleConvert() {
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
                         <HStack spacing={1}>
                             <Text>I agree to the</Text>
-                            <TermsModal />
+                            <MarkdownModal src={TERMS_OF_SERVICE} linkText='Terms of Service'/>
                             <Text>and</Text>
-                            <PrivacyPolicyModal />
+                            <MarkdownModal src={PRIVACY_POLICY} linkText='Privacy Policy'/>
                         </HStack>
                     </Checkbox>
                 </HStack>

@@ -8,5 +8,17 @@ export default defineConfig({
   server: {
     port: 3001,
   },
-  plugins: [react({ babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] } })],
+  plugins: [
+    react({ babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] } }),
+    {
+      name: "markdown-loader",
+      transform(code, id) {
+        if (id.slice(-3) === ".md") {
+          // For .md files, get the raw content
+          return `export default ${JSON.stringify(code)};`;
+        }
+        return;
+      } 
+    }
+  ],
 });

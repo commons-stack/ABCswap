@@ -1,8 +1,9 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import PrivacyPolicyModal from "commons-ui/src/components/PrivacyPolicyModal";
-import TermsModal from "commons-ui/src/components/TermsModal";
+import MarkdownModal from "commons-ui/src/components/MarkdownModal";
 import { getCollateralTokenInfo } from "../../utils/token-info";
 import { useNameAtom, useTokenSettingsValue, useInitialTotalSupplyValue, useVotingSettingsValue, useAbcSettingsValue, useDaoInfoCheckedAtom, useLegalsCheckedAtom} from "../../store";
+
+import { TERMS_OF_SERVICE, PRIVACY_POLICY } from "../../constants";
 
 export enum StepType {
     ORGANIZATION_SETTINGS,
@@ -162,9 +163,9 @@ export default function Summary({ steps }: SummaryProps) {
                 <Checkbox colorScheme="brand" isChecked={legalsChecked} onChange={(e) => setLegalsChecked(e.target.checked)}>
                     <HStack spacing={1}>
                         <Text>I agree to the</Text>
-                        <TermsModal />
+                        <MarkdownModal src={TERMS_OF_SERVICE} linkText='Terms of Service' />
                         <Text>and</Text>
-                        <PrivacyPolicyModal />
+                        <MarkdownModal src={PRIVACY_POLICY} linkText='Privacy Policy' />
                     </HStack>
                 </Checkbox>
             </VStack>
