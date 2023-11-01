@@ -36,7 +36,7 @@ export default function DaoNameInput({
   return (
     <InputGroup mt="0" w="408px">
       <Input
-        placeholder="Enter the DAO's name or contract address"
+        placeholder="Enter DAO name"
         value={daoName}
         autoFocus={true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNameChange(e.target.value)}
