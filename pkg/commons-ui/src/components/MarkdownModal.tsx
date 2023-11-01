@@ -9,14 +9,14 @@ import {
     VStack,
     useDisclosure,
 } from '@chakra-ui/react';
-import LegalInfo from './LegalInfo';
+import MarkdownText from './MarkdownText';
 
-interface LegalModalProps {
+interface MarkdownModalProps {
     linkText: string;
-    legalMarkdown: string;
+    src: string;
 }
 
-export default function LegalModal({ legalMarkdown, linkText }: LegalModalProps) {
+export default function MarkdownModal({ src, linkText }: MarkdownModalProps) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -29,7 +29,7 @@ export default function LegalModal({ legalMarkdown, linkText }: LegalModalProps)
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack m="5%" color="brand.900" spacing={5} alignItems="flex-start">
-                            <LegalInfo legalMarkdown={legalMarkdown} />
+                            <MarkdownText src={src} />
                         </VStack>
                     </ModalBody>
                 </ModalContent>

@@ -1,6 +1,6 @@
 import { List, UnorderedList, OrderedList, ListItem, ListProps, ListItemProps, TextProps, Text } from '@chakra-ui/react';
 
-interface LegalThemeProps extends TextProps {
+interface MarkdownThemeProps extends TextProps {
     children?: React.ReactNode;
 }
 
@@ -13,8 +13,8 @@ interface LegalListItemProps extends ListItemProps {
 
 }
 
-const legalTheme = {
-    h1: (props: LegalThemeProps) => {
+const MarkdownTheme = {
+    h1: (props: MarkdownThemeProps) => {
         const { children, ...rest } = props;
         return (
             <Text as="h1" fontSize="72px" fontFamily="VictorSerifTrial" {...rest}>
@@ -22,7 +22,7 @@ const legalTheme = {
             </Text>
         );
     },
-    h2: (props: LegalThemeProps) => {
+    h2: (props: MarkdownThemeProps) => {
         const { children, ...rest } = props;
         return (
             <Text as="h2" fontSize="36px" fontFamily="VictorSerifTrial" {...rest}>
@@ -30,7 +30,7 @@ const legalTheme = {
             </Text>
         );
     },
-    h3: (props: LegalThemeProps) => {
+    h3: (props: MarkdownThemeProps) => {
         const { children, ...rest } = props;
         return (
             <Text as="h3" fontSize="24px" fontFamily="VictorSerifTrial" {...rest}>
@@ -68,4 +68,4 @@ const legalTheme = {
     }
 }
 
-export default legalTheme;
+export default MarkdownTheme;

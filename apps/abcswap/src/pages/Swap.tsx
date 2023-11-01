@@ -16,9 +16,8 @@ import { useBondingCurvePrice } from "../hooks/useBondingCurvePrice";
 import useSwapSteps from "../hooks/useSwapSteps";
 import { useReserveToken } from '../hooks/useReserveToken';
 
-import LegalModal from "commons-ui/src/components/LegalModal";
-import privacyMarkdown from "../../public/PrivacyPolicy.md"
-import termsMarkdown from "../../public/ToS.md";
+import MarkdownModal from "commons-ui/src/components/MarkdownModal";
+import { TERMS_OF_SERVICE, PRIVACY_POLICY } from '../constants';
 
 export default function SimpleConvert() {
 
@@ -232,9 +231,9 @@ export default function SimpleConvert() {
                     <Checkbox colorScheme="brand" isChecked={terms} onChange={(e) => setTerms(e.target.checked)}>
                         <HStack spacing={1}>
                             <Text>I agree to the</Text>
-                            <LegalModal legalMarkdown={termsMarkdown} linkText='Terms of Service'/>
+                            <MarkdownModal src={TERMS_OF_SERVICE} linkText='Terms of Service'/>
                             <Text>and</Text>
-                            <LegalModal legalMarkdown={privacyMarkdown} linkText='Privacy Policy'/>
+                            <MarkdownModal src={PRIVACY_POLICY} linkText='Privacy Policy'/>
                         </HStack>
                     </Checkbox>
                 </HStack>

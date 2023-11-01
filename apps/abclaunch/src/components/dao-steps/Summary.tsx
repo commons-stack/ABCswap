@@ -1,12 +1,11 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import LegalModal from "commons-ui/src/components/LegalModal";
+import MarkdownModal from "commons-ui/src/components/MarkdownModal";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { newDaoAbcState, newDaoCheckedState, newDaoNameState, newDaoTokenState, newDaoTokenSupplyState, newDaoVotingState } from "../../recoil";
 import { getCollateralTokenInfo } from "../../utils/token-info";
 
-import privacyMarkdown from "../../../public/PrivacyPolicy.md";
-import termsMarkdown from "../../../public/ToS.md";
+import { TERMS_OF_SERVICE, PRIVACY_POLICY } from "../../constants";
 
 export default function Summary() {
     const daoName = useRecoilValue(newDaoNameState);
@@ -134,9 +133,9 @@ export default function Summary() {
                 <Checkbox colorScheme="brand" onChange={(e) => setNewDaoChecks({ ...newDaoChecks, legalsChecked: e.target.checked })}>
                     <HStack spacing={1}>
                         <Text>I agree to the</Text>
-                        <LegalModal legalMarkdown={termsMarkdown} linkText='Terms of Service' />
+                        <MarkdownModal src={TERMS_OF_SERVICE} linkText='Terms of Service' />
                         <Text>and</Text>
-                        <LegalModal legalMarkdown={privacyMarkdown} linkText='Privacy Policy' />
+                        <MarkdownModal src={PRIVACY_POLICY} linkText='Privacy Policy' />
                     </HStack>
                 </Checkbox>
             </VStack>

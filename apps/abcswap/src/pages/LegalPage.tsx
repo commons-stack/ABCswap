@@ -1,15 +1,15 @@
 import { VStack } from "@chakra-ui/react";
-import LegalInfo from "../../../../pkg/commons-ui/src/components/LegalInfo"
+import MarkdownText from "commons-ui/src/components/MarkdownText"
 
 interface LegalPageProps {
-    legalMarkdown: string;
+    src: string;
 }
 
-export default function LegalPage({ legalMarkdown }: LegalPageProps) {
+export default function LegalPage({ src }: LegalPageProps) {
 
     return (
         <VStack px="5%" pb="5%" color="brand.900" spacing={5} alignItems="flex-start" backgroundColor="brand.100">
-            <LegalInfo legalMarkdown={legalMarkdown} />
+            <MarkdownText src={src} />
         </VStack>
     )
 }
