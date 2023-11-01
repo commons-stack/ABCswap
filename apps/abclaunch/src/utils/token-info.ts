@@ -8,6 +8,8 @@ export const collateralTokenList = [
     new TokenInfo("DAI", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", "/token-icons/dai-icon.svg", 18),
     new TokenInfo("USDC", "USDC", "0x7f5c764cbc14f9669b88837ca1490cca17c31607", "/token-icons/usdc-icon.svg", 6),
     new TokenInfo("GIV", "GIV", "0x528cdc92eab044e1e39fe43b9514bfdab4412b98", "/token-icons/giv-icon.png", 18),
+    new TokenInfo("Wrapped Ether", "WETH", "0x4200000000000000000000000000000000000006", "/token-icons/weth-icon.png", 18),
+    new TokenInfo("Rocket Pool ETH", "rETH", "0x9bcef72be871e61ed4fbbc7630889bee758eb81d", "/token-icons/reth-icon.webp", 18),
 ];
 
 export function getCollateralTokenInfo(tokenAddress?: string): TokenInfo | undefined {
