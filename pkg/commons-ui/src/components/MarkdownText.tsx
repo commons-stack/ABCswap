@@ -1,5 +1,4 @@
 import ReactMarkdown from "react-markdown"
-import ChakraUIRenderer from "chakra-ui-markdown-renderer"
 import MarkdownTheme from "../theme/markdown"
 import { useEffect, useState } from "react";
 
@@ -40,7 +39,7 @@ export default function MarkdownText({ src }: MarkdownTextProps) {
     return (
         <ReactMarkdown
             children={markdown}
-            components={ChakraUIRenderer(MarkdownTheme as any)}
+            components={MarkdownTheme}
             skipHtml
         />
     )
