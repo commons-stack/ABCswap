@@ -19,6 +19,7 @@ export default function Header({ variant }: HeaderProps) {
                 <HStack justifyContent="space-between">
                     <Text fontSize="xl"></Text> {/*Left blank to keep content in place till we add logo or text again*/}
                     <HStack spacing="32px" justifyContent="space-between">
+                        <Link href={'/'} fontSize="16px">Home</Link>
                         <Link
                             href={swapOrLaunchLink}
                             fontSize="16px"
