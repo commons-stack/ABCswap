@@ -9,7 +9,7 @@ type LayoutProps = {
 
 export default function Layout({ children, variant }: LayoutProps) {
     return (
-        <Box width="100%" height="100vh" bgColor="brand.100">
+        <Box width="100%" height="100vh" overflowX="hidden" overflowY="scroll" bgColor="brand.100">
             <Header variant={variant} />
                 {children}
             <Footer />
