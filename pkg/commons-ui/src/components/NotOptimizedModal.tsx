@@ -37,7 +37,7 @@ export default function NotOptimizedModal() {
                     <ModalBody textAlign="center" m="2.5%">
                         <VStack>
                             <Text>This MVP is not yet optimized for mobile. It is best experienced on a desktop.</Text>
-                            <Button onClick={onClose}>I understand</Button>
+                            <Button onClick={onClose}>Ok</Button>
                         </VStack>
                     </ModalBody>
                 </ModalContent>
