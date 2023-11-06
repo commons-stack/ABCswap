@@ -3,6 +3,7 @@ import { Button, Divider, HStack, Image, Stack, Text, VStack } from '@chakra-ui/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DaoNameInput, useIsRegisteredDaoWithApp } from 'dao-utils';
+import NotOptimizedModal from '../../../../pkg/commons-ui/src/components/NotOptimizedModal';
 
 export default function Home() {
 
@@ -20,6 +21,7 @@ export default function Home() {
 
     return (
         <VStack bg="brand.100" pb="100px0" textAlign="center">
+            <NotOptimizedModal />
             <VStack spacing={0}>
                 <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to ABC Swap</Text>
                 <Text color="brand.900" fontSize="24px" pt="32px">Find and swap ABC tokens.</Text>

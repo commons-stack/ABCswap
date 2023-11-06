@@ -1,11 +1,13 @@
 import { Divider, HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ChooseOption from '../components/ChooseOption';
+import NotOptimizedModal from '../../../../pkg/commons-ui/src/components/NotOptimizedModal';
 
 export default function Launchpad() {
     const navigate = useNavigate();
     return (
         <VStack bg="brand.100" pb="100px">
+            <NotOptimizedModal />
             <VStack spacing={0}>
                 <Text color="brand.900" fontSize="72px" fontFamily="VictorSerifTrial">Welcome to ABC Launch</Text>
                 <Text color="brand.900" fontSize="24px" pt="32px">Build a regenerative economy with an</Text>
@@ -35,20 +37,20 @@ export default function Launchpad() {
                 </HStack>
             </HStack>
             <HStack spacing={16} pt="46px">
-                <ChooseOption 
+                <ChooseOption
                     title="New DAO"
                     description={[
-                      "I want to create a new",
-                      "DAO and launch an ABC." 
+                        "I want to create a new",
+                        "DAO and launch an ABC."
                     ]}
                     onButtonClick={() => navigate('/new-dao')}
                     buttonText="Launch on a new DAO"
                 />
-                <ChooseOption 
+                <ChooseOption
                     title="Existing DAO"
                     description={[
-                      "I have a DAO and want to",
-                      "attach an ABC to it." 
+                        "I have a DAO and want to",
+                        "attach an ABC to it."
                     ]}
                     onButtonClick={() => navigate('/existing-dao')}
                     buttonText="Launch on an existing DAO"
