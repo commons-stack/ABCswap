@@ -21,7 +21,6 @@ export default function NotOptimizedModal() {
 
     useEffect(() => {
         if (isMobile) {
-            console.log("hi")
             onOpen();
         }
     }, [isMobile, onOpen])
