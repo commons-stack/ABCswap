@@ -21,7 +21,7 @@ function StepInfo({ image, children }: { image: string, children: React.ReactNod
     return (
         <VStack spacing={0}>
             <Image src={image} pb="16px" />
-            <Text fontSize="24px" color="brand.900" textAlign="center">{children}</Text>
+            {children}
         </VStack>
     )
 }
@@ -60,7 +60,7 @@ export default function WizardHome({ title, subtitle, stepsInfo, onButtonClick }
     function getStepsInfo(): JSX.Element[] {
         return stepsInfo.map((step, index) => {
             return <StepInfo key={index} image={step.image}>{step.description.map(
-                (text, index) => <Text key={index} color="brand.900">{text}</Text>
+                (text, index) => <Text key={index} fontSize="24px" color="brand.900" textAlign="center">{text}</Text>
             )}</StepInfo>
         })
     }
