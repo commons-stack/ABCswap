@@ -13,7 +13,7 @@ export default function DaoLaunched() {
 
     return (
         <Box pt="75px" pb="75px">
-            <VStack spacing={0} className="abcs-newdao-step-content">
+            <VStack spacing={0}>
                 <Text fontFamily="VictorSerifTrial" fontSize="72px" color="brand.900">Congratulations!</Text>
                 <Text mt="32px" fontSize="24px" color="brand.900" >Your DAO and ABC were created.</Text>
                 <HStack mt="28px" spacing={5}>

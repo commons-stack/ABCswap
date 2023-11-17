@@ -1,16 +1,10 @@
 import { OrderedList, Text, VStack, ListItem } from '@chakra-ui/layout';
-import { useNavigate } from 'react-router-dom';
 import ConfigureAbc from '../components/dao-steps/ConfigureAbc';
 import OrganizationName from '../components/dao-steps/OrganizationName';
 import Summary from '../components/dao-steps/Summary';
-import WizardHome from '../components/WizardHome';
-import DaoStepper from '../components/DaoStepper';
-import useIsValid from '../hooks/useIsValid';
-import { useProcessTransactions } from 'transactions-modal';
-import useLaunchSteps from '../hooks/useLaunchSteps';
-import DaoLaunched from '../components/dao-steps/DaoLaunched';
 import { StepType } from '../components/dao-steps/Summary';
-import { useDaoCreatedAtom } from '../store';
+import { Provider } from 'jotai';
+import Page from '../components/Page';
 
 function ABCHelper() {
     return (
@@ -24,23 +18,11 @@ function ABCHelper() {
                 </OrderedList>
                 <Text mt="16px">The Reserve Ratio is fixed for the life of the ABC and cannot be changed.</Text>
             </VStack>
-            
         </>
     )
 }
 
-interface AddAbcProps {
-    isInsideWizard: boolean;
-}
-
-export default function ExistingDao({isInsideWizard}: AddAbcProps){
-    const navigate = useNavigate();
-    const isValid = useIsValid('existing-dao');
-    const txSteps = useLaunchSteps();
-
-    const [newDaoIsCreated, setNewDaoIsCreated] = useDaoCreatedAtom();
-
-    const { processTransactions } = useProcessTransactions()
+export default function ExistingDao({ store }: { store: any }) {
 
     const steps = [
         { title: 'Select DAO', component: <OrganizationName title="Select your DAO" /> },
@@ -54,23 +36,22 @@ export default function ExistingDao({isInsideWizard}: AddAbcProps){
         { image: '/launchpad/LaunchDAO.svg', description: ['Submit', 'DAO Vote'] },
     ];
 
-    if (!isInsideWizard) {
-        return <WizardHome
-        title={['Launch an ABC', 'on an existing DAO']}
-        subtitle={['Configure the ABC and submit a', 'DAO vote to launch it!']}
-            stepsInfo={stepsInfo}
-            onButtonClick={() => navigate('/existing-dao/wizard')}
-        />
-    }
+    const title=['Launch an ABC', 'on an existing DAO'];
+    const subtitle=['Configure the ABC and submit a', 'DAO vote to launch it!'];
+    const clickUrl = '/existing-dao/wizard';
+    const txTitle = "Create vote on your DAO.";
 
     return (
-        <DaoStepper
-            steps={steps}
-            isValid={isValid}
-            onComplete={() => processTransactions("Create vote on your DAO.", undefined, txSteps, true, undefined, () => {
-                setNewDaoIsCreated(true)
-            })}
-            blockingComponent={newDaoIsCreated ? <DaoLaunched /> : undefined}
-        />
+        <Provider store={store}>
+            <Page
+                type="existing-dao"
+                steps={steps}
+                stepsInfo={stepsInfo}
+                title={title}
+                subtitle={subtitle}
+                clickUrl={clickUrl}
+                txTitle={txTitle}
+            />
+        </Provider>
     )
 }

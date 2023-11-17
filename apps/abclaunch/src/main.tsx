@@ -8,19 +8,20 @@ import { WagmiConfig } from "wagmi";
 import { Layout, theme } from "commons-ui"
 import { TransactionProvider } from "transactions-modal";
 import { chains, wagmiConfig } from "./wagmi.ts";
-import Home from "./pages/Home.tsx";
-import NewDao from "./pages/NewDao.tsx";
-import ExistingDao from "./pages/ExistingDao.tsx";
+import Home from "./pages/Home";
+import NewDao from "./pages/NewDao";
+import ExistingDao from "./pages/ExistingDao";
+import { createStore } from "jotai";
 
+const newDaoStore = createStore();
+const existingDaoStore = createStore();
 
 const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Home />} />
-      <Route path="/new-dao" element={<NewDao isInsideWizard={false}/>} />
-      <Route path="/new-dao/wizard" element={<NewDao isInsideWizard={true} />} />
-      <Route path="/existing-dao/" element={<ExistingDao isInsideWizard={false}/>} />
-      <Route path="/existing-dao/wizard" element={<ExistingDao isInsideWizard={true} />} />
+      <Route path="/new-dao/*" element={<NewDao />} />
+      <Route path="/existing-dao/*" element={<ExistingDao />} />
     </>
   )
 );
