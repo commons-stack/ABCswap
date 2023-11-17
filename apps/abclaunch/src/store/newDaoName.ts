@@ -59,6 +59,13 @@ const daoUrlAtom = atom(
   }
 );
 
+const daoSwapUrlAtom = atom(
+  get => {
+    const name = get(nameAtom);
+    return `https://abcswap.xyz/#/${name}`;
+  }
+);
+
 export function useNameAtom() {
   return useAtom(nameAtom);
 }
@@ -84,3 +91,6 @@ export function useDaoUrlValue() {
   return useAtom(daoUrlAtom)[0];
 }
 
+export function useDaoSwapUrlValue() {
+  return useAtom(daoSwapUrlAtom)[0];
+}
