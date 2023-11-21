@@ -46,7 +46,7 @@ export default function Launchpad() {
                     onButtonClick={() => navigate('/new-dao')}
                     buttonText="Launch on a new DAO"
                 />
-                <ChooseOption
+                {/* <ChooseOption
                     title="Existing DAO"
                     description={[
                         "I have a DAO and want to",
@@ -54,7 +54,7 @@ export default function Launchpad() {
                     ]}
                     onButtonClick={() => navigate('/existing-dao')}
                     buttonText="Launch on an existing DAO"
-                />
+                /> */}
             </HStack>
         </VStack>
     )
