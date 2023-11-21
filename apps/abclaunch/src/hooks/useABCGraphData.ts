@@ -1,4 +1,3 @@
-import { useDao } from "dao-utils";
 import { useReserveInitialBalanceAtom, useInitialTotalSupplyValue, useReserveRatioAtom } from "../store";
 
 const DOTS_LENGTH = 101; // we include the point (0,0) in the data
