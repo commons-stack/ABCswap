@@ -1,7 +1,7 @@
 import { Divider, HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ChooseOption from '../components/ChooseOption';
-import NotOptimizedModal from '../../../../pkg/commons-ui/src/components/NotOptimizedModal';
+import NotOptimizedModal from 'commons-ui/src/components/MobileOptimizationWarningModal';
 
 export default function Launchpad() {
     const navigate = useNavigate();
