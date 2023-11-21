@@ -63,7 +63,7 @@ export default function TransactionModal() {
                             <Text fontSize="24px" fontWeight={400} mt="24px" color="brand.900">{subtitle}</Text>
                         }
 
-                        <Stepper size='lg' index={activeStep} mt="42px" minW="520px">
+                        <Stepper size='lg' index={activeStep} mt="42px" minW="520px" justifyContent="space-evenly">
                             {steps?.map((stepInfo, index) => (
                                 <Step key={index}>
                                     <VStack >
