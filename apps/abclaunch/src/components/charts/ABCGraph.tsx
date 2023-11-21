@@ -35,14 +35,14 @@ function CustomTooltip({ active, supply, reserve, price, tokenSymbol, reserveTok
                     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
                 }}
             >
-                <p>
-                    <b>Supply:</b> {tooltipFormatter(supply)} {tokenSymbol}
-                </p>
                 <p style={{ color: "#E8E9E3" }}>
                     <b>Reserve:</b> {tooltipFormatter(reserve)} {reserveTokenSymbol}
                 </p>
                 <p style={{ color: "#E8E9E3" }}>
                     <b>Price:</b> {tooltipFormatter(price)} {reserveTokenSymbol}/token
+                </p>
+                <p>
+                    <b>Supply:</b> {tooltipFormatter(supply)} {tokenSymbol}
                 </p>
             </div>
         );
@@ -60,12 +60,15 @@ export default function ABCGraph() {
     const reserveTokenSymbol = getCollateralTokenInfo(collateralToken)?.tokenSymbol;
 
     const tooltip = useCallback(({ active, payload, label }: { active?: boolean, payload?: any, label?: any }) => {
+        const reserve = label;
+        const price = payload?.[0]?.payload?.y;
+        const supply = Number(reserve) / Number(price) / Number(reserveRatio) * 100
         return (
             <CustomTooltip
                 active={active}
-                supply={label}
-                reserve={Number(label) * Number(payload?.[0]?.payload?.y) * Number(reserveRatio) / 100}
-                price={payload?.[0]?.payload?.y}
+                supply={supply}
+                reserve={reserve}
+                price={price}
                 tokenSymbol={tokenSymbol}
                 reserveTokenSymbol={reserveTokenSymbol} />
         )
@@ -96,7 +99,8 @@ export default function ABCGraph() {
                             fill: "#003C00",
                             fontWeight: "bold",
                         }}
-                        value={"Supply" + (tokenSymbol ? ` (${tokenSymbol})` : "")}
+                        // value={"Supply" + (tokenSymbol ? ` (${tokenSymbol})` : "")}
+                        value={"Reserve balance" + (reserveTokenSymbol ? ` (${reserveTokenSymbol})` : "")}
                         dy={20} />
                 </XAxis>
                 <YAxis type="number" tickFormatter={tickFormatter}>
