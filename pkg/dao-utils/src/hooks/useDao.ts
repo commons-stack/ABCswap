@@ -1,7 +1,7 @@
 import { normalize, namehash } from "viem/ens";
 import { parseAbi } from "viem";
 import { useContractRead } from "wagmi";
-import useInstalledApp from "./useInstalledApp";
+import useInstalledApps from "./useInstalledApps";
 import { ARAGON_ENS_CONTRACT, ZERO_ADDRESS } from "../constants";
 
 
@@ -56,14 +56,21 @@ export function useDaoAddress(name: string = "") {
   return { address, error, isLoading };
 }
 
-export default function useDao(name?: string, app?: string) {
+type Dao = {
+  address?: `0x${string}`;
+  appAddresses: { [appId: string]: `0x${string}`[] };
+  error: Error | null;
+  isLoading: boolean;
+};
+
+export default function useDao(name?: string): Dao {
 
     const { address: daoAddress, error: daoError, isLoading: isDaoLoading } = useDaoAddress(name);
-    const { address: appAddress, error: appError, isLoading: isAppLoading } = useInstalledApp(daoAddress, app);
+    const { appAddresses, error: appError, isLoading: isAppLoading } = useInstalledApps(daoAddress);
 
     const error = daoError || appError;
     const isLoading = isDaoLoading || isAppLoading;
     
-    return { address: daoAddress, appAddress, error, isLoading };
+    return { address: daoAddress, appAddresses, error, isLoading };
   
 }

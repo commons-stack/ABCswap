@@ -23,7 +23,7 @@ export default function SimpleConvert() {
 
     const { dao } = useParams();
     const navigate = useNavigate();
-    const { appAddress: bondingCurveAddress } = useDao(dao, 'augmented-bonding-curve.open.aragonpm.eth');
+    const bondingCurveAddress = useDao(dao).appAddresses['augmented-bonding-curve.open.aragonpm.eth']?.[0];
     const { data: abc } = useAbcInfo(bondingCurveAddress);
     const abcTokenAddress = abc.token;
     const { address: reserveTokenAddress} = useReserveToken(bondingCurveAddress);
