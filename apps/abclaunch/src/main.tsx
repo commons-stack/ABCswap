@@ -20,8 +20,8 @@ const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Home />} />
-      <Route path="/new-dao/*" element={<NewDao />} />
-      <Route path="/existing-dao/*" element={<ExistingDao />} />
+      <Route path="/new-dao/*" element={<NewDao store={newDaoStore} />} />
+      <Route path="/existing-dao/*" element={<ExistingDao store={existingDaoStore} />} />
     </>
   )
 );
