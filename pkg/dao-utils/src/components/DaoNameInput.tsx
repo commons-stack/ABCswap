@@ -18,18 +18,17 @@ export default function DaoNameInput({
   requiredApp?: string;
 }) {
 
-  // Remove all non-alphanumeric characters from the DAO name
-  daoName = daoName.replaceAll(/[^a-z0-9]+/g, '');
-
   const { isLoading, daoExists, appIsInstalled } = useIsRegisteredDaoWithApp(daoName, requiredApp, debounceDelay);
 
   function handleNameChange(name: string) {
+    // Remove all non-alphanumeric characters from the DAO name
+    name = name.toLowerCase().replaceAll(/[^a-z0-9]+/g, '');
     setDaoName({name, daoExists: undefined, appIsInstalled: undefined});
   }
 
   useEffect(() => {
     setDaoName({ name: daoName, daoExists, appIsInstalled });
-  }, [daoName, daoExists, appIsInstalled, setDaoName]);
+  }, [daoName, daoExists, appIsInstalled]);
 
   const _isInvalid = !!daoName && !isLoading && isInvalid;
 
