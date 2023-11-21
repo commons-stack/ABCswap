@@ -14,7 +14,7 @@ import {
 import { useEffect } from "react"
 
 
-export default function NotOptimizedModal() {
+export default function MobileOptimizationWarningModal() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const isMobile = useBreakpointValue({ base: true, md: false })

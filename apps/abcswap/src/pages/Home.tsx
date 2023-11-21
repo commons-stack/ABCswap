@@ -3,7 +3,7 @@ import { Button, Divider, HStack, Image, Stack, Text, VStack } from '@chakra-ui/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DaoNameInput, useIsRegisteredDaoWithApp } from 'dao-utils';
-import NotOptimizedModal from '../../../../pkg/commons-ui/src/components/NotOptimizedModal';
+import NotOptimizedModal from 'commons-ui/src/components/MobileOptimizationWarningModal';
 
 export default function Home() {
 
