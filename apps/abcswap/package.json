@@ -20,7 +20,7 @@
     "react-router-dom": "^6.16.0",
     "use-async-effect": "^2.2.7",
     "viem": "1.16.5",
-    "wagmi": "1.4.2"
+    "wagmi": "1.4.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
