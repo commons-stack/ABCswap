@@ -17,10 +17,11 @@
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "prettier": "latest",
-    "turbo": "latest"
+    "prettier": "^3.3.2",
+    "turbo": "^1.10.0"
   },
   "engines": {
     "bun": ">=1.0.0"
-  }
+  },
+  "packageManager": "bun@1.0.0"
 }
