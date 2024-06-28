@@ -32,6 +32,12 @@
   <body>
     <noscript>Find and swap ABC tokens.</noscript>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      if (!import.meta.env.VITE_GRAPHQL_API_KEY) {
+        document.body.innerHTML = '<h1 style="color: red;">Error: VITE_GRAPHQL_API_KEY is not set</h1>';
+      } else {
+        import('/src/main.tsx');
+      }
+    </script>
   </body>
 </html>

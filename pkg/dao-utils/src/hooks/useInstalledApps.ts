@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 
+const API_KEY = import.meta.env.VITE_GRAPHQL_API_KEY;
+
+if (!API_KEY) {
+    throw new Error('VITE_GRAPHQL_API_KEY is not set');
+}
+
 export default function useInstalledApps(kernel?: `0x${string}`) {
     const [appAddresses, setAppAddresses] = useState<{[appId: string]: `0x${string}`[]}>({});
     const [error, setError] = useState<Error | null>(null);
@@ -16,7 +22,7 @@ export default function useInstalledApps(kernel?: `0x${string}`) {
                     return;
                 }
                 setIsLoading(true);
-                const data = await fetch('https://api.thegraph.com/subgraphs/name/blossomlabs/aragon-optimism', {
+                const data = await fetch(`https://gateway-arbitrum.network.thegraph.com/api/${API_KEY}/subgraphs/id/Dzbv16HCmTtxqUC1Cf1LpuyfADvbSkY9KguR8MsrrMEQ`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
